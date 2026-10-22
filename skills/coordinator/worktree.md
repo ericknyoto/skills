@@ -7,9 +7,12 @@ tracked saja: tanpa `vendor/`, `node_modules/`, atau `.env`. Konsekuensinya untu
 
 - Sebut base branch eksplisit. Producer yang harus bekerja di atas branch lain melakukan `git fetch` lalu `git checkout` sendiri,
   dan kamu commit atau push dulu kalau producer butuh perubahanmu.
-- Producer memverifikasi kesiapan sebelum menjalankan apa pun: `vendor/` atau `node_modules/` ada, `.env` ada, versi runtime benar
-  (`.php-version` atau `.nvmrc`). Kalau repo punya script setup worktree (cari `scripts/worktree-setup.sh` atau hook
-  post-checkout), jalankan itu. Kalau tidak ada: `cp -a` dari checkout utama, lalu install dependensi hanya bila lockfile beda.
+- Di mesin ini hook `WorktreeCreate` global (`~/Work/ericknyoto-skills/hooks/worktree/`) sudah menyalin `vendor/`, `node_modules/`,
+  `.env`, `.php-version`, `.nvmrc` dan meng-install dependensi hanya bila lockfile beda. Lognya di
+  `$(git rev-parse --absolute-git-dir)/worktree-setup/setup.log` di dalam worktree.
+- Producer tetap memverifikasi kesiapan sebelum menjalankan apa pun: `vendor/` atau `node_modules/` ada, `.env` ada, versi runtime
+  benar (`.php-version` atau `.nvmrc`). Kalau hook tidak jalan (mesin lain), producer menjalankan `setup.sh <worktree>` dari folder
+  hook itu, atau `cp -a` dari checkout utama lalu install dependensi hanya bila lockfile beda.
 - `vendor/` selalu disalin, tidak pernah symlink: symlink membuat test diam-diam menjalankan kode checkout utama.
 - Bukti test dari worktree hanya sah bila stack trace-nya menunjuk ke path worktree itu.
 - Producer paralel tidak berbagi file. Dua producer yang butuh file yang sama berarti satu producer, atau yang kedua menunggu.
