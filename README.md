@@ -14,6 +14,6 @@ Update later with `npx skills update coordinator -g`. List what the repo offers 
 
 | Skill | Invoke | Purpose |
 |---|---|---|
-| `coordinator` | `/coordinator [tugas pertama]` | Turns a Fable session into an orchestrator: it keeps thinking, synthesis and review for itself and delegates exploration, implementation and drafting to cheaper workers picked from `~/.claude/rules/pstack-models.md`. |
+| `coordinator` | `/coordinator [tugas pertama]` | Turns a Fable session into an orchestrator for coding, research/planning and investigation: it keeps thinking, synthesis and review for itself and delegates exploration, production and drafting to cheaper workers picked from `~/.claude/rules/pstack-models.md`. |
 
 `coordinator` reads model and effort values from `~/.claude/rules/pstack-models.md`; that file is not part of this repo.
