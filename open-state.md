@@ -51,7 +51,7 @@ All assigned to Nitya, none completed. Project `1219919921535476`, section Busin
 | 1219919921458898 | Listing ownership after Rithum; SKU format | 2026-11-06 | SKU format answered 10-28; ownership open |
 | 1219920153543831 | PIC per department; who contacts Rithum | 2026-11-06 | asked 10-27; no answer |
 | 1219921642535113 | UK orders: import, ignore or report (BD-20) | 2026-11-06 | "import" 10-28 07:18Z; Finance/Warehouse handling open |
-| 1219922605431756 | Redact PII of 70,793 old orders now or from go-live (BD-21) | 2026-11-06 | 10-28 07:21Z: "BA will inform users to mark the PII field in the sales-channel setting; part of the ART task". ART = After Release Task: decided with Sarina before go-live, post-release task if agreed; not blocking S1 (Erick, 28 Oct) |
+| 1219922605431756 | Redact PII of 70,793 old orders now or from go-live (BD-21) | 2026-12-18 (was 11-06; task renamed "Before go-live (After Release Task)") | 10-28 07:21Z: "BA will inform users to mark the PII field in the sales-channel setting; part of the ART task". ART = After Release Task: decided with Sarina before go-live, post-release task if agreed; not blocking S1 (Erick, 28 Oct). Doc A .72438 |
 | 1219920153544088 | Which warehouse holds FBA stock; Amazon as truth | 2026-11-20 | Nitya asked for the FC list 10-27; no answer |
 | 1219920153544152 | FBA orders from Unshipped or only once shipped | 2026-11-20 | answered 10-28: only once shipped |
 | 1219919783814613 | FBM stock = full Hamburg stock or minus buffer | 2026-12-04 | Nitya's understanding "no buffer" awaits confirmation |
