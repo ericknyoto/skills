@@ -1,0 +1,268 @@
+# Facts
+
+Production and system facts, each with its date and source. Counts expire: re-measure with `verification.md`
+before quoting one. Decisions built on these live in `decisions.md`; wrong readings of them in `traps.md`.
+
+## Seller accounts, app and tokens
+
+- **Two seller accounts, one refresh token each:** Nenalina EU and Nenalina NA (config keys `nenalina_eu`,
+  `nenalina_na` per #5969). The EU seller id is `A1SMSLS6YOBHD5`: listings calls for it answered 200 with the EU
+  token (#5981, 2026-10-27). The NA seller id is not recorded. Julie & Grace EU is not authorised (Doc A .37271).
+- **Production app** `Manobo-2008-Sellers` (`amzn1.sp.solution.b7e18360-050b-49b3-a42f-fe91e3a02b3a`): Private
+  developer profile, so self-authorisation only; entity Seller; RDT delegation No. Roles: Finance and Accounting,
+  Inventory and Order Tracking, Direct-to-Consumer Shipping (restricted), Amazon Fulfillment, Product Listing,
+  Pricing, Seller Insights, Brand Analytics. **Not** Tax Invoicing, Tax Remittance, Buyer Communication, Buyer
+  Solicitation (Solution Provider Portal, read 2026-10-27). Sandbox app: `Manobo-2008`.
+- Sarina authorised both Nenalina accounts on 2026-10-27; the portal then showed 8 of 10 self-authorisations left.
+- LWA client secret: portal banner "expires in < 30 days" seen 2026-10-20. Rotating it does not invalidate refresh
+  tokens (Amazon SP-API support, 2026-09-24). Rotation is #5985.
+- **Env var names** (local `manobo-2008/.env` only; staging and production server envs untouched as of
+  2026-10-27): `AMAZON_PROD_{APP_ID,CLIENT_ID,CLIENT_SECRET}`, `AMAZON_PROD_REFRESH_TOKEN_NENALINA_{EU,NA}`,
+  `AMAZON_SANDBOX_{APP_ID,CLIENT_ID,CLIENT_SECRET,REFRESH_TOKEN}`. No code on master reads them (2026-10-28).
+  Planned override (#5972): `AMAZON_SELLER_READ_ENDPOINT_<ACCOUNT>=production`, reads only.
+- Each token works only in its region; the other region answers 403 (marketplaceParticipations, 2026-10-27).
+
+## Marketplace ids
+
+`GET /sellers/v1/marketplaceParticipations` with both tokens, 2026-10-27, all `isParticipating` (Doc A .44674):
+
+| Marketplace | marketplaceId | Token | FBM channel | FBA channel |
+|---|---|---|---|---|
+| Amazon.de | `A1PA6795UKMFR9` | EU | AN.DL 192 | AN.DB 195 |
+| Amazon.fr | `A13V1IB3VIYZZH` | EU | AF.DL 196 | AN.FB 204 |
+| Amazon.it | `APJ6JRA9NG5V4` | EU | AN.IL 197 | AN.IB 203 |
+| Amazon.es | `A1RKKUPIHCS9HS` | EU | AN.EL 198 | AN.EB 205 |
+| Amazon.nl | `A1805IZSGTT6HS` | EU | AN.NL 201 | AN.NI 231 |
+| Amazon.com.be | `AMEN7PMS3EDWL` | EU | AN.BL 199 | AN.BE 229 |
+| Amazon.pl | `A1C3SOZRARQ6R3` | EU | AN.PL 200 | AN.PO 232 |
+| Amazon.se | `A2NODRKZP88ZB9` | EU | AN.SL 202 | AN.SE 233 |
+| Amazon.co.uk | `A1F83G8C2ARO7P` | EU | — | AN.KB 206 |
+| Amazon.com | `ATVPDKIKX0DER` | NA | — | AN.UB 207 |
+| Amazon.ca | `A2EUQ1WTGCTBG2` | NA | — | AN.CB 208 |
+| Amazon.com.mx | `A1AM78C64UM0Y8` | NA | — | AN.MB 209 |
+
+Also participating, no channel: IE `A28R8C7NBKEWEA`, SA `A17E79C6D8DWNP`, AE `A2VIGQ35RCS4UG`, TR `A33AVAJ2PDY3EV`.
+"Non-Amazon" multi-channel-fulfilment ids, unused: EU DE `A38D8NSA03LJTC`, FR `A1ZFFQZ3HTUKT9`, IT `A62U237T8HV6N`,
+ES `AFQLKURYRPEL8`, UK `AZMDEXL2RVFNN`; NA US `A2ZV50J4W1RKNI`, CA `A1MQXOICRS2Z7M`, MX `A3H6HPSLHAK3XG`.
+
+## Nenalina channels (production replica, 2026-10-28)
+
+`jng_sp` plus `jng_sp_orders`; orders = `COUNT(DISTINCT order_id)`, windows end 2026-10-28.
+
+| id | Code | Fulfilment | CA profile / site | split | Orders 365 d | 30 d | Last order |
+|---|---|---|---|---|---|---|---|
+| 192 | AN.DL | FBM | 12047680 / 642 | 0 | 1,220 | 22 | 2026-10-27 |
+| 195 | AN.DB | FBA | 12047680 / 642 | 1 | 11,230 (11,965 rows) | 356 | 2026-10-27 |
+| 196 | AF.DL | FBM | 12048120 / 643 | 0 | 61 | 0 | 2026-08-08 |
+| 204 | AN.FB | FBA | 12048120 / 643 | 1 | 1,392 | 73 | 2026-10-27 |
+| 197 | AN.IL | FBM | 12048121 / 645 | 0 | 48 | 2 | 2026-10-02 |
+| 203 | AN.IB | FBA | 12048121 / 645 | 1 | 1,322 | 71 | 2026-10-27 |
+| 198 | AN.EL | FBM | 12048116 / 683 | 0 | 39 | 0 | 2026-09-11 |
+| 205 | AN.EB | FBA | 12048116 / 683 | 1 | 983 | 49 | 2026-10-26 |
+| 201 | AN.NL | FBM | 12048124 / 1464 | 0 | 8 | 0 | 2026-09-05 |
+| 231 | AN.NI | FBA | 12048124 / 1464 | 1 | 99 | 1 | 2026-10-04 |
+| 199 | AN.BL | FBM | 12048115 / 2089 | 0 | 2 | 0 | 2026-01-14 |
+| 229 | AN.BE | FBA | 12048115 / 2089 | 1 | 96 | 7 | 2026-10-20 |
+| 200 | AN.PL | FBM | 12048122 / 1551 | 0 | 0 | 0 | never |
+| 232 | AN.PO | FBA | 12048122 / 1551 | 1 | 53 | 3 | 2026-10-25 |
+| 202 | AN.SL | FBM | 12048123 / 1535 | 0 | 0 | 0 | 2024-01-04 |
+| 233 | AN.SE | FBA | 12048123 / 1535 | 1 | 0 | 0 | 2025-01-10 |
+| 206 | AN.KB | FBA | 12048565 / 641 | 1 | 0 | 0 | 2024-03-10 |
+| 207 | AN.UB | FBA | 12048566 / 640 | 0 | 1,248 | 62 | 2026-10-26 |
+| 208 | AN.CB | FBA | 12048850 / 644 | 0 | 16 | 0 | 2026-09-07 |
+| 209 | AN.MB | FBA | 12048855 / 692 | 0 | 2 | 0 | 2026-08-04 |
+| 191 | AN.DT (test, closing) | FBM | 12046702 / 642 | 0 | 0 | 0 | 2023-07-20 |
+
+- All 21 rows: `active_status = 1`, `ca_used = 1`, `tb_used = 0`, `type` NULL (2026-10-28). Each country's FBM and
+  FBA channel share one CA profile and site; UK, US, CA and MX are single-channel profiles.
+- `ca_stock_use_alternate_sku = 1` only on 192 AN.DL; `no_order_confirmation` = 1 on every FBA row, 0 on every FBM
+  row (2026-10-28). `use_amvd_logistic` = 0 on all 20 (#5973, 2026-10-27). `jng_sp.currency` is EUR even on the PL,
+  SE and US rows (#5980). `jng_sp.marketplace_id` points at Manobo's own `marketplaces` table (#5969).
+- Neighbours outside scope: AM.US 53 (J&G US FBA) on CA profile 12043758; FBA-IN channels AN.IS 52, AN.UI 68,
+  AN.UK 118 (`ca_used = 0`), which book FBA stock as pseudo-orders (AN.UK 118 last on 2026-07-08, 20,569 in
+  total, memory 2026-10-27); row 48 AN.DS, the inactive 2021–2023 direct import.
+
+## Julie & Grace channels (phase 2)
+
+- The sheet's tab Seller JG marks 12 channels "Active, need to migrate": AM.DE (FBM: stock, price, orders,
+  returns), AM.DF, AM.UF, AM.US (FBA: stock, price, orders, returns), and order-only AM.ES, AM.EF, AM.FR, AM.FF,
+  AM.IT, AM.IF, AM.NL, AM.NF. AM.UK is inactive (sheet, read 2026-10-28).
+- All run on Tradebyte (`tb_used = 1`, `ca_used = 0`) except AM.US 53 on ChannelAdvisor. Orders in 365 days
+  (2026-10-28): AM.DF 7,661, AM.DE 757, AM.FF 581, AM.IF 399, AM.EF 341, AM.UF 56, AM.FR 22, AM.ES 22, AM.NF 20,
+  AM.IT 12, AM.NL 5, AM.US 4, AM.UK 0. J&G listings (AM.MA) also go through Tradebyte (Doc A .10265).
+
+## ChannelAdvisor today
+
+- **Order download:** host crontab `*/10 * * * *` (Europe/Berlin), `cron/job-producer-download-orders-from-integrator.php`,
+  one `DownloadOrdersFromChanneladvisorJob` per CA profile on `high-priority`: 23 profiles, 13 Nenalina. The same
+  line dispatches Tradebyte. The job has `tries = 1` and is not `ShouldBeUnique` (#5984, 2026-10-27).
+- **One page only:** `manobo-service-api` `ChanneladvisorOrderApiService::getNewOrders` reads
+  `v1/Orders?exported=false` once and never follows `@odata.nextLink` (code at service-api `edd3b67`, read
+  2026-10-28). The DE profile 12047680 returned exactly 100 unexported orders on every sampled run (2026-10-13,
+  -20, -26, -27), all FBA, the set turning over; Stilnest 90–93, US 83–85, ES 64–65 were near full (#5970).
+- **Routing** is `(ca_profile_id, ca_channel_id, use_external_warehouse)` and ignores `ca_used` and
+  `active_status`; no match or several → info log and the order stays unexported (#5970, 2026-10-27).
+- The Exported flag is set only after a successful import; a failed order is served again on every run. FBA
+  orders are imported only once SHIPPED, with `shipment_date` = order date (Doc A .28418; BA, .68082).
+- `RecordOrderImportErrorAction` uses `insertOrIgnore` on (source, order number, error hash): an identical
+  repeat adds no row. 4,804 CA downloads sat at `process_status = R` on 2026-10-27, most on Amazon profile tokens;
+  they are re-dispatched only by accident (memory ca-order-reimport-stuck-raw).
+- **Stock to CA:** no cron since 2023-07-09; event-driven `ExportStockToChanneladvisorJob` (15-minute delay, per
+  product family) plus daily family exports 18:30 and 00:30 Berlin. It pushes to every CA profile, ungated per
+  channel. Failures appear only in its log: 17 in October 2026, last on 2026-10-21 (#5984).
+- **Write-backs:** shipment confirmation via scheduler `manobo:orders-confirmation` every 30 minutes; FBA refunds
+  pulled by `manobo:daily-order-refund` at 03:00 tenant time (#5984). A refund to CA carries a quantity only:
+  `ChanneladvisorOrderStatusService::setOrderItemAsAdjusted` posts `{quantity}` to `…/order/item/{id}/status/Adjust`
+  and CA derives the money (ADR 0131 Context). `ProcessReturnB2cToChanneladvisorListener` sends only returns
+  created in Manobo, and its shipping-cost refund dispatch is commented out "temporary disabled" (code, 2026-10-28).
+- CA Adjust: one adjustment in flight per order (a concurrent one gets 400 and succeeds on retry); an order created
+  2026-05-08 answered 404 by October, cause unproven; CA's error `code` differs per request, so classify by
+  message (memory channeladvisor-adjust-api-facts, 2026-10-19).
+- The CA carrier map `ChanneladvisorOrderService::getShipmentCarrier` sends CA names (`DP`, `Metapack - PostNord`,
+  `Bpost`, …) that are not Amazon codes (#5982).
+
+## Amazon orders that never reach Manobo
+
+searchOrders v2026, orders created since 2026-09-27 06:18Z, matched on `jng_sp_orders.order_id`, misses looked
+up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
+
+| Marketplace, fulfilment | Shipped on Amazon | In Manobo | Missing | "Product not found for SKU" | Other import error | No trace |
+|---|---|---|---|---|---|---|
+| DE FBA | 573 | 354 (+1 under AM.DF) | 218 | 201 | 10 | 7 |
+| ES FBA | 84 | 52 | 32 | 7 | 25 | 0 |
+| US FBA | 88 | 64 | 24 | 24 | 0 | 0 |
+| IT FBA | 86 | 69 | 17 | 15 | 1 | 1 |
+| FR FBA | 83 | 69 | 14 | 8 | 4 | 2 |
+| PL FBA | 3 | 1 | 2 | 1 | 0 | 1 |
+| DE FBM | 20 | 20 | 0 | – | – | – |
+| UK FBA | 129 (+4 cancelled, 2 pending) | 0 | 129 | 0 | 0 | 129 |
+
+- "Other import error" is always "Name / Billing Address / Shipping Address / Shipping City contains unknown
+  characters". Cancelled and pending orders never enter Manobo by design, so they are left out.
+- The often-quoted **211** is the DE missing orders with an unresolved CA import error (201 + 10). It is not the
+  243 error rows that channel 195 logged in the 30 days to 2026-10-28 (see SKU rules).
+- UK: AN.KB's last order is 2024-03-10 (859 orders, December 2023 – March 2024). UK is the second-largest
+  Nenalina EU marketplace in the window.
+- Unexplained: DE FBA order `028-5344066-8747504` (Nenalina EU) sits under J&G channel AM.DF (58) with two rows
+  and a midnight order date.
+
+## SKU rules
+
+- **Real SKU** = `product_skus.sku` = product code (`products_model`) + `_` + size, no suffix when sizeless
+  (`ProductSkuService::generate`), e.g. `0101113122_55`.
+- **FBA listing = real SKU; FBM listing = real SKU + `-FBM`** (BA, 2026-10-28). Amazon.de agrees for ASIN
+  B08Z7R2YCC (getListingsItem 2026-10-28): `0402620921` AMAZON_EU, our_price 29.40, FBA fulfillable 4;
+  `0402620921-FBM` DEFAULT qty 1, our_price 29.50; both list_price 39.90, product type CHARM.
+- `-FBM` is data, never generated: alternate SKUs per channel in `jng_sp_sku`. 23,946 rows end in `-FBM`; 21,067
+  are exactly real SKU + `-FBM`; the rest use the old dash format, e.g. `335108-019-FBM` (#5978, 2026-10-28).
+- **Import lookup:** `product_skus` first, then `jng_sp_sku` for the order's own channel
+  (`ChanneladvisorCacheService::getObjectProductArticleBySku` → `ProductArticle::loadObjectFromSKUExternal`).
+- **`-L` exception** (`order_import_errors`, CA source, last 30 days, 2026-10-28): channel 195 has 243 "Product not
+  found for SKU" rows over 138 distinct SKUs, all ending in `-L` (`726099-046-L`, `0101371222_55-L`), none in
+  `-FBM`; 90 of the 138 match a real SKU once `-L` is stripped; `-L` alternate SKUs exist only on FBA-IN channels
+  52, 68 and 118. Channels 203, 204, 205 and 207 show the same (39, 28, 45, 17 SKUs, all `-L`), and 229, 231 and
+  232 one `-L` SKU each. Example orders on 195:
+  `028-1496294-5276357` (`335109-021-L`), `028-3014188-7621138` (`712712-019-L`). So FBA listings carry at least
+  three styles: real, real + `-L`, old dash format.
+- `S` + mother product code (e.g. `S0402620921`) is the CA family parent built by
+  `ChanneladvisorExportProductFamilyService`; Amazon does not know it (404, search 0 results, 2026-10-28).
+- Amazon.de holds 4,714 Nenalina listings (searchListingsItems `numberOfResults`, 2026-10-27). Anja uploads new
+  products to Amazon by hand and copies the ASIN into Manobo; products are never uploaded via Manobo (sheet).
+
+## Order money in Manobo
+
+- Per CA-imported Amazon item Manobo keeps the unit price (`price`, `price_selling`, `price_selling_foreign` and
+  currency), the promotion per piece in `jng_sp_orders_item_services` (`SavePromotionsItemLevelAction`),
+  `price_selling_after_service`, and the order's shipping total. `tax_amount` is Manobo's own computation
+  (`UpdateTaxAmountAction`); CA's `TaxPrice` is never read. Order `302-2119838-0613968` (DE FBM, EUR): 89.50 −
+  13.43 = 76.07; Manobo tax 12.14 against 12.15 from 76.07 × 19/119 (ADR 0131 Context, verified 2026-10-28).
+- `tax_amount = 0` in the 3 months to 2026-10-27: 5 of 1,414 AN.DB rows, 0 of 69 AN.DL rows; always 0 on US (#5971).
+- In 12 months, all 17,846 Nenalina `order_id` values are 19-character Amazon ids without suffix; at most 15
+  items and 15 units per order; none of 5,454,266 `shipment_id` values ends in `AZ` (#5971, 2026-10-27).
+- `order_id` repeats across seller accounts: 13 Amazon order ids sit in both AM.DF (58) and AN.DB (195), 12 months
+  (#5971).
+- **Currency:** a channel's currency comes from `countries.currency` of its country, never `jng_sp.currency`;
+  the CA import converts from the order's own `Currency`; `convertCurrency` returns 0 on a missing pair (#5980).
+- **Rates:** `app_config` key `exchange-rate`, replaced whole each day by host cron `cron/daily-exchange-rate.php`
+  from apilayer; a failed base silently drops its pairs and the failure email cannot fire (#5980). 2026-10-26: 756
+  pairs, none zero, EUR↔USD/PLN/SEK present. 2026-10-28: 757 pairs (refreshed 2026-10-27 09:05), `GBP2EUR`
+  1.194085, `MXN2EUR` 0.0482, `CAD2EUR` 0.63914 present.
+
+## Amazon API
+
+- **Orders v0** deprecated 2026-01-28; its read operations are removed 2027-03-27. `confirmShipment`
+  (`POST /orders/v0/orders/{orderId}/shipmentConfirmation`, 2 rps, burst 10; requires `packageReferenceId`,
+  `carrierCode`, `trackingNumber`, `shipDate`, `orderItems`) is not deprecated and has no v2026 equivalent
+  (Doc A .3057; #5982).
+- **searchOrders v2026-01-01:** 0.0056 rps, burst 20 (model; header seen 2026-10-27). `includedData` ∈ BUYER,
+  RECIPIENT, PROCEEDS, EXPENSE, PROMOTION, CANCELLATION, FULFILLMENT, PACKAGES, TAX, PAYMENT, FULFILLMENT_ORDERS.
+  Without FULFILLMENT the `fulfillment` block (`fulfilledBy`, status) is absent. `salesChannel.marketplaceId` and
+  `fulfillment.fulfilledBy` are order-level. One call takes all 13 EU marketplace ids (2026-10-27).
+- **Item money is only in `proceeds`:** `proceedsTotal` and `breakdowns[]` typed ITEM, SHIPPING, GIFT_WRAP,
+  COD_FEE, OTHER, TAX, DISCOUNT, each a line-total `subtotal`; `detailedBreakdowns` only on TAX and DISCOUNT.
+  `promotion.breakdowns[]` holds only `promotionId`; `tax` holds `taxCalculationBreakdowns[].reportingScheme` and
+  `taxCollections[].{model, responsibleParty}` (`orders_2026-01-01.json`, checked 2026-10-28).
+- **FBA buyer data with our roles:** AFN orders carry no buyer block, and `recipient.deliveryAddress` holds only
+  city, postal code and country (sometimes region): 96 of 96 DE FBA orders, 2026-10-27; v0 `getOrderAddress` Name
+  is empty. MFN orders are complete. Through CA, AN.DB has full addresses today (370 of 370 orders in 30 days),
+  with Amazon relay emails and placeholder phones (Doc A .27600, .44046; example `303-6456306-1725135`).
+- **Feeds:** cancel = `POST_ORDER_ACKNOWLEDGEMENT_DATA`; refund = `POST_PAYMENT_ADJUSTMENT_DATA` (AdjustedItem →
+  ItemPriceAdjustments components Principal, Shipping, Tax, …), not deduplicated by Amazon (ADR 0129). The legacy
+  inventory and price feeds were removed 2025-12-03; FBM quantity and price go through `patchListingsItem` or
+  `JSON_LISTINGS_FEED` (Doc A .3057).
+- No documented rule caps a refund at the charged amount; only Seller Forum error 18010 "refund amount for the item
+  price is too high" (docs check, 2026-10-28).
+- **Finances API** (`listFinancialEventsByOrderId` v0, `listTransactions` 2024-06-19) returns per-item Principal,
+  Tax, Shipping and Promotion of a shipped order on demand: up to 48 h lag, 0.5 rps, needs Finance and Accounting
+  (held), retention undocumented (ADR 0131). FBA refunds are not in the Orders API: Reports
+  `GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA` or Finances (Doc A .5422).
+- **Listings, Amazon.de** (#5981, 2026-10-27): product types NECKLACE, RING, BRACELET (CHARM seen 2026-10-28), not
+  JEWELRY; all share version `…PcHMd1` and identical price and stock subschemas. `list_price` =
+  `[{currency, value_with_tax, marketplace_id}]`, no schedule, required on non-parent listings. `purchasable_offer`
+  has one entry per (marketplace, currency, audience `ALL`): `our_price[].schedule[]` = `{value_with_tax}` only;
+  `discounted_price[].schedule[]` needs `start_at`, `end_at`, `value_with_tax` and an `our_price` beside it.
+  `fulfillment_availability`: `AMAZON_EU` or `DEFAULT`; DEFAULT takes exactly one of `quantity` and
+  `is_inventory_available`, optionally `lead_time_to_ship_max_days` (0–30), and makes `merchant_shipping_group`
+  required.
+- Live examples: FBA `0101141222_55` (NECKLACE) list 74.90, our 65.40, discounted 55.90 from
+  2026-10-22T22:00Z to 2026-11-28T23:00Z (Berlin midnights), availability AMAZON_EU + out-of-enum `AMAZON_UK_RAFN`
+  + DEFAULT qty 150; FBM `0608672622_60-FBM` (RING) list 63.00, our 55.50, DEFAULT qty 2, lead time 1 (#5981).
+  `0402620921` also lists `AMAZON_DE_TBYB` and an offer for audience B2B (2026-10-28).
+- Listings also carry `uvp_list_price`: 33.53 on `0402620921` beside `list_price` 39.90 (39.90 / 1.19 = 33.53).
+  Assumption: it is the sheet's "List price (RRP EUR net)"; the schema was not read for it.
+- **Carrier codes:** `carrierCode` comes from the `amzn-base.xsd` `CarrierCode` list (Last-Modified 2026-07-09):
+  present DHL, DHL Express, DHL-Paket, Deutsche Post, PostNord, Seven Senders, BPOST, Colissimo, Swiss post, Poste
+  Italiane, PostNL, Royal Mail, DPD; absent Metapack and Austrian Post. `Other` requires `carrierName` and Amazon
+  cannot track it (#5982).
+- getInventorySummaries returns 50 SKUs per page with `nextToken` (2026-10-27).
+
+## Populations
+
+- **PII:** retention is off on all 238 channels and `pii_redaction_logs` is empty; the 20 Nenalina channels hold
+  70,793 orders shipped more than 30 days ago that still carry PII (FBM 6,380, FBA 64,413, oldest mid-2023)
+  (#5975, 2026-10-27). `config/sentry.php` has `breadcrumbs.sql_bindings => true` (master, 2026-10-28).
+- **Personalisation:** 0 of 18,695 Amazon Nenalina orders in 12 months; only CA PrivateNotes on 1,318 FBM orders,
+  one constant string (#5983, 2026-10-27).
+- **Load:** CA retail for Nenalina averages 27 orders a day, peak 44; returns 613 rows per 90 days (AN.DB 358,
+  AN.UB 90) (Doc A .2855, .11301, measured 2026-10-20).
+
+## Code anchors
+
+Accurate on 2026-10-28: manobo-2008 master `74b6517496`, manobo-service-api `edd3b67`. `Manobo2/Domain/AmazonSeller`
+and `config/amazon.php` do not exist yet.
+
+| What | Where |
+|---|---|
+| CA order download and routing | `Manobo2/Domain/Shared/ChanneladvisorExchange/Service/ChanneladvisorDownloadOrderService.php::downloadNewOrders` |
+| CA order import, shipment ids, carrier map | `…/ChanneladvisorExchange/Service/ChanneladvisorOrderService.php` (`generateShipmentId`, `generateShipmentIdForSplitQuantity`, `getShipmentCarrier`) |
+| CA refund / cancel (quantity only) | `…/ChanneladvisorExchange/Service/ChanneladvisorOrderStatusService.php::setOrderItemAsAdjusted` |
+| Returns to CA, shipping refund (off) | `Manobo2/Domain/SalesOrder/Channeladvisor/Listener/ProcessReturnB2cToChanneladvisorListener.php` |
+| SKU lookup | `…/ChanneladvisorExchange/Service/ChanneladvisorCacheService.php::getObjectProductArticleBySku` |
+| Real SKU | `Manobo2/Services/ProductSkuService.php::generate` |
+| CA family parent `S…` | `…/ChanneladvisorExchange/Service/ChanneladvisorExportProductFamilyService.php` |
+| Item promotions / tax | `Manobo2/Domain/SalesOrder/Channeladvisor/Action/SavePromotionsItemLevelAction.php`, `Manobo2/Domain/Order/Action/UpdateTaxAmountAction.php` |
+| Import error ledger | `Manobo2/Domain/SalesOrder/Action/RecordOrderImportErrorAction.php` |
+| `ca_used`/`tb_used` derived on save | `Manobo2/Domain/Shared/SalesChannel/Action/SaveSalesChannelDetailAction.php` |
+| FBA refund pull | `Manobo2/Domain/ChannelAdvisor/Command/OrderRefundFromSalesChanneladvisorFbaCommand.php` |
+| Currency conversion | `helpers/functions-2.php` (`convertCurrency`), `cron/daily-exchange-rate.php` |
+| CA new-order read (service-api) | `app/Manobo/Service/Impl/v3/ChanneladvisorOrderApiService.php::getNewOrders` |
