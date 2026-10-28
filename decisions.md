@@ -62,5 +62,5 @@ append-only errata. Erick accepted that as is ("Merge begini", 2026-10-28, coord
 | 2026-10-28 | FBA orders enter Manobo only once SHIPPED, as with ChannelAdvisor; no new rule | Asana 1219920153544152 (05:27Z); Doc A .68082; map #5967 |
 | 2026-10-28 | Seller SKU: FBA = real SKU, FBM = real SKU + `-FBM`. The listing-ownership half is unanswered | Asana 1219919921458898 (06:51Z); Doc A .70046; #5986 c6463275311 |
 | 2026-10-28 | UK: import the orders, keep a UK channel | Asana 1219921642535113 (07:18Z); Doc A .70555 |
-| 2026-10-28 | Old-order PII: the BA will have users tick the PII field in the sales-channel setting, "part of the ART task" (term unexplained; start date and who still needs the data undecided) | Asana 1219922605431756 (07:21Z); Doc A .70800 |
+| 2026-10-28 | Old-order PII: the BA will have users tick the PII field in the sales-channel setting, as an After Release Task (ART): decided with Sarina before go-live; if agreed, a post-release task enables PII redaction per channel and the developer verifies the process; not blocking S1 (Erick, 28 Oct) | Asana 1219922605431756 (07:21Z); Doc A .70800 |
 | 2026-10-28 | JG phase 2 = 12 channels: AM.DE (FBM), AM.DF/AM.UF/AM.US (FBA), 8 ES/FR/IT/NL order-only. AM.US stays on her list although Doc A recommends closing it; the JG BRD decides | Asana 1219919783909992 (03:34Z); Doc A .67265 |
