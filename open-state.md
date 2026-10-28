@@ -11,6 +11,8 @@ Re-verify with `verification.md` before acting on a line.
 
 - Asana A9 task 1219920153544088 got a second question on 28 Oct 08:36Z (mention): may the FBA stock import go live before the peak, separately from the January go-live? Sarina decides. Not yet in Doc A (open question, not a decision).
 
+- **BRD sign-off moved to 20 Nov as the S2 gate** (Erick, 28 Oct): S1 code needs no business answer; by 9 Nov only Frank's go decision and the Tax Invoicing answer (Asana 1219919849816117, due 6 Nov) are required. Asana: BRD task 1219919921548797 due 20 Nov in section S1; S0-exit task retitled; listing-ownership 1219919921458898 and PIC 1219920153543831 are "Blocks S2", due 20 Nov. #5989 move requested from the map session. Brief doc and Doc A being updated.
+
 ## Pull requests
 
 - **#6008** (ADR 0134, branch `5973-adr-amazon-channel-config`, head `4c531081ee`): open. Mergeable but blocked —
