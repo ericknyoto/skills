@@ -30,9 +30,9 @@ Blockers from GitHub issue dependencies, read 2026-10-28:
 | 5974 | grilling | Write-flow gating by fulfilment channel (FBM-only, FBA-only flows) | nothing open: **next to grill** |
 | 5977 | grilling | Monitoring per flow: failure table, notifications, queues, cadence | #5974 |
 | 5976 | grilling | Shadow mode: comparison table and diff report during peak | #6006 |
-| 5978 | grilling | SKU mapping table and the DE reconciliation report | #5986, #5989 |
-| 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth | #5987, #5989 |
-| 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism | #5978, #6013 |
+| 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
+| 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
+| 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
 | 5985 | task | Rotate the LWA client secret; store it in staging and production | — |
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
