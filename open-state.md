@@ -3,6 +3,10 @@
 **As of 2026-10-28, about 08:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
+## Decisions taken late on 2026-10-28
+
+- `-L` FBA listings: **no data fix before the migration** (Erick, 'Tetap tunggu'). The 138 DE FBA `-L` SKUs stay as input to #5978 (comment issuecomment-6463784061); the BA was asked on Asana 1219919921458898 what `-L` means, who created the listings, and whether they map to the real SKU. Answer pending.
+
 ## Pull requests
 
 - **#6008** (ADR 0134, branch `5973-adr-amazon-channel-config`, head `4c531081ee`): open. Mergeable but blocked —
