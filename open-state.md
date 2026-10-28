@@ -37,7 +37,7 @@ Blockers from GitHub issue dependencies, read 2026-10-28:
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
-| 5989 | BRD input | BRD P0+P1 signed off: the S0 exit gate | #5986, #5987, #5988, #6013 |
+| 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013 |
 | 6006 | BRD input | Release-freeze exception for the go-live weeks; is the November shadow pull a release | — |
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows | — |
 
@@ -102,10 +102,12 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 
 ## Deadlines ahead
 
-- **6 Nov 2026, S0 exit** (Asana milestone `1219919783880756`): Frank's go, BRD P0+P1 signed (#5989), scope
-  approved. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) and the LWA secret
+- **6 Nov 2026, S0 exit** (Asana milestone `1219919783880756`): Frank's go, scope approved, and the Tax Invoicing
+  answer (#5988, Asana `1219919849816117`; Amazon's role approval takes weeks). The BRD sign-off is no longer here. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) and the LWA secret
   rotation (`1219920153548672`, #5985).
-- **9 Nov 2026:** S1 starts if the map destination holds.
+- **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
+- **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
+  Listing ownership `1219919921458898` and PIC `1219920153543831` are "Blocks S2", due 20 Nov.
 
 ## Known-unfixed, no issue yet
 
