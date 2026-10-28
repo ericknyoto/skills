@@ -5,7 +5,7 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
 
-- `-L` FBA listings: **no data fix before the migration** (Erick, 'Tetap tunggu'). The 138 DE FBA `-L` SKUs stay as input to #5978 (comment issuecomment-6463784061); the BA was asked on Asana 1219919921458898 what `-L` means, who created the listings, and whether they map to the real SKU. Answer pending.
+- `-L` FBA listings: **no data fix before the migration** (Erick, 'Tetap tunggu'). The 138 DE FBA `-L` SKUs stay as input to #5978 (comment issuecomment-6463784061); the BA was asked on Asana 1219919921458898 what `-L` means, who created the listings, and whether they map to the real SKU (comment 07:58Z). Answer pending. Doc A .71715 (rev 160).
 
 ## Pull requests
 
