@@ -9,6 +9,8 @@ Re-verify with `verification.md` before acting on a line.
 
 - Asana Business-decisions tasks **completed on 28 Oct** (Erick: answered and locked): scope 20 channels 1219919921404437, UK orders = import 1219921642535113, FBA orders only once SHIPPED 1219920153544152. Still open there: buyer address/Tax Invoicing, listing ownership + `-L`, PIC per department, PII (before go-live), FBA warehouse, FBM buffer, BIL, price fields, returns, cutover window, release freeze, UK/US GBP/USD price fields, success measures.
 
+- Asana A9 task 1219920153544088 got a second question on 28 Oct 08:36Z (mention): may the FBA stock import go live before the peak, separately from the January go-live? Sarina decides. Not yet in Doc A (open question, not a decision).
+
 ## Pull requests
 
 - **#6008** (ADR 0134, branch `5973-adr-amazon-channel-config`, head `4c531081ee`): open. Mergeable but blocked —

@@ -100,6 +100,8 @@ place: prune superseded facts before adding, never a fact that still holds.
 
 ## Hard lines
 
+**Asana questions for the BA are posted as comments that @-mention Nitya** (`html_text` with `<a data-asana-gid="1198833652207853"/>`); a note or title edit notifies nobody (Erick, 28 Oct). Sarina = `1202380965972104`, Sahat = `49340007000266`.
+
 **SP-API writes run only from production.** ADR 0128 makes every write refuse a production endpoint outside
 production; from a laptop, use GET calls only. A refund feed (`POST_PAYMENT_ADJUSTMENT_DATA`) is not
 deduplicated by Amazon and is never replayed (ADR 0129).
