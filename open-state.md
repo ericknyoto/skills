@@ -1,6 +1,6 @@
 # Open state
 
-**As of 2026-10-29, about 13:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-29, about 13:30 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
@@ -11,24 +11,24 @@ Re-verify with `verification.md` before acting on a line.
 
 - Asana A9 task 1219920153544088 got a second question on 28 Oct 08:36Z (mention): may the FBA stock import go live before the peak, separately from the January go-live? Sarina decides. Not yet in Doc A (open question, not a decision).
 
-- **BRD sign-off moved to 20 Nov as the S2 gate** (Erick, 28 Oct): dates and Asana ids under "Deadlines ahead" below; Doc A .73109 (rev 162); map #5967 Destination names #5978, #5979, #6012 as S2-gate tickets.
+- **BRD sign-off moved to 20 Nov as the S2 gate** (Erick, 28 Oct): dates and Asana ids under "Deadlines ahead" below; Doc A .73109 (rev 162); map #5967 Destination names the S2-gate tickets (four since 29 Oct, see the map table).
 
 ## Pull requests
 
-- **#6008** (ADR 0134, branch `5973-adr-amazon-channel-config`, head `4c531081ee`): open. Mergeable but blocked —
-  review required, and the "Entire Gates" check failed (not investigated); the branch is behind master. It was
-  to merge after #6007, which has merged. Erick merges.
+- **ADR 0138** (fulfilment gating, #5974): branch `5974-adr-amazon-flow-gating`, commit `1bd761dbf7`, pushed,
+  **no PR until Erick says go**. Claim the number again at merge (0135/0137 on other branches, 0136 on master).
+- #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
 
-## Map #5967 — 13 of 26 tickets closed
+## Map #5967 — 14 of 28 tickets closed
 
-Blockers from GitHub issue dependencies, read 2026-10-28:
+Blockers from GitHub issue dependencies, read 2026-10-29 (#5974 closed that day: resolution issuecomment-6497734388):
 
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
-| 5974 | grilling | Write-flow gating by fulfilment channel (FBM-only, FBA-only flows) | nothing open: **next to grill** |
-| 5977 | grilling | Monitoring per flow: failure table, notifications, queues, cadence | #5974 |
+| 5977 | grilling | Monitoring per flow: failure table, notifications, queues, cadence. Handover from #5974: reason `fulfilment_channel_not_served` (issuecomment-6497739716) | nothing open: **next to grill** |
+| 6040 | grilling | Refund flows: FBA refund pull source, already-refunded guard, per-unit feed values, does the adjustment feed accept FBA orders (S2 gate: closes before 23 Nov) | #6039 |
 | 5976 | grilling | Shadow mode: comparison table and diff report during peak | #6006 |
 | 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
@@ -37,12 +37,15 @@ Blockers from GitHub issue dependencies, read 2026-10-28:
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
-| 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013 |
+| 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013, #6039 |
 | 6006 | BRD input | Release-freeze exception for the go-live weeks; is the November shadow pull a release | — |
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
+| 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
+
+Map Destination names four S2-gate tickets since 29 Oct: #5978, #5979, #6012, #6040.
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
-carrier map, refund feed values and the FBA refund source, the runbook of the 11–15 Jan week across both tokens,
+carrier map, the runbook of the 11–15 Jan week across both tokens,
 the months-long ChannelAdvisor overlap, updates to an already imported order, UK and US FBA stock flows, and how
 Finance and Warehouse handle UK orders.
 
@@ -63,7 +66,7 @@ All assigned to Nitya; 6 completed (see above). Project `1219919921535476`, sect
 | 1219919783814613 | FBM stock = full Hamburg stock or minus buffer | 2026-12-04 | **answered and completed 29 Oct**: full stock, no buffer (Anja + Nitya 10-28) |
 | 1219919864498676 | Build International Listings active; copies DE quantity? | 2026-12-04 | no comment |
 | 1219919849429744 | UVP, selling and promo fields; FBM price = FBA? (#6013) | 2026-12-04 | **completed 29 Oct**: mapping locked; FBM/FBA = separate rows, may differ (Erick) |
-| 1219920153544278 | Returns opened on Amazon: who records them; shipping refund? | 2026-12-04 | no comment |
+| 1219920153544278 | Returns opened on Amazon: who records them; shipping refund? (#6039) | 2026-12-04 | 29 Oct 13:18Z (IT, @Nitya, story 1220015351242263): FBA goods sent back to Hamburg (13 in 12 months; ChannelAdvisor accepted the refund for 7) stay refunded automatically with an already-refunded check, or CS refunds in Seller Central? No answer |
 | 1219961077776438 | Release-freeze exception for 4–8 and 11–15 Jan (#6006) | 2026-12-04 | no comment |
 | 1219919783909992 | UK/US FBA stock + price flows and GBP/USD fields | 2026-12-04 | flows confirmed 10-28; 29 Oct: asked to confirm the `_foreign` price columns (GBP/USD already held for 74 UK / 5 US products) feed Amazon with the DE mapping; a wrong 'EUR only' comment was corrected the same day |
 | 1219919983346126 | Cutover window, sync pause, hypercare length | 2026-12-18 | no comment |
@@ -122,3 +125,8 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
   action without approval.
 - A Manobo ↔ Shopify direct project, also dropping ChannelAdvisor, exists per Erick; nothing for it in manobo-2008
   yet (coordinator ledger, 2026-10-28).
+- `ProcessChannelAdvisorRefundOrdersAction` (the CA FBA refund pull) looks orders up by `order_id` with no channel or
+  seller-account scope, and drops the refund of an item already marked returned with a log line only (#5974 side
+  finding; listed in #6040 as behaviour not to copy).
+- Follow-up candidate after the BA answers #6039: a fulfilment check on `ProcessReturnB2cToChanneladvisorListener`
+  during the ChannelAdvisor overlap (ADR 0138 rule 7 leaves it unchanged).

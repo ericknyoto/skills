@@ -115,6 +115,13 @@ ES `AFQLKURYRPEL8`, UK `AZMDEXL2RVFNN`; NA US `A2ZV50J4W1RKNI`, CA `A1MQXOICRS2Z
   `ChanneladvisorOrderStatusService::setOrderItemAsAdjusted` posts `{quantity}` to `…/order/item/{id}/status/Adjust`
   and CA derives the money (ADR 0131 Context). `ProcessReturnB2cToChanneladvisorListener` sends only returns
   created in Manobo, and its shipping-cost refund dispatch is commented out "temporary disabled" (code, 2026-10-28).
+- **FBA gating today** (code master `58eea8e9ea` + replica, 2026-10-29): shipment and cancel confirmations skip FBA
+  only through the generic checkbox `no_order_confirmation` (1 → `AutoConfirmOrderJob`, closed locally): 1 on all 12
+  Nenalina FBA rows, 0 on all 9 FBM rows. The return listener has **no** fulfilment check: an internal return ("Returned
+  via Manobo" CS bin-in, "Returned via MC") on an FBA order goes to CA as an Adjust. 365 days: FBM 217 internal returns;
+  FBA 3,949 "Returned via CA" (the pull) and 13 internal (goods sent to Hamburg; CA accepted 7, `confirm_return = 1`).
+  Finances API on those 13: one refund on 12, none on 1, none doubled. The pull updates only items still in a sent
+  status, so an Amazon refund on an item already returned in Manobo is dropped with a log line (#5974; ADR 0138).
 - CA Adjust: one adjustment in flight per order (a concurrent one gets 400 and succeeds on retry); an order created
   2026-05-08 answered 404 by October, cause unproven; CA's error `code` differs per request, so classify by
   message (memory channeladvisor-adjust-api-facts, 2026-10-19).

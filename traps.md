@@ -67,6 +67,16 @@ price. **Caught** by getListingsItem, 2026-10-28. The business answer is still o
 **True:** status lags in every copy. Read the ADR file on `origin/master` and `gh pr view`; see `decisions.md`.
 **Caught** while building this skill, 2026-10-28.
 
+## "FBA refunds are Amazon's alone, so the refund feed can be FBM-only"
+
+**Believed** in the #5974 question and its round-1 recommendation (2026-10-29): a Manobo return on an FBA order can
+only cause a double refund, so block it.
+**True:** buyers send FBA goods to Hamburg about once a month (13 in 12 months); the Manobo return then triggers the
+refund through ChannelAdvisor, often as the buyer's only refund, and no order was refunded twice (Finances API).
+FBM-only would have stopped those refunds. ADR 0138 keeps the refund feed for both, behind an already-refunded check.
+Manobo's own tables cannot show a double refund: the FBA pull drops a refund for an item already returned.
+**Caught** by the replica and Finances check, 2026-10-29; decided by the coordinator ("keep today's model").
+
 ## "The listings use product type JEWELRY"
 
 **Believed** in the #5981 question and Doc A (.5920).

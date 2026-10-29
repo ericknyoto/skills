@@ -112,6 +112,13 @@ could carry buyer data.
 | FBA stock of a SKU | `GET /fba/inventory/v1/summaries?details=true&granularityType=Marketplace&granularityId={mp}&marketplaceIds={mp}&sellerSkus={sku}` (50 per page) | 2026-10-28 |
 | Product type schema | `GET /definitions/2020-09-01/productTypes/{TYPE}?marketplaceIds={mp}&requirements=LISTING&locale=de_DE`, then fetch `schema.link` (pre-signed, 0.4–0.5 MB) | 2026-10-27 |
 | Orders, counts only | `GET /orders/2026-01-01/orders?marketplaceIds={13 ids}&createdAfter=…&includedData=FULFILLMENT`; each next page sends `paginationToken` **plus the original `createdAfter`**, else 400 | 2026-10-27 |
+| Refunds Amazon made on an order | `GET /finances/v0/orders/{amazonOrderId}/financialEvents?MaxResultsPerPage=100`: count `payload.FinancialEvents.RefundEventList[]` and its `ShipmentItemAdjustmentList[]` (`PostedDate`, `SellerSKU`, Principal); no buyer block. 0.5 rps: sleep 2 s between orders | 2026-10-29 |
+
+Returns per origin on the Nenalina channels (replica, 2026-10-29), the base for "is this refund already made":
+`SELECT sp.use_external_warehouse, r.return_comment_customer, COUNT(*) FROM jng_sp_orders_items_return r JOIN
+jng_sp_orders_items i USING (jng_sp_orders_items_id) JOIN jng_sp_orders o USING (jng_sp_orders_id) JOIN jng_sp sp ON
+sp.jng_sp_id = o.jng_sp_id WHERE o.jng_sp_id IN (…20 ids…) AND r.return_time >= NOW() - INTERVAL 365 DAY GROUP BY 1, 2`.
+`confirm_return = 1` on an internal return means CA accepted its Adjust.
 
 searchOrders allows 0.0056 requests per second (burst 20): a 30-day EU pull took 13 pages. API models without a
 call: `models/orders-api-model/orders_2026-01-01.json` and `ordersV0.json` in `amzn/selling-partner-api-models`.
