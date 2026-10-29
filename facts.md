@@ -243,6 +243,23 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   cannot track it (#5982).
 - getInventorySummaries returns 50 SKUs per page with `nextToken` (2026-10-27).
 
+## Refund feed on FBA orders (documentation research, 2026-10-29)
+
+- `POST_PAYMENT_ADJUSTMENT_DATA` (Order Adjustment feed): Amazon's documentation is **silent** on the fulfilment
+  channel. The feed-type page and the refund walkthrough (https://developer-docs.amazon.com/sp-api/docs/submit-a-feed,
+  re-read 29 Oct) list the eligibility checks as: order exists, inside the refund window, item refundable, not already
+  refunded. No FBA/MFN restriction, no numeric error code; the failure text is "Error attempting to issue refund for
+  order". `OrderAdjustment.xsd` (reasons incl. `CustomerReturn`, `GeneralAdjustment`) carries no restriction either.
+- Rithum/ChannelAdvisor `POST Orders(id)/Adjust` docs (KB0018002, KB0017989) say refunds are "communicated back to the
+  marketplace" but never name the Amazon feed used. A 2013 CA staff forum reply says Amazon handles FBA refunds itself
+  (dated, low trust). Seller Central help pages need a login and were not read.
+- Production evidence (session #5974, Finances API): 12 of 13 internal returns on FBA orders in 12 months show exactly
+  one Amazon refund, several on the day of the MC return, so CA Adjust does refund FBA orders through some path.
+- Status: **open fact** on #6040. Decision (#5974, ADR 0138): refund feed runs for both channels with the
+  already-refunded guard; if Amazon rejects FBA order ids, the rule falls back to FBM-only and CS refunds in Seller
+  Central from the failure row. A proof before go-live needs a controlled real order (Erick + Finance go); the sandbox
+  cannot answer it.
+
 ## Populations
 
 - **PII:** retention is off on all 238 channels and `pii_redaction_logs` is empty; the 20 Nenalina channels hold
