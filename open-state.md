@@ -1,6 +1,6 @@
 # Open state
 
-**As of 2026-10-29, about 13:30 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-29, about 13:45 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
@@ -15,8 +15,10 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Pull requests
 
-- **ADR 0138** (fulfilment gating, #5974): branch `5974-adr-amazon-flow-gating`, commit `1bd761dbf7`, pushed,
-  **no PR until Erick says go**. Claim the number again at merge (0135/0137 on other branches, 0136 on master).
+- **#6041** (ADR 0138 Accepted, fulfilment gating, #5974): branch `5974-adr-amazon-flow-gating`, head `2f6f7d2095`,
+  opened 2026-10-29 13:36Z. `guard` and `check_changes` pass, `do_testing` skipped (docs only); blocked on review
+  (read 13:45Z). Erick merges. Re-check the number before merge: 0135 and 0137 sit on other branches, 0136 on master,
+  and 0138 nowhere else (2026-10-29).
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
