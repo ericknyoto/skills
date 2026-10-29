@@ -39,7 +39,7 @@ Blockers from GitHub issue dependencies, read 2026-10-28:
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
 | 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013 |
 | 6006 | BRD input | Release-freeze exception for the go-live weeks; is the November shadow pull a release | — |
-| 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows | — |
+| 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, refund feed values and the FBA refund source, the runbook of the 11–15 Jan week across both tokens,
