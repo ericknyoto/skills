@@ -1,13 +1,13 @@
 # Open state
 
-**As of 2026-10-29, about 04:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-29, about 13:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
 
 - `-L` FBA listings: **no data fix before the migration** (Erick, 'Tetap tunggu'). The 138 DE FBA `-L` SKUs stay as input to #5978 (comment issuecomment-6463784061); the BA was asked on Asana 1219919921458898 what `-L` means, who created the listings, and whether they map to the real SKU (comment 07:58Z). Answer pending. Doc A .71715 (rev 160).
 
-- Asana Business-decisions tasks **completed**: 28 Oct (Erick: answered and locked) scope 20 channels 1219919921404437, UK orders = import 1219921642535113, FBA orders only once SHIPPED 1219920153544152; 29 Oct: FBM stock without buffer 1219919783814613, price mapping + FBM/FBA per channel 1219919849429744. Still open there: buyer address/Tax Invoicing, listing ownership + `-L`, PIC per department, PII (before go-live), FBA warehouse, BIL,  returns, cutover window, release freeze, UK/US GBP/USD price fields, success measures.
+- Asana Business-decisions tasks **completed**: 28 Oct (Erick: answered and locked) scope 20 channels 1219919921404437, UK orders = import 1219921642535113, FBA orders only once SHIPPED 1219920153544152; 29 Oct: FBM stock without buffer 1219919783814613, price mapping + FBM/FBA per channel 1219919849429744, historical PII 1219922605431756 (Erick himself, 04:17Z: After Release Task). Still open there: buyer address/Tax Invoicing, listing ownership + `-L`, PIC per department, FBA warehouse, BIL,  returns, cutover window, release freeze, UK/US GBP/USD price fields, success measures.
 
 - Asana A9 task 1219920153544088 got a second question on 28 Oct 08:36Z (mention): may the FBA stock import go live before the peak, separately from the January go-live? Sarina decides. Not yet in Doc A (open question, not a decision).
 
@@ -48,7 +48,7 @@ Finance and Warehouse handle UK orders.
 
 ## Asana business questions
 
-All assigned to Nitya; 5 completed (see above). Project `1219919921535476`, section Business decisions.
+All assigned to Nitya; 6 completed (see above). Project `1219919921535476`, section Business decisions.
 
 | Task | Question (short) | Due | State |
 |---|---|---|---|
@@ -57,7 +57,7 @@ All assigned to Nitya; 5 completed (see above). Project `1219919921535476`, sect
 | 1219919921458898 | Listing ownership after Rithum; SKU format | 2026-11-20 | SKU format answered 10-28; 08:54Z: `-L` only on old products, other alternate formats may come; ownership and `-L` mapping open |
 | 1219920153543831 | PIC per department; who contacts Rithum | 2026-11-06 | asked 10-27; no answer |
 | 1219921642535113 | UK orders: import, ignore or report (BD-20) | 2026-11-06 | "import" 10-28 07:18Z; Finance/Warehouse handling open |
-| 1219922605431756 | Redact PII of 70,793 old orders now or from go-live (BD-21) | 2026-12-18 (was 11-06; task renamed "Before go-live (After Release Task)") | 10-28 07:21Z: "BA will inform users to mark the PII field in the sales-channel setting; part of the ART task". ART = After Release Task: decided with Sarina before go-live, post-release task if agreed; not blocking S1 (Erick, 28 Oct). Doc A .72438 |
+| 1219922605431756 | Redact PII of 70,793 old orders now or from go-live (BD-21) | 2026-12-18 (was 11-06; task renamed "Before go-live (After Release Task)") | **completed by Erick 29 Oct 04:17Z** (intentional: After Release Task, decided with Sarina before go-live, no closing comment on Asana). Previous state: 10-28 07:21Z "BA will inform users to mark the PII field in the sales-channel setting; part of the ART task"; not blocking S1 (Erick, 28 Oct). Doc A .72438 |
 | 1219920153544088 | Which warehouse holds FBA stock; Amazon as truth | 2026-11-20 | FC list asked 10-27; 10-28 08:56Z 'not a problem, FBA stock not used today', warehouse waits for Andreas; early go-live question unanswered |
 | 1219920153544152 | FBA orders from Unshipped or only once shipped | 2026-11-20 | answered 10-28: only once shipped |
 | 1219919783814613 | FBM stock = full Hamburg stock or minus buffer | 2026-12-04 | **answered and completed 29 Oct**: full stock, no buffer (Anja + Nitya 10-28) |
