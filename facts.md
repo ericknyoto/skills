@@ -266,3 +266,24 @@ and `config/amazon.php` do not exist yet.
 | FBA refund pull | `Manobo2/Domain/ChannelAdvisor/Command/OrderRefundFromSalesChanneladvisorFbaCommand.php` |
 | Currency conversion | `helpers/functions-2.php` (`convertCurrency`), `cron/daily-exchange-rate.php` |
 | CA new-order read (service-api) | `app/Manobo/Service/Impl/v3/ChanneladvisorOrderApiService.php::getNewOrders` |
+
+## Prices per sales channel (verified 2026-10-29, code + replica)
+
+- The sales-channel price page (`modules/products-pricing/controller.php:391-411` → `SalesChannelCatalogPriceService::savePrices`)
+  writes `sales_channel_catalog_prices` (one row per `jng_sp_catalog_id`). The price columns of `jng_sp_catalog` itself
+  (`price`, `price_uvp`, `price_new`, `price_foreign*`) are **zero on every ChannelAdvisor Amazon channel**: do not read them.
+- Columns: `price_uvp`, `price_retail`, `price_retail_promotion` + `promotion_date_start/end`, `price_selling*`, each with a
+  `_foreign` twin in the channel's country currency (`countries.currency` via `jng_sp.countries_iso_code_2`: 206 GB→GBP,
+  207 US→USD, 208 CA→CAD, 209 MX→MXN, 200/232 PLN, 202/233 SEK; `jng_sp.currency` is EUR everywhere and is not the
+  effective currency). A blank foreign value is derived from EUR with the `exchange-rate` app_config value (EUR→GBP 0.837037,
+  EUR→USD 1.112038 on 2026-10-28) plus pretty-price rounding (`PriceService.php:394-420`); foreign UVP comes from
+  `product_uvp_countries` (`ProductUvpService.php:119-160`).
+- Population (replica 2026-10-29): 192 AN.DL 1,548 products with EUR UVP + retail; 195 AN.DB 1,455; 206 AN.KB 74 with GBP
+  foreign values; 207 AN.UB 5 with USD; 0 promotion prices/dates on all four.
+- ChannelAdvisor receives from this table only RRP + SellingPrice on save (`ProductPriceEventSubscriber.php:39-50` →
+  `UpdateProductPriceAction.php:23-30`, PUT `v3/integrator/channeladvisor/product/price`; `ChanneladvisorWrapperService.php:980-1016`);
+  SellingPrice = running promotion price else retail. Promo dates go only through the family export, whose
+  `profile-id-for-upload` list (8 profiles) excludes the DE/UK/US profiles 12047680, 12048565, 12048566.
+- BA mapping (Asana 1219919849429744, 28 Oct): Amazon `list_price` ← UVP; `our_price` ← Normal Price → Retail Price;
+  `discounted_price` ← Promotion Price → Retail Price + dates. Open: FBM = FBA price (separate rows today), `_foreign` columns
+  for UK/US (asked 29 Oct). Not verified: how Rithum maps RRP/SellingPrice to Amazon fields; whether the PUTs succeed.

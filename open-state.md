@@ -65,7 +65,7 @@ All assigned to Nitya; 4 completed (see above). Project `1219919921535476`, sect
 | 1219919849429744 | UVP, selling and promo fields; FBM price = FBA? (#6013) | 2026-12-04 | mapping answered 10-28 08:59Z (UVP / Normal Retail / Promotion Retail + dates); FBM=FBA and GBP/USD asked 29 Oct |
 | 1219920153544278 | Returns opened on Amazon: who records them; shipping refund? | 2026-12-04 | no comment |
 | 1219961077776438 | Release-freeze exception for 4–8 and 11–15 Jan (#6006) | 2026-12-04 | no comment |
-| 1219919783909992 | UK/US FBA stock + price flows and GBP/USD fields | 2026-12-04 | flows confirmed 10-28; price fields open |
+| 1219919783909992 | UK/US FBA stock + price flows and GBP/USD fields | 2026-12-04 | flows confirmed 10-28; 29 Oct: asked to confirm the `_foreign` price columns (GBP/USD already held for 74 UK / 5 US products) feed Amazon with the DE mapping; a wrong 'EUR only' comment was corrected the same day |
 | 1219919983346126 | Cutover window, sync pause, hypercare length | 2026-12-18 | no comment |
 | 1219920153543863 | Success measures; future of the 20 non-Amazon Rithum channels | 2026-11-20 | no comment |
 
