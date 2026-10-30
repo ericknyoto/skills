@@ -1,7 +1,9 @@
 # Verification playbook
 
 Every recipe here is read-only and worked on the date given. Credentials live in `manobo-2008/.env` and **must
-never be printed**: read them into variables and reference them.
+never be printed**: read them into variables and reference them. No session helper is persisted: rebuild the replica
+query wrapper and the GET-only SP-API script below in each session. Flow-specific queries and requests live in each
+flow file's "How to verify" section.
 
 ## Safety
 
@@ -17,7 +19,8 @@ never be printed**: read them into variables and reference them.
 
 ## Production replica
 
-Database = the central tenant, which holds every Nenalina channel. Shape of the wrapper used on 2026-10-28:
+Production is the central tenant of `manobo-2008`, which holds every Nenalina channel; the replica is reached via
+`DB_*_PRODUCTION_DEBUGGING`. Shape of the wrapper used on 2026-10-28:
 
 ```bash
 envf=/home/ericknyoto/Work/manobo-2008/.env
@@ -28,68 +31,15 @@ q() { MYSQL_PWD="$(g DB_PASSWORD_PRODUCTION_DEBUGGING)" mariadb --protocol=TCP -
         -e "SET SESSION TRANSACTION READ ONLY; $1" 2>&1 | grep -v '^WARNING'; }
 ```
 
-**Channels** (the `facts.md` channel table):
-
-```sql
-SELECT jng_sp_id, package_prefix, name, ca_profile_id, ca_channel_id, use_external_warehouse uew,
-       active_status, ca_used, tb_used, split_orders, ca_stock_use_alternate_sku, no_order_confirmation, type
-FROM jng_sp WHERE ca_used = 1 AND (package_prefix LIKE 'AN.%' OR package_prefix LIKE 'AF.%' OR package_prefix LIKE 'AM.%')
-ORDER BY jng_sp_id;
-```
-
-**Orders per channel.** Split channels hold one row per unit, so count `DISTINCT order_id` (AN.DB, 365 days to
-2026-10-28: 11,965 rows, 11,230 orders):
-
-```sql
-SELECT o.jng_sp_id,
-       COUNT(DISTINCT CASE WHEN o.order_date >= CURDATE() - INTERVAL 365 DAY THEN o.order_id END) orders_365d,
-       COUNT(DISTINCT CASE WHEN o.order_date >= CURDATE() - INTERVAL 30 DAY THEN o.order_id END) orders_30d,
-       MAX(o.order_date) last_order
-FROM jng_sp_orders o WHERE o.jng_sp_id IN (191,192,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,229,231,232,233)
-GROUP BY o.jng_sp_id;
-```
-
-**Is an Amazon order in Manobo?** `SELECT jng_sp_id, shipment_id, order_date FROM jng_sp_orders WHERE order_id IN
-('…')` — then check the `jng_sp_id` belongs to the right seller account (`order_id` repeats across accounts).
-If absent: `SELECT order_number, created_at, resolved_at, JSON_EXTRACT(payload,'$.errors') FROM
-order_import_errors WHERE source = 'channeladvisor' AND order_number IN ('…')`.
-
-**ChannelAdvisor SKU errors per channel** (`order_import_errors.payload` holds `errors[]` and a `reference`
-"Download ID/CA Order ID: <download id>/<CA id>"; ran 2026-10-28, about 5 s):
-
-```sql
-WITH e AS (
-  SELECT oie.id, d.jng_sp_id,
-         TRIM(SUBSTRING_INDEX(j.err, 'Product not found for SKU:', -1)) COLLATE utf8mb4_general_ci sku
-  FROM order_import_errors oie
-  JOIN JSON_TABLE(oie.payload, '$.errors[*]' COLUMNS (err VARCHAR(500) COLLATE utf8mb4_general_ci PATH '$')) j
-  JOIN jng_sp_download d ON d.jng_sp_download_id = CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(
-         JSON_UNQUOTE(JSON_EXTRACT(oie.payload,'$.reference')),': ',-1),'/',1) AS UNSIGNED)
-  WHERE oie.source = 'channeladvisor' AND oie.created_at >= NOW() - INTERVAL 30 DAY
-    AND j.err LIKE '%Product not found for SKU:%')
-SELECT jng_sp_id, COUNT(*) err_rows, COUNT(DISTINCT sku) distinct_skus,
-       COUNT(DISTINCT CASE WHEN sku LIKE '%-L' THEN sku END) l_suffix,
-       COUNT(DISTINCT CASE WHEN sku LIKE '%-FBM' THEN sku END) fbm_suffix,
-       COUNT(DISTINCT CASE WHEN sku IN (SELECT sku FROM product_skus) THEN sku END) in_product_skus,
-       COUNT(DISTINCT CASE WHEN sku IN (SELECT sku FROM jng_sp_sku) THEN sku END) in_any_jng_sp_sku
-FROM e GROUP BY jng_sp_id;
-```
-
-To test the `-L` strip on one channel, add `d AS (SELECT DISTINCT sku FROM e WHERE jng_sp_id = 195)` and count
-`JOIN product_skus ps ON ps.sku = LEFT(d.sku, CHAR_LENGTH(d.sku) - 2)`; `jng_sp_sku` has `jng_sp_id`, `sku`,
-`products_id`, `articles_id`.
-
-**Exchange-rate pairs** (add any pair the same way):
-
-```sql
-SELECT updated_at, JSON_LENGTH(value), JSON_EXTRACT(value,'$.USD2EUR'), JSON_EXTRACT(value,'$.GBP2EUR'),
-       JSON_EXTRACT(value,'$.MXN2EUR'), JSON_EXTRACT(value,'$.CAD2EUR')
-FROM app_config WHERE `key` = 'exchange-rate';
-```
+Queries per flow: channels and orders per channel in [channels-and-routing.md](flows/channels-and-routing.md#how-to-verify),
+"is an Amazon order in Manobo?" and exchange-rate pairs in [orders-import.md](flows/orders-import.md#how-to-verify),
+ChannelAdvisor SKU errors and the `-L` strip in [prices-and-listings.md](flows/prices-and-listings.md#how-to-verify),
+returns per origin in [cancel-and-refund.md](flows/cancel-and-refund.md#how-to-verify).
 
 ## SP-API, read-only
 
-Shape of the script used on 2026-10-27/28 (Python standard library, run with `python3 -I`):
+SP-API is reached via `AMAZON_PROD_*` in the local `.env`. Shape of the script used on 2026-10-27/28 (Python
+standard library, run with `python3 -I`):
 
 ```python
 env = {k: v.strip().strip('"\'') for k, v in (l.strip().split('=', 1) for l in open(ENV) if l.startswith('AMAZON_PROD_') and '=' in l)}
@@ -102,36 +52,19 @@ req = urllib.request.Request('https://sellingpartnerapi-eu.amazon.com' + path,  
 ```
 
 Write each response to a file and print only `GET path -> status`. Never print `env`, `tok` or a response that
-could carry buyer data.
+could carry buyer data. API models without a call: `models/orders-api-model/orders_2026-01-01.json` and
+`ordersV0.json` in `amzn/selling-partner-api-models`.
 
-**LWA secret check (status only; #5985).** Per app, run the token exchange above with that app's client id and
-secret: `AMAZON_PROD_*` with the EU and the NA refresh token, and `AMAZON_SANDBOX_*` with
-`AMAZON_SANDBOX_REFRESH_TOKEN` against `https://sandbox.sellingpartnerapi-eu.amazon.com`. Then call
-`GET /sellers/v1/marketplaceParticipations`. Print only the two status codes, plus LWA's `error` field on a failure
-(`invalid_client` = rejected secret). To prove a rotation inside the 7-day overlap, store a SHA-256 of each client
-secret in a `umask 077` scratchpad file before rotating (never printed) and afterwards report only "changed: yes/no".
-Run it again after day 7, when the old secret is dead. Last OK: 2026-10-30, all 200.
+Requests per flow (EU seller `A1SMSLS6YOBHD5`, DE `A1PA6795UKMFR9`): marketplaces of a token in
+[channels-and-routing.md](flows/channels-and-routing.md#how-to-verify); listings, SKU search and product type schema in
+[prices-and-listings.md](flows/prices-and-listings.md#how-to-verify); FBA stock in [fba-stock.md](flows/fba-stock.md#how-to-verify);
+orders in [orders-import.md](flows/orders-import.md#how-to-verify); refunds on an order in
+[cancel-and-refund.md](flows/cancel-and-refund.md#how-to-verify); the LWA secret check in
+[data-protection.md](flows/data-protection.md#how-to-verify).
 
-| Purpose | Request (EU seller `A1SMSLS6YOBHD5`, DE `A1PA6795UKMFR9`) | Last OK |
-|---|---|---|
-| Marketplaces of a token | `GET /sellers/v1/marketplaceParticipations` (EU token: 18 entries, 13 Amazon + 5 MCF) | 2026-10-28 |
-| One listing | `GET /listings/2021-08-01/items/{seller}/{urlencoded sku}?marketplaceIds={mp}&includedData=summaries,attributes,offers,fulfillmentAvailability,issues` — 404 `NOT_FOUND` = no such SKU | 2026-10-28 |
-| Find a SKU / count listings | `GET /listings/2021-08-01/items/{seller}?marketplaceIds={mp}&identifiers={sku}&identifiersType=SKU&includedData=summaries`; with `pageSize=20` and no identifiers → `numberOfResults` | 2026-10-28 |
-| FBA stock of a SKU | `GET /fba/inventory/v1/summaries?details=true&granularityType=Marketplace&granularityId={mp}&marketplaceIds={mp}&sellerSkus={sku}` (50 per page) | 2026-10-28 |
-| Product type schema | `GET /definitions/2020-09-01/productTypes/{TYPE}?marketplaceIds={mp}&requirements=LISTING&locale=de_DE`, then fetch `schema.link` (pre-signed, 0.4–0.5 MB) | 2026-10-27 |
-| Orders, counts only | `GET /orders/2026-01-01/orders?marketplaceIds={13 ids}&createdAfter=…&includedData=FULFILLMENT`; each next page sends `paginationToken` **plus the original `createdAfter`**, else 400 | 2026-10-27 |
-| Refunds Amazon made on an order | `GET /finances/v0/orders/{amazonOrderId}/financialEvents?MaxResultsPerPage=100`: count `payload.FinancialEvents.RefundEventList[]` and its `ShipmentItemAdjustmentList[]` (`PostedDate`, `SellerSKU`, Principal); no buyer block. 0.5 rps: sleep 2 s between orders | 2026-10-29 |
+## GitHub
 
-Returns per origin on the Nenalina channels (replica, 2026-10-29), the base for "is this refund already made":
-`SELECT sp.use_external_warehouse, r.return_comment_customer, COUNT(*) FROM jng_sp_orders_items_return r JOIN
-jng_sp_orders_items i USING (jng_sp_orders_items_id) JOIN jng_sp_orders o USING (jng_sp_orders_id) JOIN jng_sp sp ON
-sp.jng_sp_id = o.jng_sp_id WHERE o.jng_sp_id IN (…20 ids…) AND r.return_time >= NOW() - INTERVAL 365 DAY GROUP BY 1, 2`.
-`confirm_return = 1` on an internal return means CA accepted its Adjust.
-
-searchOrders allows 0.0056 requests per second (burst 20): a 30-day EU pull took 13 pages. API models without a
-call: `models/orders-api-model/orders_2026-01-01.json` and `ordersV0.json` in `amzn/selling-partner-api-models`.
-
-## GitHub (repo julie-grace/manobo-2008, cwd `/home/ericknyoto/Work/manobo-2008`)
+Repo julie-grace/manobo-2008, cwd `/home/ericknyoto/Work/manobo-2008`:
 
 ```bash
 gh issue view 5967                                            # map: Notes, Decisions so far, Not yet specified
@@ -144,12 +77,11 @@ git show origin/5973-adr-amazon-channel-config:docs/adr/0134-amazon-seller-chann
 git show origin/master:docs/adr/0132-one-integrator-per-sales-channel.md
 ```
 
-Amazon map tickets: #5968–#5989, #5991, #6006, #6012, #6013. Research write-ups: `docs/research/` on
-`research/jewelry-list-price` (`amazon-jewelry-list-price.md`), `research/amazon-carrier-codes`
-(`amazon-carrier-codes.md`), `research/currency-pairs` (`5980-exchange-rate-pairs-usd-pln-sek.md`),
-`5983-research-amazon-personalisation-prod` (`amazon-personalisation-prod.md`). No checkout needed.
+Ticket numbers, ADR files and research branches: [sources/github.md](sources/github.md).
 
-## Doc A and Nitya's timeline (Docs MCP, read)
+## Doc A and Nitya's timeline
+
+Docs MCP, read:
 
 1. `ToolSearch` with `select:mcp__1a59c906-04da-521d-bda7-7f71b9f9e01c__read,mcp__1a59c906-04da-521d-bda7-7f71b9f9e01c__guide`;
    call `guide` with `topic.instructions` once.
@@ -161,19 +93,21 @@ Amazon map tickets: #5968–#5989, #5991, #6006, #6012, #6013. Research write-up
 4. Nitya's artifact: ref `{object: node, id: 9cc01e70-9437}`, container `{kind: project, id:
    54c254bd-2bb2-4e38-89c6-e02f1fed3def}`; fits inline (rev 57 on 2026-10-28).
 
-## Asana (read)
+## Asana
 
-Tools `mcp__047f5739-9183-4376-9dd3-e2c259f07f1b__*`, loaded with `ToolSearch`. `get_project` 1219919921535476 with
+Read: tools `mcp__047f5739-9183-4376-9dd3-e2c259f07f1b__*`, loaded with `ToolSearch`. `get_project` 1219919921535476 with
 `include_sections`; `get_tasks` with `project` and `opt_fields=name,due_on,assignee.name,completed,memberships.section.name`
 returns all 61 tasks in one page; `get_task_stories` with `task_ids=[…]` and `resource_subtype=comment_added` reads
 every comment in one call. Profile ids inside comment mentions do not resolve with `get_user`.
 
-## Sales Channel List sheet (read)
+## Sales Channel List sheet
 
-Google Drive MCP `read_file_content`, `fileId` `1I1FtuGRnXalKkJmLXanTLsljNFLsAMNvKlQ2kIH5nlM`: returns all three tabs
+Read: Google Drive MCP `read_file_content`, `fileId` `1I1FtuGRnXalKkJmLXanTLsljNFLsAMNvKlQ2kIH5nlM`: returns all three tabs
 as tables (2026-10-28).
 
-## Production host (SSH needs a per-task grant from Erick)
+## Production host
+
+SSH needs a per-task grant from Erick.
 
 - CA download log: container `manobo_2008-manobo_central-NN`, `/app/storage/logs/channeladvisor-download-order-YYYY-MM-DD.log`
   (about 43 MB a day, the full service-api response per run).
