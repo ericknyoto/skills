@@ -29,7 +29,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5985 closed that day:
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
 | 6040 | grilling | Refund flows: FBA refund pull source, already-refunded guard, per-unit feed values, does the adjustment feed accept FBA orders (S2 gate: closes before 23 Nov) | #6039 |
-| 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
+| 5978 | grilling | SKU mapping table and the DE reconciliation report (S1 exit includes the report: grilled inside S1 once #5986 is answered, closes before 23 Nov at the latest; #5989 blocker removed 30 Oct, c6517816695) | #5986 |
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
 | 6052 | grilling | FBM stock push: trigger (event vs sweep, cadence), write mechanism (patchListingsItem vs JSON_LISTINGS_FEED), SKUs and marketplaces written (S2 gate: closes before 23 Nov; graduated from #5977, 30 Oct) | #5978 |
