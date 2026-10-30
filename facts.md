@@ -369,3 +369,26 @@ and `config/amazon.php` do not exist yet.
 - BA mapping (Asana 1219919849429744, 28 Oct): Amazon `list_price` ← UVP; `our_price` ← Normal Price → Retail Price;
   `discounted_price` ← Promotion Price → Retail Price + dates. Open: FBM = FBA price (separate rows today), `_foreign` columns
   for UK/US (asked 29 Oct). Not verified: how Rithum maps RRP/SellingPrice to Amazon fields; whether the PUTs succeed.
+
+## Seller Central return settings, FBM orders (screenshot from Erick, 2026-10-30)
+
+Seller Central → Manage Returns → Return Settings, Nenalina account, rows Belgium to Spain visible (Sweden to US not yet seen):
+
+| Marketplaces | Return authorisation | Prepaid return labels | Label type | RMA number |
+|---|---|---|---|---|
+| DE, FR, IT, ES | In Policy (Amazon): auto-authorised | Enrolled | Amazon Prepaid (exempt items: unpaid label) | Amazon |
+| BE, IE, NL, PL | In Policy (Amazon): auto-authorised | not enrolled | Unpaid label (buyer pays postage) | Amazon |
+| CA, MX, SA | Manual (Seller): someone must act on each request in Seller Central | not enrolled | Unpaid label | Amazon |
+
+What it means for the migration (coordinator assessment, 2026-10-30):
+- Applies to seller-fulfilled (FBM) returns only; FBA returns are handled by Amazon end to end and are read through
+  the FBA returns report / Finances API (see above).
+- Amazon authorises the return, issues the RMA and (DE/FR/IT/ES) the prepaid label itself, so the direct integration
+  needs no return-authorisation or label write. Manobo's part stays what it is today: goods arrive in Hamburg → return
+  recorded in Manobo → refund via the adjustment feed (ADR 0138 rule, #5974). No decision in ADR 0128–0139 changes; no S1 item.
+- Input to #6039 / Asana 1219920153544278 (BA): Manobo learns of an FBM return only when the parcel arrives, unless the
+  BA wants return requests visible earlier. Unchecked: SP-API has seller-fulfilled returns reports
+  (`GET_XML_RETURNS_DATA_BY_RETURN_DATE`), and Amazon charges the seller for prepaid labels; both to verify by a
+  research ticket only if the BA asks for it. The outbound-shipping refund question stays with the BA.
+- Manual (Seller) authorisation on CA/MX/SA is an operations duty in Seller Central today (CA 1 order and SA 0 in the last
+  365 days, so negligible); the US and UK rows were not in the screenshot and matter more (US 109 orders in 30 days).
