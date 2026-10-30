@@ -14,10 +14,12 @@ before quoting one. Decisions built on these live in `decisions.md`; wrong readi
   Pricing, Seller Insights, Brand Analytics. **Not** Tax Invoicing, Tax Remittance, Buyer Communication, Buyer
   Solicitation (Solution Provider Portal, read 2026-10-27). Sandbox app: `Manobo-2008`.
 - Sarina authorised both Nenalina accounts on 2026-10-27; the portal then showed 8 of 10 self-authorisations left.
-- LWA client secrets (#5985): both apps' secrets were accepted on 2026-10-30 06:42Z (token exchange and
-  marketplaceParticipations 200 for prod EU, prod NA and sandbox). The portal banner ("LWA client secrets for some of
-  our applications will expire in less than 30 days") names no app; each app's target rotation date shows only in the
-  portal. Amazon's page "Rotating your app's LWA credentials" (read 2026-10-30): rotate every 180 days; the old secret
+- LWA client secrets (#5985, portal read 2026-10-30): `Manobo-2008-Sellers` rotated 2026-10-30 07:23Z, rotation
+  deadline **2027-04-28 07:23Z**; sandbox `Manobo-2008` (the one in `.env`) deadline **2027-03-22 03:24Z**. The portal
+  banner and the only expiration alert belong to an unused sandbox app `Manobo` (`amzn1.sp.solution.2185aaca-…`,
+  deadline 2026-10-13, left unrotated by Erick; not in `.env` or any repo). Right after "Rotate secret", the
+  credentials view still shows the OLD secret until the page is reloaded, and the confirmation message showed a
+  different date (2027-03-23); trust the reloaded view. New secret verified 07:32Z (EU and NA 200). Amazon's page "Rotating your app's LWA credentials" (read 2026-10-30): rotate every 180 days; the old secret
   expires 7 days after the new one is generated; only the primary account user can rotate; notice 90 days ahead; past
   the deadline SP-API calls return an error (the page does not say "suppressed"). Rotation does not invalidate
   refresh tokens (Amazon SP-API support, 2026-09-24).
