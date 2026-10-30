@@ -2,7 +2,7 @@
 name: amazon-spapi-context
 description: >-
   ChannelAdvisor → Amazon SP-API migration for the Nenalina Amazon channels, with Julie & Grace as phase 2.
-  Read before working a ticket on wayfinder map #5967 or an ADR 0128–0134, writing `Domain\AmazonSeller`
+  Read before working a ticket on wayfinder map #5967 or an ADR 0128–0139, writing `Domain\AmazonSeller`
   code, calling SP-API or querying production about Amazon channels, SKUs, stock or order money, editing
   Doc A or the Asana project, or quoting a scope, date, status or volume. Spans Doc A (the decision log), the
   GitHub map, Asana, the ADRs and production, so no single place holds the picture. Organised per flow: each file
