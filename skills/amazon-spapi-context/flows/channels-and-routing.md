@@ -57,6 +57,15 @@ preparation section).
 - **Who, when:** Sarina (authorisation), Erick (check), 2026-10-27
 - **Where:** Doc A .37271; Asana 1219960974323506
 
+### Currency is `currency_code` inside the Amazon Seller domain
+
+The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
+channel from another object), which is stricter than the ADR's "on a sales channel". Accepted, with the convention that
+the domain's own currency columns and properties are named `currency_code` (ISO 4217, Amazon's `currencyCode`; ADR 0131
+already says "currency code"), so S2's order currency never trips the test. No ADR change.
+- **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q6, #6064 / PR #6088)
+- **Where:** the architecture test's docblock; PR #6088
+
 ### S1 spec additions to ADR 0132 and 0134
 
 The S1 spec adds four rules that no ADR states:

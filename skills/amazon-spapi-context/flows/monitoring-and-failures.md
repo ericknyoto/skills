@@ -57,6 +57,14 @@ always served before `amazon-seller-listings`.
 - **Who, when:** Erick ("saya ikut rekomendasi mu"), 2026-10-30.
 - **Where:** S1 spec #6062 section I; #6062 issuecomment-6518781823, which replaces that line of #5977 c6514635367.
 
+### Token failures on the transport (401 and 403)
+
+A 401 means the access token is stale: forget it, refetch, retry the call once. A 403 is treated the same only when
+Amazon's `errors[].details` or `message` contains "access token"; every other 403 (missing role, wrong region) is not
+retried and becomes a failure row / Sentry event carrying Amazon's code and message. ADR 0129 fixes no rule here.
+- **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q5, #6064 / PR #6088)
+- **Where:** PR #6088 body and the transport class docblock
+
 ### S1 spec additions to ADR 0129 and 0139
 
 1. A feed's `amazon_seller_feeds` row is written **before** `createFeed`, so an `outcome_unknown` failure always has a

@@ -50,6 +50,13 @@ and #5976; the service-api `nextLink` gap stays a follow-up candidate, untickete
 - **Who, when:** Erick, 2026-10-28
 - **Where:** #5970 c6462113723; Doc A .68504
 
+### Duplicate-guard lock timeouts belong to #6074
+
+The cache-lock timeouts of the cross-importer duplicate guard are configured by #6074 (keys in `config/amazon.php` and
+`.env.example`, values in its PR), not by the skeleton ticket #6064. Each S1 ticket owns the config keys its flow reads.
+- **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q4)
+- **Where:** #6074; PR #6088 leaves the keys out
+
 ## Facts
 
 ### The Amazon order stream
