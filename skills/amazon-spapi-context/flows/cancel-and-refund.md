@@ -20,7 +20,7 @@ failure row `fulfilment_channel_not_served`, no retry; channel-walking flows jus
 - **Status:** **Accepted** (approved by Erick Nyoto, 29 Oct; Q1–Q9 delegated, Q1 changed to refund feed = both, "keep
   today's model"; decision confirmed "Ok setuju" ~14:10Z after the refund-feed research; fallback to FBM-only if
   Amazon rejects FBA order ids); PR #6041 merged to master 2026-10-30 03:41Z (`238de6e6d8`)
-- **Where:** #5974 c6497734388; Doc A: coordinator logs it
+- **Where:** #5974 c6497734388; Doc A .79715 (rev 192, read 2026-10-30)
 
 ### ADR 0131 shipment id and raw item money
 
@@ -113,10 +113,10 @@ FBA-goods-returned-to-Hamburg question posted to Nitya on that task.
   (dated, low trust). Seller Central help pages need a login and were not read.
 - Production evidence (session #5974, Finances API): 12 of 13 internal returns on FBA orders in 12 months show exactly
   one Amazon refund, several on the day of the MC return, so CA Adjust does refund FBA orders through some path.
-- Status: **open fact** on #6040. Decision (#5974, ADR 0138): refund feed runs for both channels with the
-  already-refunded guard; if Amazon rejects FBA order ids, the rule falls back to FBM-only and CS refunds in Seller
-  Central from the failure row. A proof before go-live needs a controlled real order (Erick + Finance go); the sandbox
-  cannot answer it.
+- Status: **open fact** on #6040 (Doc A .81665, logged as a fact, not a decision). Decision (#5974, ADR 0138): refund
+  feed runs for both channels with the already-refunded guard; if Amazon rejects FBA order ids, the rule falls back
+  to FBM-only and CS refunds in Seller Central from the failure row. A proof before go-live needs a controlled real
+  order (Erick + Finance go); the sandbox cannot answer it.
 
 ### Seller Central return settings, FBM orders (screenshot from Erick, 2026-10-30)
 
