@@ -13,7 +13,14 @@ No Amazon ADR PR is open. Merges and closures, with commits: [timeline.md](timel
 ## S1 spec 6062
 
 - Published 2026-10-30 with `to-spec` (label `ready-for-agent`), linked from map #5967 (issuecomment-6518285175).
-  **Not ticketed, nothing implemented:** Erick reviews it, cuts the tickets and gives the go.
+- **Ticketed 2026-10-30, nothing implemented.** Erick approved the breakdown, the test seams and the six added
+  decisions (recorded in the flow files). Implementation waits for Erick's go for S1.
+  - **Tickets:** #6064–#6077, all sub-issues of #6062 with native blocked-by edges; listed in #6062
+    issuecomment-6519040956.
+  - **Frontier:** #6064 (skeleton), #6065 (integrator column), #6066 (BR-3).
+  - **HITL:** #6067 (server credentials) and #6073 (the 20 keys); their production steps follow the parent deploy.
+  - **Branching:** parent `6062-amazon-seller-s1-foundation` → children `6062-<ticket>-<slug>` → one PR to `master`.
+    #6066 is the exception: Erick: "Boleh", read as BR-3 shipping early from its own branch straight to `master`.
 - **Covers:** the SP-API transport, the feeds primitive, `config/amazon.php` and its env names (local names kept;
   new: `AMAZON_SELLER_GOOGLE_CHAT_WEBHOOK_URL`, `AMAZON_SELLER_SWITCH_ENABLED`), the connection check, the integrator
   column and switch (skip rule, duplicate guard, switch command), the channel keys for the 20 channels (filled by form;
@@ -22,17 +29,8 @@ No Amazon ADR PR is open. Merges and closures, with commits: [timeline.md](timel
   pull, and the `shipment_id` scheme with `amazon_seller_order_items`. Doc A's backlog row (.21248) puts the last two
   in S1; the spec defers them to the order-import spec, pending Erick.
 - Updated 2026-10-30: `balance => false` on the supervisor ([decision](flows/monitoring-and-failures.md#supervisor-balance-false)).
-- **`to-tickets` breakdown proposed, not published** (S1 spec session, 30 Oct):
-  - 14 tickets, 2 of them HITL (server env, filling the 20 keys).
-  - Parent branch `6062-amazon-seller-s1-foundation`, child branches `6062-<ticket>-<slug>`, one parent PR to `master`.
-  - It waits on Erick's answers: granularity, blocking edges, the seams and six decisions, and whether BR-3 ships early.
-- **Awaiting Erick:** confirm the test seams, and six decisions the spec adds beyond the ADRs:
-  1. switch enable flag, false in production;
-  2. form rule rejecting a ChannelAdvisor identity under an integrator other than CA or Amazon;
-  3. audit allow-list gains `integrator` and the Amazon keys;
-  4. keys filled by form, not by command;
-  5. feed row written before `createFeed`;
-  6. duplicate check (b) dropped, because `shipment_id` is UNIQUE.
+- **Still open for Erick:** the Doc A backlog deferral above (`shipment_id` scheme and raw-money table out of S1). It
+  was not part of his "Setuju".
 
 ## Map tickets
 
