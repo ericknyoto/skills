@@ -85,7 +85,11 @@ Task, decided with Sarina before go-live (18 Dec); nothing to decide for S1–S4
   records (`config/logging.php` overrides its `nightwatch` channel with a daily file). It does send exception
   messages, and a `QueryException` message embeds the bound values (`QueryException::formatMessage`). Its
   `exception_preview` skips `redactExceptions` (`ExceptionSensor.php:74`). Scrubber follow-up: #6087, due before
-  the DE go-live import. Nightwatch's production state is unread; treat it as enabled (code default).
+  the DE go-live import. **Nightwatch on production Central** (read over SSH, `config:show` in
+  `manobo_central`, 2026-10-30, #6066 issuecomment-6520256868): enabled, token set, agent running; sampling
+  requests 0.1, commands 1, scheduled tasks 1, exceptions 0 (= only unsampled executions are dropped, so exceptions
+  in every command/scheduled task and 10% of requests are sent); `ignore_queries` false; log_level error;
+  `capture_request_payload` false.
 
 ### Credentials
 
