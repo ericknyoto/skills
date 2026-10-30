@@ -11,10 +11,10 @@ to [timeline.md](timeline.md) and to the Decisions of its flow file.
 Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and merges every PR. As of 2026-10-30 ~10:40Z.
 
 - **#6088** `6064: feat(amazon-seller)` → `6062-amazon-seller-s1-foundation`, draft. Domain skeleton, `config/amazon.php`,
-  connection check. Review fixes in progress; architecture tests being removed (Erick, 30 Oct).
+  connection check, ADR 0134 erratum. Ready for review; architecture tests removed (Erick, 30 Oct).
 - **#6089** `6065: feat(sales-channel)` → `6062-amazon-seller-s1-foundation`, draft, CI green. Integrator column,
   single writer, CHECK. Independent code review running.
-- **#6090** `6064: docs(adr)` → `master`, docs-only erratum on ADR 0134 (architecture test dropped). Waits on Erick.
+- **#6090** closed 30 Oct, erratum moved into #6088 (`0c87d56c51`).
 - **Staging** for #6088 and #6089 waits on Erick's promotion request (one branch per request). #6066 / PR #6085 merged and
   deployed 2026-10-30; its "after deploy" Sentry check (an event with SQL breadcrumbs and no bindings) is still open.
 - **Ticket #6087** (ready-for-agent, not a sub-issue of #6062): scrub bound values from database exception messages
