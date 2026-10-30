@@ -123,6 +123,7 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 ## Inputs owed to later specs
 
 - **S3 spec:** the CA export gate per profile (stock and price exports skip all-`amazon` profiles; Doc A .99433), decided 30 Oct without a map ticket. The next Wayfinder session adds its line to map #5967 Decisions.
+- **S2 spec (integration branch):** the `jng_sp_integrator_mirrors_check` CHECK migration, deferred from #6065 so the backfill command can run on production first (Doc A 30 Okt "Migrasi #6065 dipecah").
 - **Order-import spec (S2):** the raw-money table and `shipment_id` scheme (Doc A .92290); the bounded production-read procedure for staging (Doc A .96202).
 
 ## Deadlines ahead

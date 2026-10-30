@@ -103,6 +103,25 @@ integrator too (seven JSON-fixture seeders fixed).
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q7–Q9, #6065 / PR #6089)
 - **Where:** PR #6089 body and docblocks; #6075 acceptance criteria; #6074 note on the factory default (`integrator` NULL)
 
+### The #6065 migration is split: column, backfill command, CHECK later
+
+PR #6089's first migration mixed four jobs (a both-flags guard, the column, the backfill, the CHECK). Erick chose the
+Laravel and repo practice (ADR 0004; `.ai/rules/migrations.md`: one-shot data cutovers are artisan commands; four
+`Backfill*Command` precedents in Design, Element, Order, Product), expand/contract across releases:
+1. The migration only adds the nullable `jng_sp.integrator` column.
+2. The backfill from `ca_used`/`tb_used` is `BackfillSalesChannelIntegratorCommand` in `Domain\SalesChannel`
+   (`--dry-run`, test, idempotent; refuses to run and lists rows where both flags are 1). Erick runs it once on
+   production after the S1 parent deploy (26 Nov); it is rerunnable to repair drift.
+3. The CHECK `jng_sp_integrator_mirrors_check` moves to its own migration (raw `DB::statement`, literals not the enum,
+   no PHP guard: `ALTER TABLE` fails on inconsistent data by itself) on the S2 integration branch, deployed in January.
+Consequence: between 26 Nov and the S2 deploy nothing in the DB guards the mirrors; only `SetSalesChannelIntegratorAction`
+writes the three columns, app validation bounds the values, and the command repairs any drift the CHECK migration
+exposes. The S1 parent PR carries the post-deploy step; the S2 spec carries the CHECK migration. Three migrations in S1
+(CHECK from day one) was the rejected alternative. Earlier lines in this file that say the CHECK restricts values apply
+from the S2 deploy on.
+- **Who, when:** Erick on the coordinator's recommendation, 2026-10-30
+- **Where:** Doc A row of 30 Okt "Migrasi #6065 (PR #6089) dipecah"; #6089 to be reworked; S2 spec input
+
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
