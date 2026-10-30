@@ -1,6 +1,6 @@
 # Open state
 
-**As of 2026-10-29, about 13:45 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-30, about 05:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
@@ -16,19 +16,19 @@ Re-verify with `verification.md` before acting on a line.
 ## Pull requests
 
 - #6053 (ADR 0139, Accepted) merged 2026-10-30 04:45Z (`b53a9b8971`). No Amazon ADR PR is open.
+- ADR 0140 (shadow mode, #5976, Proposed): branch `5976-adr-amazon-shadow-mode`, head `49b5e2f386` (ADR + `GLOSSARY.md` term "Shadow mode (Amazon)"), pushed 30 Oct; no PR until Erick asks.
 - #6041 (ADR 0138, Accepted) merged 2026-10-30 03:41Z (`238de6e6d8`).
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
 
-## Map #5967 — 15 of 29 tickets closed
+## Map #5967 — 16 of 29 tickets closed
 
-Blockers from GitHub issue dependencies, read 2026-10-30 (#5977 closed that day: resolution issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
+Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day: resolution issuecomment-6515329122; #5977 the same day: issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
 
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
 | 6040 | grilling | Refund flows: FBA refund pull source, already-refunded guard, per-unit feed values, does the adjustment feed accept FBA orders (S2 gate: closes before 23 Nov) | #6039 |
-| 5976 | grilling | Shadow mode: comparison table and diff report during peak. Unblocked from #6006 on 30 Oct (coordinator, option (c), issuecomment-6514714221): only the November shadow-pull deploy date waits on Asana 1219961077776438 | nothing open: **next to grill** |
 | 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
@@ -42,7 +42,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5977 closed that day:
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
-Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs #5976 (the only unblocked grilling ticket) and #5985 (Erick's LWA rotation); every other grilling ticket waits on BRD inputs.
+Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs only #5985 (Erick's LWA rotation); every open grilling ticket waits on BRD inputs (#5976 closed 30 Oct).
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
@@ -117,6 +117,9 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 
 ## Known-unfixed, no issue yet
 
+- The ChannelAdvisor import stores Amazon FBA item promotions (`PLM-…`, since 2026-10-27) as if the net discount were
+  gross, or drops the item discount when a shipping discount is present: 15 of 258 DE items in the #5976 diff, Manobo too
+  high by up to 20.16 EUR per order (`traps.md`). Reported to Erick by the coordinator, 30 Oct; not a map ticket.
 - `DownloadOrdersFromChanneladvisorJob::handle()` writes the full CA refresh token into the error log on failure
   (#5984 side finding).
 - The exchange-rate cron's silent partial refresh (`facts.md` → Order money; #5980 recommends a fix).
