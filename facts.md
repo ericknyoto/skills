@@ -100,6 +100,9 @@ ES `AFQLKURYRPEL8`, UK `AZMDEXL2RVFNN`; NA US `A2ZV50J4W1RKNI`, CA `A1MQXOICRS2Z
   `v1/Orders?exported=false` once and never follows `@odata.nextLink` (code at service-api `edd3b67`, read
   2026-10-28). The DE profile 12047680 returned exactly 100 unexported orders on every sampled run (2026-10-13,
   -20, -26, -27), all FBA, the set turning over; Stilnest 90–93, US 83–85, ES 64–65 were near full (#5970).
+- **What the import keeps** (code, master `238de6e6d8`, #5976): row creation time = `jng_sp_orders.import_date` (Berlin,
+  no `created_at`); the seller SKU is never stored (only Manobo's `article_number`); `article_reference_number` holds CA's
+  item id; on split channels every unit row repeats the order's `order_price_vk` and `shipping_costs` (code reading).
 - **Routing** is `(ca_profile_id, ca_channel_id, use_external_warehouse)` and ignores `ca_used` and
   `active_status`; no match or several → info log and the order stays unexported (#5970, 2026-10-27).
 - The Exported flag is set only after a successful import; a failed order is served again on every run. FBA
@@ -156,8 +159,9 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   2026-10-28Z):
   - FBA: 243 of 245 shipped orders are in 195, and 2 are missing (`-L` SKUs still unmapped, downloads still `R`).
     FBM: 9 of 9. Extras: 0.
-  - The cause: on 2026-10-28 between 19:40 and 19:50 Berlin, 108 stuck `R` downloads went to `I`, and 195 now
-    holds 486 `-L` rows in `jng_sp_sku`. 79 of the 243 orders came in that batch, so 81 had been missing before
+  - The cause: on 2026-10-28 between 19:40 and 19:50 Berlin, 108 stuck `R` downloads went to `I`, and 195, 203, 204
+    and 205 now hold 486 `-L` rows each in `jng_sp_sku` (replica recount 2026-10-30; who made the change is asked by
+    the coordinator). 79 of the 243 orders came in that batch, so 81 had been missing before
     it.
   - 2 further orders were imported with the `-L` item silently dropped: error status "Imported" plus "Product not
     found for SKU".
@@ -177,7 +181,7 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
 - **`-L` exception** (`order_import_errors`, CA source, last 30 days, 2026-10-28): channel 195 has 243 "Product not
   found for SKU" rows over 138 distinct SKUs, all ending in `-L` (`726099-046-L`, `0101371222_55-L`), none in
   `-FBM`; 90 of the 138 match a real SKU once `-L` is stripped. On 2026-10-28 `-L` alternate SKUs existed only on
-  FBA-IN channels 52, 68 and 118. By 2026-10-30, 195 held 486 `-L` rows. Each points at the same product and
+  FBA-IN channels 52, 68 and 118. By 2026-10-30, 195, 203, 204 and 205 held 486 `-L` rows each. Each points at the same product and
   article as `product_skus` for the stripped SKU on 288 of 288 rows where that SKU exists; 198 have no
   `product_skus` row. Channels 203, 204, 205 and 207 show the same (39, 28, 45, 17 SKUs, all `-L`), and 229, 231 and
   232 one `-L` SKU each. Example orders on 195:
@@ -217,6 +221,12 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   RECIPIENT, PROCEEDS, EXPENSE, PROMOTION, CANCELLATION, FULFILLMENT, PACKAGES, TAX, PAYMENT, FULFILLMENT_ORDERS.
   Without FULFILLMENT the `fulfillment` block (`fulfilledBy`, status) is absent. `salesChannel.marketplaceId` and
   `fulfillment.fulfilledBy` are order-level. One call takes all 13 EU marketplace ids (2026-10-27).
+  Filters (model `3677bb9d96`, 2026-10-30): `createdAfter` or `lastUpdatedAfter` families (not mixed), `fulfillmentStatuses`
+  (7 values), `fulfilledBy` MERCHANT/AMAZON, up to 50 `marketplaceIds`, `maxResultsPerPage` 1–100; next pages resend every
+  parameter but `maxResultsPerPage`/`includedData`; stop on a missing token, not a short page. Items come inline
+  (`orderItemId`, `quantityOrdered`, `product.sellerSku`). `fulfillment.fulfillmentStatus` is the only status. **Without
+  BUYER/RECIPIENT, FBM orders still return `giftMessage` (via FULFILLMENT) and `customizedUrl` (ungated)**; FBA orders
+  neither (#5976). IE, SA, AE, TR: 0 orders in 365 days; NA 30 days: US 109, CA 1, MX 0, all FBA (2026-10-30).
 - **Item money is only in `proceeds`:** `proceedsTotal` and `breakdowns[]` typed ITEM, SHIPPING, GIFT_WRAP,
   COD_FEE, OTHER, TAX, DISCOUNT, each a line-total `subtotal`; `detailedBreakdowns` only on TAX and DISCOUNT.
   `promotion.breakdowns[]` holds only `promotionId`; `tax` holds `taxCalculationBreakdowns[].reportingScheme` and
