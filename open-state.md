@@ -48,7 +48,8 @@ Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
-the months-long ChannelAdvisor overlap, updates to an already imported order, UK and US FBA stock flows, how
+the months-long ChannelAdvisor overlap, updates to an already imported order, the re-import trigger for an Amazon order whose
+import failed (the poll's watermark moves past it; added 30 Oct), UK and US FBA stock flows, how
 Finance and Warehouse handle UK orders, and an Admin Tool page for Amazon failure rows if resolving by command stops scaling (#5977).
 
 ## Asana business questions
