@@ -237,7 +237,10 @@ GROUP BY o.jng_sp_id;
 ```
 
 **Marketplaces of a token** (SP-API GET script in [verification.md](../verification.md#sp-api-read-only)):
-`GET /sellers/v1/marketplaceParticipations` (EU token: 18 entries, 13 Amazon + 5 MCF). Last OK 2026-10-28.
+`GET /sellers/v1/marketplaceParticipations` (EU token: 18 entries, 13 Amazon + 5 MCF; NA token: 6 entries, 3 Amazon + 3 MCF;
+all `isParticipating`). Last OK 2026-10-30 through the S1 transport (#6064); the Amazon ids match `config/amazon.php`.
+Amazon's `countryCode` for the UK is `GB` (Amazon.co.uk and the Non-Amazon UK entry): the config key "UK" is a label and
+the code compares by marketplace id, so any later mapping by country code must use `GB`.
 
 ## Open
 
