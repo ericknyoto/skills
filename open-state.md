@@ -1,6 +1,6 @@
 # Open state
 
-**As of 2026-10-30, about 05:00 UTC.** The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-30, about 09:30 UTC** (S1 spec added; the rest as of about 05:00 UTC). The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line.
 
 ## Decisions taken late on 2026-10-28
@@ -21,6 +21,25 @@ Re-verify with `verification.md` before acting on a line.
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
+
+## S1 spec: #6062
+
+- Published 2026-10-30 with `to-spec` (label `ready-for-agent`), linked from map #5967 (issuecomment-6518285175).
+  **Not ticketed, nothing implemented:** Erick reviews it, cuts the tickets and gives the go.
+- **Covers:** the SP-API transport, the feeds primitive, `config/amazon.php` and its env names (local names kept;
+  new: `AMAZON_SELLER_GOOGLE_CHAT_WEBHOOK_URL`, `AMAZON_SELLER_SWITCH_ENABLED`), the connection check, the integrator
+  column and switch (skip rule, duplicate guard, switch command), the channel keys for the 20 channels (filled by form;
+  AN.DT none), the flow rule table and gate, `amazon_seller_failures`, alarms, watchdog, digest, the supervisor, BR-3.
+- **Left out on purpose:** the SKU mapping table's design (#5978 → #5986), the DE reconciliation report, the order
+  pull, and the `shipment_id` scheme with `amazon_seller_order_items`. Doc A's backlog row (.21248) puts the last two
+  in S1; the spec defers them to the order-import spec, pending Erick.
+- **Awaiting Erick:** confirm the test seams, and six decisions the spec adds beyond the ADRs:
+  1. switch enable flag, false in production;
+  2. form rule rejecting a ChannelAdvisor identity under an integrator other than CA or Amazon;
+  3. audit allow-list gains `integrator` and the Amazon keys;
+  4. keys filled by form, not by command;
+  5. feed row written before `createFeed`;
+  6. duplicate check (b) dropped, because `shipment_id` is UNIQUE.
 
 ## Map #5967 — 16 of 29 tickets closed
 
