@@ -15,8 +15,8 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Pull requests
 
-- #6053 (ADR 0139, Accepted) merged 2026-10-30 04:45Z (`b53a9b8971`). No Amazon ADR PR is open.
-- ADR 0140 (shadow mode, #5976, Proposed): branch `5976-adr-amazon-shadow-mode`, head `49b5e2f386` (ADR + `GLOSSARY.md` term "Shadow mode (Amazon)"), pushed 30 Oct; no PR until Erick asks.
+- #6053 (ADR 0139, Accepted) merged 2026-10-30 04:45Z (`b53a9b8971`).
+- **#6055** (ADR 0140 Proposed, shadow mode, #5976): branch `5976-adr-amazon-shadow-mode`, head `49b5e2f386` (ADR + `GLOSSARY.md` term "Shadow mode (Amazon)"), opened 30 Oct on Erick's "Ya, buat PR" (relayed by the coordinator); 22 checks green, `guard` running at open; review required, Erick merges; the file stays Proposed until he approves.
 - #6041 (ADR 0138, Accepted) merged 2026-10-30 03:41Z (`238de6e6d8`).
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
