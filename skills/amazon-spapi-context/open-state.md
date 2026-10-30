@@ -11,7 +11,7 @@ to [timeline.md](timeline.md) and to the Decisions of its flow file.
 Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and merges every PR.
 
 - **#6085** `6066: fix(sentry)` → `master`, draft, CI green. BR-3: `breadcrumbs.sql_bindings` and
-  `tracing.sql_bindings` false. Waits on the staging promotion (sink conflict, Q1 below) and the Nightwatch read (Q2).
+  `tracing.sql_bindings` false. Staging promotion only when Erick asks (sink reset to master 30 Oct ~10:05Z, merge-tree clean); Nightwatch read (Q2) open.
 - **#6086** `6067: docs(adr)` → `master`, ready, docs-only erratum on ADR 0128 (staging gets sandbox tokens only).
   Waits on Erick's review.
 - **#6088** `6064: feat(amazon-seller)` → `6062-amazon-seller-s1-foundation`, draft, CI running. Domain skeleton,
@@ -19,8 +19,6 @@ Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and
 - **Ticket #6087** (ready-for-agent, not a sub-issue of #6062): scrub bound values from database exception messages
   before Sentry and Nightwatch. Must close before the DE go-live order import (4 Jan 2027).
 - **Waiting on Erick** (asked via the coordinator, 30 Oct):
-  - Q1: reset `integration-test` to master, or resolve the IDS-1113 leftover `308f843f57`. Master itself conflicts with
-    the sink on `docs/INTEGRATIONS.md`, so no S1 branch can be promoted to staging until then.
   - Q2: Nightwatch's production state (`php artisan config:show nightwatch` in production `manobo_central`, or the
     dashboard). Treated as enabled until read.
 
