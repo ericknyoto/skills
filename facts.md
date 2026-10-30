@@ -160,8 +160,8 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   - FBA: 243 of 245 shipped orders are in 195, and 2 are missing (`-L` SKUs still unmapped, downloads still `R`).
     FBM: 9 of 9. Extras: 0.
   - The cause: on 2026-10-28 between 19:40 and 19:50 Berlin, 108 stuck `R` downloads went to `I`, and 195, 203, 204
-    and 205 now hold 486 `-L` rows each in `jng_sp_sku` (replica recount 2026-10-30; who made the change is asked by
-    the coordinator). 79 of the 243 orders came in that batch, so 81 had been missing before
+    and 205 now hold 486 `-L` rows each in `jng_sp_sku` (replica recount 2026-10-30; Erick confirmed on 2026-10-30 that his team
+    made the change: a manual fix, not an automated process). 79 of the 243 orders came in that batch, so 81 had been missing before
     it.
   - 2 further orders were imported with the `-L` item silently dropped: error status "Imported" plus "Product not
     found for SKU".
