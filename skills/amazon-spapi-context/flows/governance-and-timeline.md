@@ -111,6 +111,16 @@ as well as the DE switch. Nothing to ask Nitya about dormant deploys.
 - **Fact (Erick, 2026-10-30):** CI deploys `master` to production automatically on every PR merge, so a merge to `master`
   is a release.
 
+### S1 implementation sessions consult the coordinator
+
+Erick opens separate sessions for the S1 implementation. When one is blocked or unsure it messages the coordinator
+session ("Manager Amazon", `local_0f6cedbf-c406-4622-afe2-5b8dae0215c5`), which answers from the ADRs, spec #6062,
+this store, Doc A and read-only production; design, scope, date and production questions go to Erick, business ones
+to Nitya via Asana. Decisions born from implementation blockers are logged in Doc A and here the same day; the
+implementing session adds the "Implemented by PR #n" lines. The coordinator writes no code and opens no PR.
+- **Who, when:** Erick, 2026-10-30
+- **Where:** this file (chat decision, no Doc A row: a working arrangement, not a project decision)
+
 ### Branching during the freeze
 
 S1 stays as spec #6062 says (child PRs → parent `6062-amazon-seller-s1-foundation` → one PR to `master` by 26 Nov;
