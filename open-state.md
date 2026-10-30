@@ -16,7 +16,7 @@ Re-verify with `verification.md` before acting on a line.
 ## Pull requests
 
 - #6053 (ADR 0139, Accepted) merged 2026-10-30 04:45Z (`b53a9b8971`).
-- **#6055** (ADR 0140 Proposed, shadow mode, #5976): branch `5976-adr-amazon-shadow-mode`, head `49b5e2f386` (ADR + `GLOSSARY.md` term "Shadow mode (Amazon)"), opened 30 Oct on Erick's "Ya, buat PR" (relayed by the coordinator); 22 checks green, `guard` running at open; review required, Erick merges; the file stays Proposed until he approves.
+- #6055 (ADR 0140, shadow mode) closed unmerged 2026-10-30: Erick and the BA dropped shadow mode the same day. Branch `5976-adr-amazon-shadow-mode` kept at `49b5e2f386`. No Amazon ADR PR is open.
 - #6041 (ADR 0138, Accepted) merged 2026-10-30 03:41Z (`238de6e6d8`).
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
@@ -24,7 +24,7 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Map #5967 — 16 of 29 tickets closed
 
-Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day: resolution issuecomment-6515329122; #5977 the same day: issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
+Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day, then ruled out of scope: no shadow mode, issuecomment-6516457748; #5977 the same day: issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
 
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day:
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
 | 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013, #6039 |
-| 6006 | BRD input | Release-freeze exception for the go-live weeks; is the November shadow pull a release | — |
+| 6006 | BRD input | Release-freeze exception for the go-live weeks and the S4 real test orders (retitled 30 Oct; the November shadow-pull half withdrawn when shadow mode was dropped, c6516463236) | — |
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
