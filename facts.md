@@ -14,11 +14,17 @@ before quoting one. Decisions built on these live in `decisions.md`; wrong readi
   Pricing, Seller Insights, Brand Analytics. **Not** Tax Invoicing, Tax Remittance, Buyer Communication, Buyer
   Solicitation (Solution Provider Portal, read 2026-10-27). Sandbox app: `Manobo-2008`.
 - Sarina authorised both Nenalina accounts on 2026-10-27; the portal then showed 8 of 10 self-authorisations left.
-- LWA client secret: portal banner "expires in < 30 days" seen 2026-10-20. Rotating it does not invalidate refresh
-  tokens (Amazon SP-API support, 2026-09-24). Rotation is #5985.
-- **Env var names** (local `manobo-2008/.env` only; staging and production server envs untouched as of
-  2026-10-27): `AMAZON_PROD_{APP_ID,CLIENT_ID,CLIENT_SECRET}`, `AMAZON_PROD_REFRESH_TOKEN_NENALINA_{EU,NA}`,
-  `AMAZON_SANDBOX_{APP_ID,CLIENT_ID,CLIENT_SECRET,REFRESH_TOKEN}`. No code on master reads them (2026-10-28).
+- LWA client secrets (#5985): both apps' secrets were accepted on 2026-10-30 06:42Z (token exchange and
+  marketplaceParticipations 200 for prod EU, prod NA and sandbox). The portal banner ("LWA client secrets for some of
+  our applications will expire in less than 30 days") names no app; each app's target rotation date shows only in the
+  portal. Amazon's page "Rotating your app's LWA credentials" (read 2026-10-30): rotate every 180 days; the old secret
+  expires 7 days after the new one is generated; only the primary account user can rotate; notice 90 days ahead; past
+  the deadline SP-API calls return an error (the page does not say "suppressed"). Rotation does not invalidate
+  refresh tokens (Amazon SP-API support, 2026-09-24).
+- **Env var names** (local `manobo-2008/.env` only; staging and production are filled by the S1 ticket that adds
+  `config/amazon.php`, under the names it fixes: #5985, 30 Oct): `AMAZON_PROD_{APP_ID,CLIENT_ID,CLIENT_SECRET}`,
+  `AMAZON_PROD_REFRESH_TOKEN_NENALINA_{EU,NA}`, `AMAZON_SANDBOX_{APP_ID,CLIENT_ID,CLIENT_SECRET,REFRESH_TOKEN}`. No
+  code on master reads them (`git grep` on `b53a9b8971`, 2026-10-30).
   Planned override (#5972): `AMAZON_SELLER_READ_ENDPOINT_<ACCOUNT>=production`, reads only.
 - Each token works only in its region; the other region answers 403 (marketplaceParticipations, 2026-10-27).
 
