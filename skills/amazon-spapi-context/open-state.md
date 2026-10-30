@@ -46,7 +46,7 @@ Map #5967: 16 of 29 tickets closed. Blockers from GitHub issue dependencies, rea
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
 | 5989 | BRD input | BRD P0+P1 signed off: the S2 build gate, due 20 Nov (moved off S0 by Erick, 28 Oct; GitHub title and body updated) | #5986, #5987, #5988, #6013, #6039 |
-| 6006 | BRD input | Release-freeze exception for the go-live weeks and the S4 real test orders (retitled 30 Oct; the November shadow-pull half withdrawn when shadow mode was dropped, c6516463236) | — |
+| 6006 | BRD input | Release-freeze exception for the go-live weeks and the S4 real test orders (retitled 30 Oct; the November shadow-pull half withdrawn when shadow mode was dropped, c6516463236). Since 30 Oct the exception also carries the S2–S4 production deploys: dormant deploys count as releases ([decision](flows/governance-and-timeline.md#dormant-deploys-count-as-releases)) | — |
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 

@@ -99,6 +99,18 @@ Release-freeze question becomes BRD-input ticket #6006, which blocked shadow-mod
 - **Who, when:** map session, at the coordinator's request, 2026-10-28
 - **Where:** #6006; Asana 1219961077776438
 
+### Dormant deploys count as releases
+
+A deploy of Amazon code that is still dormant (behind the integrator switch, changing no channel's behaviour) counts as a
+release, so the Christmas freeze (27 Nov 2026 – 17 Jan 2027) applies to it. S1 merges to `master` at the end of S1 (one PR
+from the parent branch; #6066 early) and must be in production before 27 Nov; S2–S4 code reaches production during the
+freeze only under the go-live-week exception (#6006 / Asana 1219961077776438), which therefore carries the S2–S4 deploys
+as well as the DE switch. Nothing to ask Nitya about dormant deploys.
+- **Who, when:** Erick ("Kita anggap itu release meskipun dormant"), 2026-10-30
+- **Where:** Doc A .94215; Asana 1219961077776438 story 1220048529867511 (@Nitya)
+- **Open:** how `master` reaches production (per merge or by a release step) decides whether S2–S4 PRs may merge to `master`
+  during the freeze or wait on their parent branches; asked Erick 30 Oct.
+
 ### 6006 does not block 5989
 
 #6006 deliberately does not block #5989: the freeze exception is needed before the January go-live, not before the
