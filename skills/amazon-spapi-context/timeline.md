@@ -95,3 +95,4 @@ time. The detail of each decision is in its flow file ([index.md](index.md)); li
 - 2026-10-30 — Erick: the raw-money table and `shipment_id` scheme move from S1 to the order import (Doc A .92290).
 - 2026-10-30 — Erick approves spec #6062 (seams, six added decisions, `balance => false`) and 14 S1 tickets #6064–#6077 are cut; #6066 (BR-3) ships early to `master` (Doc A .93129).
 - 2026-10-30 — Erick: dormant Amazon deploys count as releases; S1 must be in production before the 27 Nov freeze, S2–S4 deploys wait on the go-live-week exception (Doc A .94215).
+- 2026-10-30 — Erick: `master` auto-deploys to production on merge; S2–S4 stack on one integration branch until the freeze exception (Doc A .95048).

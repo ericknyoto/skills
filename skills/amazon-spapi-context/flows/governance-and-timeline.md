@@ -109,8 +109,18 @@ as well as the DE switch. Nothing to ask Nitya about dormant deploys.
 - **Who, when:** Erick ("Kita anggap itu release meskipun dormant"), 2026-10-30
 - **Where:** Doc A .94215; Asana 1219961077776438 story 1220048529867511 (@Nitya)
 - **Fact (Erick, 2026-10-30):** CI deploys `master` to production automatically on every PR merge, so a merge to `master`
-  is a release. During the freeze no Amazon PR merges to `master` without the exception; S2–S4 work stacks on a
-  long-lived integration branch whose PR to `master` waits for the exception (proposal to Erick 30 Oct, not yet decided).
+  is a release.
+
+### Branching during the freeze
+
+S1 stays as spec #6062 says (child PRs → parent `6062-amazon-seller-s1-foundation` → one PR to `master` by 26 Nov;
+#6066 early). S2–S4 stack on ONE long-lived integration branch cut from `master` after the S1 merge: ticket PRs target it,
+`master` is merged into it weekly, each ticket is verified through the staging sink. Its PR to `master` opens only once the
+freeze exception (#6006 / Asana 1219961077776438) is granted, which is needed before 21 Dec for the S4 real test orders;
+if refused, S2–S4 first reach production with the DE switch in the go-live week and the S4 test orders move to that UAT.
+The branch name is fixed in the S2 spec.
+- **Who, when:** Erick ("Setuju"), 2026-10-30
+- **Where:** Doc A .95048; Asana 1219961077776438 story 1220048753331736 (@Nitya); #6006 issuecomment-6519634865
 
 ### 6006 does not block 5989
 
