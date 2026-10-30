@@ -59,9 +59,11 @@ always served before `amazon-seller-listings`.
 
 ### Token failures on the transport (401 and 403)
 
-A 401 means the access token is stale: forget it, refetch, retry the call once. A 403 is treated the same only when
-Amazon's `errors[].details` or `message` contains "access token"; every other 403 (missing role, wrong region) is not
-retried and becomes a failure row / Sentry event carrying Amazon's code and message. ADR 0129 fixes no rule here.
+A 401 means the access token is stale: forget it and refetch. A 403 is treated the same only when Amazon's
+`errors[].details` or `message` contains "access token"; every other 403 (missing role, wrong region) is not retried and
+becomes a failure row / Sentry event carrying Amazon's code and message. Replay after a token refresh follows ADR 0129 §2:
+the token is always forgotten, but only idempotent operations are replayed (corrected 30 Oct in PR #6088's review; the
+first framing "ADR 0129 fixes no rule here" was wrong).
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q5, #6064 / PR #6088)
 - **Where:** PR #6088 body and the transport class docblock
 
