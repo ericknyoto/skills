@@ -104,6 +104,14 @@ req = urllib.request.Request('https://sellingpartnerapi-eu.amazon.com' + path,  
 Write each response to a file and print only `GET path -> status`. Never print `env`, `tok` or a response that
 could carry buyer data.
 
+**LWA secret check (status only; #5985).** Per app, run the token exchange above with that app's client id and
+secret: `AMAZON_PROD_*` with the EU and the NA refresh token, and `AMAZON_SANDBOX_*` with
+`AMAZON_SANDBOX_REFRESH_TOKEN` against `https://sandbox.sellingpartnerapi-eu.amazon.com`. Then call
+`GET /sellers/v1/marketplaceParticipations`. Print only the two status codes, plus LWA's `error` field on a failure
+(`invalid_client` = rejected secret). To prove a rotation inside the 7-day overlap, store a SHA-256 of each client
+secret in a `umask 077` scratchpad file before rotating (never printed) and afterwards report only "changed: yes/no".
+Run it again after day 7, when the old secret is dead. Last OK: 2026-10-30, all 200.
+
 | Purpose | Request (EU seller `A1SMSLS6YOBHD5`, DE `A1PA6795UKMFR9`) | Last OK |
 |---|---|---|
 | Marketplaces of a token | `GET /sellers/v1/marketplaceParticipations` (EU token: 18 entries, 13 Amazon + 5 MCF) | 2026-10-28 |
