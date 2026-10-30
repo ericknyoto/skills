@@ -66,7 +66,7 @@ All assigned to Nitya; 6 completed (see above). Project `1219919921535476`, sect
 | 1219919864498676 | Build International Listings active; copies DE quantity? | 2026-12-04 | no comment |
 | 1219919849429744 | UVP, selling and promo fields; FBM price = FBA? (#6013) | 2026-12-04 | **completed 29 Oct**: mapping locked; FBM/FBA = separate rows, may differ (Erick) |
 | 1219920153544278 | Returns opened on Amazon: who records them; shipping refund? (#6039) | 2026-12-04 | 29 Oct 13:18Z (IT, @Nitya, story 1220015351242263): FBA goods sent back to Hamburg (13 in 12 months; ChannelAdvisor accepted the refund for 7) stay refunded automatically with an already-refunded check, or CS refunds in Seller Central? No answer |
-| 1219961077776438 | Release-freeze exception for 4–8 and 11–15 Jan (#6006) | 2026-12-04 | no comment |
+| 1219961077776438 | Release-freeze exception for 4–8 and 11–15 Jan (#6006) | 2026-12-04 | 30 Oct 04:04Z (IT, @Nitya, story `1220040996798747`): asked to answer the November half first, before 6 Nov (is the S1 shadow pull a release under the Christmas freeze); the January exception may wait for 4 Dec. Only the shadow-pull deploy date waits on it; #5976 design does not (IT decision 30 Oct, option c) |
 | 1219919783909992 | UK/US FBA stock + price flows and GBP/USD fields | 2026-12-04 | flows confirmed 10-28; 29 Oct: asked to confirm the `_foreign` price columns (GBP/USD already held for 74 UK / 5 US products) feed Amazon with the DE mapping; a wrong 'EUR only' comment was corrected the same day |
 | 1219919983346126 | Cutover window, sync pause, hypercare length | 2026-12-18 | no comment |
 | 1219920153543863 | Success measures; future of the 20 non-Amazon Rithum channels | 2026-11-20 | no comment |
