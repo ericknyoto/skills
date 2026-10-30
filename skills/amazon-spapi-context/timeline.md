@@ -93,3 +93,4 @@ time. The detail of each decision is in its flow file ([index.md](index.md)); li
 - 2026-10-30 — Erick confirms the 28 Oct `-L` rows were his team's manual fix.
 - 2026-10-30 — The coordinator reports the CA FBA promotion import error to Erick; not a map ticket.
 - 2026-10-30 — Erick: the raw-money table and `shipment_id` scheme move from S1 to the order import (Doc A .92290).
+- 2026-10-30 — Erick approves spec #6062 (seams, six added decisions, `balance => false`) and 14 S1 tickets #6064–#6077 are cut; #6066 (BR-3) ships early to `master` (Doc A .93129).
