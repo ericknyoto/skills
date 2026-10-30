@@ -26,11 +26,9 @@ No Amazon ADR PR is open. Merges and closures, with commits: [timeline.md](timel
   column and switch (skip rule, duplicate guard, switch command), the channel keys for the 20 channels (filled by form;
   AN.DT none), the flow rule table and gate, `amazon_seller_failures`, alarms, watchdog, digest, the supervisor, BR-3.
 - **Left out on purpose:** the SKU mapping table's design (#5978 → #5986), the DE reconciliation report, the order
-  pull, and the `shipment_id` scheme with `amazon_seller_order_items`. Doc A's backlog row (.21248) puts the last two
-  in S1; the spec defers them to the order-import spec, pending Erick.
+  pull, and the `shipment_id` scheme with `amazon_seller_order_items`. Erick decided 30 Oct that the last two are built with the
+  order import, not S1 (Doc A row .92290; backlog row .21248 marked moved).
 - Updated 2026-10-30: `balance => false` on the supervisor ([decision](flows/monitoring-and-failures.md#supervisor-balance-false)).
-- **Still open for Erick:** the Doc A backlog deferral above (`shipment_id` scheme and raw-money table out of S1). It
-  was not part of his "Setuju".
 
 ## Map tickets
 

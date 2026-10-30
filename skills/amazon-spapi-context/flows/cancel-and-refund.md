@@ -47,6 +47,14 @@ refund flow generalises the port, not the storage.
 - **Who, when:** Erick ("Per integrator"), 2026-10-28
 - **Where:** ADR 0131 Consequences, `6440c7feda`; Doc A .69284
 
+### ADR 0131 structures built with the order import
+
+The raw-money table `amazon_seller_order_items` and the `shipment_id` scheme are built with the order-import spec,
+not in S1: the order import is their only writer and S1 has none. Design unchanged (ADR 0131); only the timing of
+Doc A's 20 Oct backlog row (.21248, "S1, 1.5 d") moved.
+- **Who, when:** Erick ("Ya, dengan order import"), 2026-10-30, asked through the S1 spec session
+- **Where:** Doc A .92290 (log) and .21248 (marked moved); spec #6062 "Left open for the tech lead" item 2
+
 ### 6040 refund fog graduated
 
 Refund fog graduated: grilling #6040 (FBA refund pull source, already-refunded guard, per-unit values, adjustment
