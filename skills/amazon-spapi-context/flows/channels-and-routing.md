@@ -72,9 +72,12 @@ test twice), #6064's acceptance criterion and spec #6062 Testing Decisions are s
 `integrator` is a required (`present`) field on the sales-channel save: a stale form opened before the deploy fails
 loudly with a "reload the page" message instead of saving NULL and silently taking a channel off ChannelAdvisor. The
 form rule "reject `amazon` while `AMAZON_SELLER_SWITCH_ENABLED` is false" ships with #6075 (moved from spec §E), and the
-S1 parent PR is not marked ready before #6075 is in. The save keeps no DB transaction around the row update and the
-integrator write: the integrator is written last, a failure leaves the old value and its mirrors consistent, and
-wrapping would move the selling-price refresh job before commit; revisit if S2 adds writes to that save.
+S1 parent PR is not marked ready before #6075 is in. The save runs in a `DB::transaction` with the selling-price refresh
+job dispatched through `DB::afterCommit()` (CODING_STANDARDS: multi-write Actions use a transaction). The coordinator's
+30 Oct waiver "no transaction, integrator written last" was wrong and is withdrawn: the review of PR #6089 found that on the
+insert path a failed integrator write left the new row while the page re-rendered as "new", so a second save created a
+duplicate channel. The CHECK also restricts `integrator` to the three ADR 0132 §1 values; seeders that set a flag set the
+integrator too (seven JSON-fixture seeders fixed).
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q7–Q9, #6065 / PR #6089)
 - **Where:** PR #6089 body and docblocks; #6075 acceptance criteria; #6074 note on the factory default (`integrator` NULL)
 
