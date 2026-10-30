@@ -122,6 +122,18 @@ from the S2 deploy on.
 - **Who, when:** Erick on the coordinator's recommendation, 2026-10-30
 - **Where:** Doc A row of 30 Okt "Migrasi #6065 (PR #6089) dipecah"; #6089 to be reworked; S2 spec input
 
+### The CA download never skips on `integrator` NULL (#6074)
+
+The ChannelAdvisor download acknowledges-without-importing an order only when its target channel's `integrator` is
+NOT NULL and not `channeladvisor`. NULL never triggers the skip, permanently, not only during the deploy window.
+Reason: after the S1 parent deploy (`migrate --force`) and until Erick runs `manobo:sales-channel:backfill-integrator`,
+every channel is NULL; a plain "not channeladvisor" rule would acknowledge the 29 production CA channels' orders on CA
+and import them nowhere. With this rule the window is safe in any order of command and download. Consistent with ADR
+0132 §1 (NULL = no integrator, not "switched"); the switch always writes `amazon`, so a switched channel is never NULL.
+Goes into #6074's acceptance criteria and the parent PR #6062 post-deploy note.
+- **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session question on #6074)
+- **Where:** Doc A row of 30 Okt "Aturan skip download ChannelAdvisor (#6074) dipertegas"; #6074; PR #6089 body note
+
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
