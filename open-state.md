@@ -109,7 +109,7 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
   rotation (`1219920153548672`, #5985).
 - **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
 - **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
-  - BRD requirement posted on that task 30 Oct 03:56Z (IT, @Nitya, story `1220041038186030`): who receives the daily 06:00 Amazon failure digest and the immediate refund/cancel failure alert; technical default Google Chat space "Order N8N" (from #5977 round 1). No answer yet.
+  - BRD requirement posted on that task 30 Oct 03:56Z (IT, @Nitya, story `1220041038186030`): who receives the daily 06:00 Amazon failure digest and the immediate refund/cancel failure alert; first comment named "Order N8N" as the default; corrected the same day by Erick (story `1220041038698373`): a NEW dedicated Google Chat space for Amazon, name and members per BRD. Standing rule from Erick (30 Oct): Amazon core flows run in Manobo only, no n8n; n8n only for notifications and similar, and every n8n plan is confirmed with Erick first. No answer yet.
   Listing ownership `1219919921458898` and PIC `1219920153543831` are "Blocks S2", due 20 Nov.
 
 ## Known-unfixed, no issue yet
