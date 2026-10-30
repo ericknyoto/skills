@@ -1,9 +1,9 @@
 # Shipment confirmation
 
 confirmShipment on Orders v0, carrier codes (#5982) and the cadence of the confirmation. confirmShipment serves FBM
-only: [ADR 0138](cancel-and-refund.md#adr-0138-flows-per-fulfilment-channel). Its cadence (every 15 minutes) and the
-failure path are set by [ADR 0139](monitoring-and-failures.md#adr-0139-failures-alarms-and-supervisor). Code anchors:
-[sources/github.md](../sources/github.md#code-anchors).
+only: [ADR 0138](cancel-and-refund.md#adr-0138-flows-per-fulfilment-channel). Its cadence (shipment confirmation
+15 min, config recorded on #5977) and the failure path: [ADR 0139](monitoring-and-failures.md#adr-0139-failures-alarms-and-supervisor).
+Code anchors: [sources/github.md](../sources/github.md#code-anchors).
 
 ## Decisions
 
