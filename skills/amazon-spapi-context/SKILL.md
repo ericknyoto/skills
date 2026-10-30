@@ -5,10 +5,11 @@ description: >-
   Read before working a ticket on wayfinder map #5967 or an ADR 0128–0134, writing `Domain\AmazonSeller`
   code, calling SP-API or querying production about Amazon channels, SKUs, stock or order money, editing
   Doc A or the Asana project, or quoting a scope, date, status or volume. Spans Doc A (the decision log), the
-  GitHub map, Asana, the ADRs and production, so no single place holds the picture. Carries a corrections list
-  of conclusions that proved wrong (scope 16 vs 20, the "dead" UK channel, money in the promotion and tax
-  blocks, the `-L` SKUs) and read-only verification recipes. Write verified findings back into it before you
-  finish; it lives outside the repos and nothing else keeps it current.
+  GitHub map, Asana, the ADRs and production, so no single place holds the picture. Organised per flow: each file
+  in flows/ holds one flow's decisions, facts, traps, checks and open items, and index.md lists every decision.
+  Carries a corrections list of conclusions that proved wrong (scope 16 vs 20, the "dead" UK channel, money in the
+  promotion and tax blocks, the `-L` SKUs) and read-only verification recipes. Write verified findings back into it
+  before you finish; it lives outside the repos and nothing else keeps it current.
 ---
 
 # Amazon SP-API migration context
@@ -38,65 +39,72 @@ description: >-
 
 | Doing | Read |
 |---|---|
-| Anything, before believing a number, a scope or a status | [`traps.md`](traps.md) — **start here** |
-| Asking whether something is decided, by whom, and where it is written | [`decisions.md`](decisions.md) |
-| Needing a channel or marketplace id, a SKU rule, ChannelAdvisor behaviour, an API shape, a volume | [`facts.md`](facts.md) |
-| Running a replica query or an SP-API call, or reading Doc A, Asana, GitHub or the sheet | [`verification.md`](verification.md) |
+| Anything, before believing a number, a scope or a status | [`traps.md`](traps.md) — **start here** — then the Traps of your flow |
+| Meeting a bug or working a ticket in one Amazon flow | that file in [`flows/`](#layout): Decisions, Facts, Traps, How to verify, Open |
+| Asking whether something is decided, by whom, and where it is written | [`index.md`](index.md), then the flow file it links |
+| Asking when something happened | [`timeline.md`](timeline.md) |
 | Finding what is open, blocked or owed, and by whom | [`open-state.md`](open-state.md) |
-| Grilling a map ticket | `decisions.md` for what is settled, `open-state.md` for its blockers |
+| Running a replica query or an SP-API call, or reading Doc A, Asana, GitHub or the sheet | [`verification.md`](verification.md) and [`sources/`](#layout) |
+| Grilling a map ticket | the flow file's Decisions for what is settled, `open-state.md` for its blockers |
 
-## Where the pieces live
+## Layout
 
-| Piece | Location | Holds |
-|---|---|---|
-| Doc A | Claude Doc project `fa6cbfbc-b183-4630-91d7-4a9698b7eab5`, tab `c14e51ea-922c`, node `3544b1d9-3e5b`; https://claude.ai/code/artifact/fa6cbfbc-b183-4630-91d7-4a9698b7eab5 (also /artifact/XvZjE5pVUpsQvniMMYG8o6) | decision log = table `mzse2z3z5sh.36886`; scope, sprint, backlog, marketplace tables. Element ids carry the prefix `mzse2z3z5sh`; this skill cites them as `.NNNN` |
-| Nitya's timeline | https://claude.ai/artifact/BU42JMy7BheVebNdexxkAr (docs project `54c254bd-2bb2-4e38-89c6-e02f1fed3def`, node `9cc01e70-9437`); Indonesian copy /artifact/Q62697LGPjBCJiz2avAPA9 | dates, gates, phase scope; owned by Nitya |
-| Sales Channel List sheet | Google Sheet `1I1FtuGRnXalKkJmLXanTLsljNFLsAMNvKlQ2kIH5nlM`, tabs Notes, Seller Nenalina, Seller JG | scope reference: status per channel, flow codes S-FBM, S-FBA, P, O, R/C |
-| Asana | project `1219919921535476` (sections below); old project `1216749791369428` superseded 27 Oct | business questions, sprint milestones |
-| GitHub map | julie-grace/manobo-2008 #5967 (`wayfinder:map`); tickets `wayfinder:grilling` / `research` / `task` | technical decisions in each ticket's resolution comment |
-| ADRs | `docs/adr/0128`–`0133` on master; `0134` on branch `5973-adr-amazon-channel-config` (PR #6008) | the binding technical decisions |
-| `GLOSSARY.md` | master: Integrator, Amazon Seller vs Amazon Vendor, Seller account (Amazon), Fulfilment channel (Amazon), Amazon marketplace vs Marketplace; "Amazon Seller channel" in PR #6008 | canonical terms |
-| Research | branches `research/jewelry-list-price`, `research/amazon-carrier-codes`, `research/currency-pairs`, `5983-research-amazon-personalisation-prod`, each one `docs/research/*.md`, never merged | findings behind #5980–#5983 |
-| Ticket fact notes | `~/.config/Claude/side-session-notes/local_37c29950-6eeb-45e7-a4a8-4be997f0d0c4/` (`5969`…`5984-*.md`) | raw evidence the resolutions cite |
-| Auto-memory | `~/.claude/projects/-home-ericknyoto-Work-manobo-2008/memory/amazon-spapi-*.md` and neighbours | chronological notes holding superseded lines ("14 channels"); this skill is the curated copy |
-| Production | central tenant of `manobo-2008` (every Nenalina channel); replica via `DB_*_PRODUCTION_DEBUGGING`; SP-API via `AMAZON_PROD_*` in the local `.env` | see `facts.md`, `verification.md` |
-| Session helpers | none persisted: a replica query wrapper and a GET-only SP-API script, rebuilt per session from `verification.md` | — |
+- `index.md` — every decision, one line each: id, gist, who, date, link to its flow file.
+- `timeline.md` — dated events, oldest first: decisions, merges, Asana completions, production changes, deploys.
+- `open-state.md` — live state only: PRs, open map tickets, Asana questions, deadlines, owed actions, known-unfixed.
+- `traps.md` — wrong conclusions that cut across flows, plus pointers to flow traps hit from outside.
+- `verification.md` — safety rules and generic recipes: replica, SP-API GET script, GitHub, Doc A, Asana, sheet, host.
+- `sources/doc-a.md`, `sources/asana.md`, `sources/github.md`, `sources/timeline-nitya.md`, `sources/sheet.md` — ids,
+  URLs, owners and access notes per source; `github.md` also holds the ADR list, research branches, local note
+  folders and the code anchors.
+- `flows/channels-and-routing.md` — seller accounts, app, marketplace ids, channel tables, integrator switch (ADR 0128, 0132, 0134), populations.
+- `flows/orders-import.md` — order stream and routing (ADR 0130), SKU resolution, order money in Manobo (#5980), missing orders, ChannelAdvisor import.
+- `flows/shipment-confirmation.md` — confirmShipment, carrier codes (#5982), cadence.
+- `flows/cancel-and-refund.md` — flows per fulfilment channel (ADR 0138), `shipment_id` and raw money (ADR 0131), feeds, refunds on FBA, returns.
+- `flows/fba-stock.md`, `flows/fbm-stock.md` — FBA stock read and FBM stock push, inventory API.
+- `flows/prices-and-listings.md` — SKU formats and mapping (#5978, #5986), listings, price fields (#6012, #6013), personalisation.
+- `flows/monitoring-and-failures.md` — SP-API transport and rate limits (ADR 0129), failures, alarms, supervisor (ADR 0139), no n8n.
+- `flows/data-protection.md` — PII (ADR 0133, BR-1 … BR-6), credentials and LWA rotation (#5985).
+- `flows/governance-and-timeline.md` — roles, scope, phases and gates, no shadow mode, the withdrawn ADR 0140.
 
-Asana sections: Business decisions `1219919783593124` · S0 `1219919783880525` · S1 `1219919783798571` ·
-S2 `1219919864526198` · S3 `1219919864339665` · S4 `1219919864522872` · S5 Go-live DE + UAT `1219919864525951` ·
-S6 Go-live other Nenalina `1219920153543929` · Monitoring + JG preparation `1219961007589210` ·
-S8 Decommission `1219919849941605` · Buffer `1219919921503213`.
-
-**Code symbols named here are anchors, not addresses.** Accurate on 2026-10-28 (manobo-2008 master
-`74b6517496`); this knowledge base is not versioned with the code, so confirm a symbol exists before relying on it.
+**Who writes what.** Wayfinder sessions own the GitHub lines (map, tickets, resolution comments, PRs, ADR statuses);
+the coordinator owns the Asana, Doc A and BRD lines; from S1 on, implementation sessions add the "Implemented by"
+lines. Code symbols named here are anchors, not addresses: see [`sources/github.md`](sources/github.md#code-anchors).
 
 ## Keeping this current — required
 
-**You are expected to write back what you learn.** Nothing else updates this: it lives outside the repos it
-describes, under its own git repository here. Commit each change with a one-line reason, on your own paths
-only (`git add <file>`, never `git add -A`: a concurrent agent's loose edits get swept in under your name).
+**You are expected to write back what you learn.** Nothing else updates this. It lives in Erick's skills repo
+(`/home/ericknyoto/Work/ericknyoto-skills`, remote `ericknyoto/skills`, path `skills/amazon-spapi-context/`) and is
+installed by symlink from `~/.agents/skills/amazon-spapi-context`: never run `npx skills update` for it; edit the
+repo and push. Commit each change with a one-line reason, on your own paths only (`git add <file>`, never `git add
+-A`: a concurrent agent's loose edits get swept in under your name).
 
-**Verified, or not written.** Check a claim before writing it (`verification.md` holds the commands) and name
-the check and its date. A wrong turn belongs in `traps.md`. A hunch stays in the reply to the human, or goes in
-marked `Assumption:`.
+**Verified, or not written.** Check a claim before writing it (`verification.md` and the flow's How to verify hold
+the commands) and name the check and its date. A wrong turn belongs in a Traps section. A hunch stays in the reply to
+the human, or goes in marked `Assumption:`. Counts expire: re-measure before quoting one.
 
 **Replace, do not append.** A superseded fact is edited out, not stacked under its replacement, and each fact
 lives in exactly one file: link rather than restate. The failure mode is sediment, stale layers that settle
 because adding feels safe and removing feels risky. Date anything that expires.
 
 **Doc A stays the source of truth.** This skill indexes it. A new decision is logged in Doc A by whoever owns the
-session, and only when the human asks; then its row id goes into `decisions.md`.
+session, and only when the human asks; then its row id goes into the flow file's Decisions and a line into `index.md`.
+
+**Implementation and events.** Every PR that implements an Amazon decision gets a line "Implemented by PR #n, merged
+<date>, deployed <date>" under that decision in its flow file. Every deploy, channel switch and incident gets one
+dated line in `timeline.md` the same day.
 
 | What you learned | Goes in |
 |---|---|
-| A decision, who made it, where it is recorded, or a decision superseded | `decisions.md`: edit the row |
-| An id, a column value, a volume, an API shape, a code entry point | `facts.md`, with date and source |
-| A conclusion that looked right and was not | `traps.md` |
-| A command, query or API call that worked | `verification.md` |
+| A decision, who made it, where it is recorded, or a decision superseded | the flow file's Decisions, and its line in `index.md` |
+| An id, a column value, a volume, an API shape, a code entry point | the flow file's Facts, with date and source (code anchors: `sources/github.md`) |
+| A conclusion that looked right and was not | the flow file's Traps; `traps.md` if it cuts across flows |
+| A command, query or API call that worked | the flow file's How to verify; `verification.md` if generic |
 | A PR, ticket or Asana state, a question asked or answered, an owed action | `open-state.md` (carries an "as of" line) |
+| A deploy, a channel switch, an incident, a merge | `timeline.md` |
 
-**Under 1200 lines total.** Started at 856 on 2026-10-28. Past the cap something has stopped earning its
-place: prune superseded facts before adding, never a fact that still holds.
+**At most 250 lines per flow file.** Past the cap something has stopped earning its place: prune superseded facts
+before adding, never a fact that still holds.
 
 ## Hard lines
 
@@ -108,3 +116,5 @@ deduplicated by Amazon and is never replayed (ADR 0129).
 
 **ChannelAdvisor downloads stuck at `R` are re-imported one order at a time, with Erick's approval per order.**
 A re-import can ship an order that ops already shipped by hand.
+
+**No secrets, no buyer PII, read-only production** in anything you print or write here: [`verification.md`](verification.md#safety).
