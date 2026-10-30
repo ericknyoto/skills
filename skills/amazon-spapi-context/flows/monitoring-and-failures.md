@@ -71,12 +71,15 @@ always served before `amazon-seller-listings`.
 ### Transport and rate limits
 
 - **Rate limits** (rps / burst, per account-application pair; Usage Plan tables in `github.com/amzn/selling-partner-api-models`,
-  read 2026-10-30; the `x-amzn-RateLimit-Limit` header can apply other values): getOrder v2026 and v0 0.5/30;
+  read 2026-10-30; the `x-amzn-RateLimit-Limit` header can apply other values): getMarketplaceParticipations 0.016/15
+  (sellers.json; production header `0.016` for both accounts, 2026-10-30, PR #6088); getOrder v2026 and v0 0.5/30;
   getOrderItems v0 0.5/30; createFeed 0.0083/15; getFeed 2/15; createFeedDocument 0.5/15; getFeedDocument 0.0222/10;
   getListingsItem 5/10; patchListingsItem 5/**5**; putListingsItem 5/10; getInventorySummaries 2/2;
   listFinancialEventsByOrderId v0 0.5/30; listTransactions 2024-06-19 0.5/10; createReport 0.0167/15; getReport 2/15;
   getReportDocument 0.0167/15 (searchOrders in [orders-import.md](orders-import.md#the-amazon-order-stream),
   confirmShipment in [shipment-confirmation.md](shipment-confirmation.md#facts)).
+- **Sandbox getMarketplaceParticipations** returns Amazon's static example (`ATVPDKIKX0DER`, …) for both regions, so
+  marketplace drift reported by `manobo:amazon-seller:check-connection` in sandbox mode means nothing (2026-10-30, #6064).
 - **Notifications API** delivers only to an SQS queue or an EventBridge bus in our own AWS account; no webhook. ORDER_CHANGE,
   FEED_PROCESSING_FINISHED and REPORT_PROCESSING_FINISHED all need one, so every flow polls (2026-10-30; #5977).
 
