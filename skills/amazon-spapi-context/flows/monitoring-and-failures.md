@@ -57,6 +57,15 @@ always served before `amazon-seller-listings`.
 - **Who, when:** Erick ("saya ikut rekomendasi mu"), 2026-10-30.
 - **Where:** S1 spec #6062 section I; #6062 issuecomment-6518781823, which replaces that line of #5977 c6514635367.
 
+### S1 spec additions to ADR 0129 and 0139
+
+1. A feed's `amazon_seller_feeds` row is written **before** `createFeed`, so an `outcome_unknown` failure always has a
+   subject. This refines the step order recorded on #5972.
+2. The daily duplicate check drops #5977's check (b), a repeated (`jng_sp_id`, `shipment_id`): `shipment_id` is
+   UNIQUE on `jng_sp_orders` (replica, 2026-10-30), so it cannot repeat. Checks (a) and (c) stay.
+- **Who, when:** Erick ("Setuju"), 2026-10-30
+- **Where:** #6062 sections D and H; tickets #6071, #6077
+
 ## Facts
 
 ### Transport and rate limits

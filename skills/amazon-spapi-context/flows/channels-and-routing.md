@@ -57,6 +57,18 @@ preparation section).
 - **Who, when:** Sarina (authorisation), Erick (check), 2026-10-27
 - **Where:** Doc A .37271; Asana 1219960974323506
 
+### S1 spec additions to ADR 0132 and 0134
+
+The S1 spec adds four rules that no ADR states:
+1. `AMAZON_SELLER_SWITCH_ENABLED` (default false; false in production until the go-live weeks) makes the switch
+   command and the sales-channel form refuse `integrator = amazon`.
+2. The form rejects a channel that has a ChannelAdvisor channel id when its integrator is neither `channeladvisor`
+   nor `amazon`: the skip rule would otherwise acknowledge its ChannelAdvisor orders and nothing would import them.
+3. `integrator`, `amazon_seller_account` and `amazon_marketplace_id` join `JngSp`'s audit allow-list.
+4. The keys of the 20 channels are filled through the form, from a runbook table (#6073), not by a command.
+- **Who, when:** Erick ("Setuju"), 2026-10-30
+- **Where:** #6062 sections E and F, Further Notes; tickets #6065, #6072, #6073, #6075
+
 ## Facts
 
 ### Seller accounts and app
