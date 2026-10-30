@@ -63,3 +63,4 @@ rechecked 2026-10-29, 0138 and 0139 2026-10-30).
 | #5976 c6516457748 | No shadow mode; BR-3 binds before the go-live order import | Erick and the BA | 2026-10-30 | [governance-and-timeline](flows/governance-and-timeline.md#no-shadow-mode) |
 | #5985 | LWA: rotate `Manobo-2008-Sellers` now; server env from the S1 ticket; sandbox `Manobo` left unrotated | Erick; coordinator (server env) | 2026-10-30 | [data-protection](flows/data-protection.md#5985-lwa-secrets) |
 | .91480 | #5978 waits only on #5986 and is grilled inside S1 | Erick | 2026-10-30 | [prices-and-listings](flows/prices-and-listings.md#5978-waits-only-on-5986) |
+| #6062 c6518781823 | `supervisor-amazon-seller` uses `balance => false`, so order work goes before listings work | Erick | 2026-10-30 | [monitoring-and-failures](flows/monitoring-and-failures.md#supervisor-balance-false) |

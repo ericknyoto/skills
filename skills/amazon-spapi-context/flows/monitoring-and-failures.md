@@ -46,6 +46,17 @@ first. "Order N8N" Chat space stays for MS Direct orders; Amazon gets its own sp
 - **Who, when:** Erick, 2026-10-30
 - **Where:** Manager Amazon chat 30 Oct; Asana story 1220041038698373; map #5967 Notes; #5977 c6514635367
 
+### Supervisor balance false
+
+`supervisor-amazon-seller` runs with `balance => false` (`minProcesses` 1, `maxProcesses` 3), so `amazon-seller` is
+always served before `amazon-seller-listings`.
+- **Why:** #5977 said "in priority order", but every supervisor in this repo uses `balance => 'auto'`, and under
+  `auto` Horizon ignores queue order and shares workers by load (Horizon docs, "Queue Priorities and Auto Balancing",
+  via Boost `search-docs`, 2026-10-30).
+- **Held by:** a config test in the S1 spec, so the supervisor cannot be "aligned" to `auto` later.
+- **Who, when:** Erick ("saya ikut rekomendasi mu"), 2026-10-30.
+- **Where:** S1 spec #6062 section I; #6062 issuecomment-6518781823, which replaces that line of #5977 c6514635367.
+
 ## Facts
 
 ### Transport and rate limits
