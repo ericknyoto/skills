@@ -108,8 +108,9 @@ freeze only under the go-live-week exception (#6006 / Asana 1219961077776438), w
 as well as the DE switch. Nothing to ask Nitya about dormant deploys.
 - **Who, when:** Erick ("Kita anggap itu release meskipun dormant"), 2026-10-30
 - **Where:** Doc A .94215; Asana 1219961077776438 story 1220048529867511 (@Nitya)
-- **Open:** how `master` reaches production (per merge or by a release step) decides whether S2–S4 PRs may merge to `master`
-  during the freeze or wait on their parent branches; asked Erick 30 Oct.
+- **Fact (Erick, 2026-10-30):** CI deploys `master` to production automatically on every PR merge, so a merge to `master`
+  is a release. During the freeze no Amazon PR merges to `master` without the exception; S2–S4 work stacks on a
+  long-lived integration branch whose PR to `master` waits for the exception (proposal to Erick 30 Oct, not yet decided).
 
 ### 6006 does not block 5989
 
