@@ -8,19 +8,17 @@ to [timeline.md](timeline.md) and to the Decisions of its flow file.
 
 ## Pull requests
 
-Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and merges every PR.
+Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and merges every PR. As of 2026-10-30 ~10:40Z.
 
-- **#6085** `6066: fix(sentry)` → `master`, draft, CI green. BR-3: `breadcrumbs.sql_bindings` and
-  `tracing.sql_bindings` false. Staging promotion only when Erick asks (sink reset to master 30 Oct ~10:05Z, merge-tree clean); Nightwatch read (Q2) open.
-- **#6086** `6067: docs(adr)` → `master`, ready, docs-only erratum on ADR 0128 (staging gets sandbox tokens only).
-  Waits on Erick's review.
-- **#6088** `6064: feat(amazon-seller)` → `6062-amazon-seller-s1-foundation`, draft, CI running. Domain skeleton,
-  `config/amazon.php`, connection check.
+- **#6088** `6064: feat(amazon-seller)` → `6062-amazon-seller-s1-foundation`, draft. Domain skeleton, `config/amazon.php`,
+  connection check. Review fixes in progress; architecture tests being removed (Erick, 30 Oct).
+- **#6089** `6065: feat(sales-channel)` → `6062-amazon-seller-s1-foundation`, draft, CI green. Integrator column,
+  single writer, CHECK. Independent code review running.
+- **#6090** `6064: docs(adr)` → `master`, docs-only erratum on ADR 0134 (architecture test dropped). Waits on Erick.
+- **Staging** for #6088 and #6089 waits on Erick's promotion request (one branch per request). #6066 / PR #6085 merged and
+  deployed 2026-10-30; its "after deploy" Sentry check (an event with SQL breadcrumbs and no bindings) is still open.
 - **Ticket #6087** (ready-for-agent, not a sub-issue of #6062): scrub bound values from database exception messages
   before Sentry and Nightwatch. Must close before the DE go-live order import (4 Jan 2027).
-- **Waiting on Erick** (asked via the coordinator, 30 Oct):
-  - Q2: Nightwatch's production state (`php artisan config:show nightwatch` in production `manobo_central`, or the
-    dashboard). Treated as enabled until read.
 
 ## S1 spec 6062
 
