@@ -77,7 +77,15 @@ Task, decided with Sarina before go-live (18 Dec); nothing to decide for S1–S4
   `customizedUrl` (ungated)**; FBA orders neither (#5976).
 - **PII:** retention is off on all 238 channels and `pii_redaction_logs` is empty; the 20 Nenalina channels hold
   70,793 orders shipped more than 30 days ago that still carry PII (FBM 6,380, FBA 64,413, oldest mid-2023)
-  (#5975, 2026-10-27). `config/sentry.php` has `breadcrumbs.sql_bindings => true` (master, 2026-10-28).
+  (#5975, 2026-10-27). `config/sentry.php` has `breadcrumbs.sql_bindings => true` on master (2026-10-30); PR #6085 (#6066,
+  open) sets it and `tracing.sql_bindings` false.
+- **Sentry and Nightwatch bindings paths** (code read at master `b53a9b8971`, 2026-10-30): sentry-laravel 4.20.1 has a
+  second key, `tracing.sql_bindings`, which defaults to true when absent (`Tracing/EventHandler.php:99`), so BR-3
+  needs both keys off. Nightwatch v1.22.1 sends SQL with `?` placeholders and no job payloads, and receives no log
+  records (`config/logging.php` overrides its `nightwatch` channel with a daily file). It does send exception
+  messages, and a `QueryException` message embeds the bound values (`QueryException::formatMessage`). Its
+  `exception_preview` skips `redactExceptions` (`ExceptionSensor.php:74`). Scrubber follow-up: #6087, due before
+  the DE go-live import. Nightwatch's production state is unread; treat it as enabled (code default).
 
 ### Credentials
 
