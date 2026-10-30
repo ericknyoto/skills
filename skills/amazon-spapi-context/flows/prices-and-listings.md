@@ -32,8 +32,9 @@ Price flow gets a grilling ticket #6012 (blocked by #5978, #6013) and a BRD-inpu
 
 Price fields (A5–A7), from the Manobo sales-channel price page: `list_price` ← UVP; `purchasable_offer.our_price` ←
 Normal Price → Retail Price; `purchasable_offer.discounted_price` ← Promotion Price → Retail Price with Start/End
-Date. Open: FBM price = FBA price? (Amazon.de 0402620921: 29.40 FBA vs 29.50 FBM) and the GBP/USD source (candidate:
-the Foreign Price columns); both asked on Asana 29 Oct.
+Date. FBM price = FBA price was answered 29 Oct: separate rows, may differ (Erick; Asana 1219919849429744 completed;
+Amazon.de 0402620921 showed 29.40 FBA vs 29.50 FBM). Still open: the GBP/USD source (candidate: the Foreign Price
+columns), asked 29 Oct on 1219919783909992.
 - **Who, when:** the BA, 2026-10-28
 - **Where:** Asana 1219919849429744 (08:59Z, screenshot asset 1219967631945095); Doc A .74487; #6013 issuecomment-6487445189
 
@@ -137,7 +138,7 @@ is grilled inside S1 once #5986 is answered.
   SellingPrice = running promotion price else retail. Promo dates go only through the family export, whose
   `profile-id-for-upload` list (8 profiles) excludes the DE/UK/US profiles 12047680, 12048565, 12048566.
 - BA mapping (Asana 1219919849429744, 28 Oct): Amazon `list_price` ← UVP; `our_price` ← Normal Price → Retail Price;
-  `discounted_price` ← Promotion Price → Retail Price + dates. Open: FBM = FBA price (separate rows today), `_foreign` columns
+  `discounted_price` ← Promotion Price → Retail Price + dates. FBM/FBA price: separate rows, may differ (Erick, 29 Oct). Open: `_foreign` columns
   for UK/US (asked 29 Oct). Not verified: how Rithum maps RRP/SellingPrice to Amazon fields; whether the PUTs succeed.
 
 ### Personalisation

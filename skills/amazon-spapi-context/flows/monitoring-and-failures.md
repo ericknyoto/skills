@@ -36,7 +36,7 @@ cancellation feed 30 min.
   answered by the coordinator; Chat-space default corrected by Erick the same day); branch
   `5977-adr-amazon-seller-failures` (head `3bbdbd64b0`, transport settled 30 Oct; option (d) "everything in
   `order_import_errors`" added as rejected at Erick's request); PR #6053 merged to master 2026-10-30 04:45Z (`b53a9b8971`)
-- **Where:** #5977 c6514635367; Doc A: coordinator logs it
+- **Where:** #5977 c6514635367; Doc A: coordinator logs it; Doc A .84988 (Accepted, PR #6053 merged b53a9b8971)
 
 ### No n8n in Amazon core processes
 

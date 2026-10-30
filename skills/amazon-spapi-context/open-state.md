@@ -65,10 +65,10 @@ All assigned to Nitya; 6 completed (their answers are in the flow files' Decisio
 | Task | Question (short) | Due | State |
 |---|---|---|---|
 | 1219919849816117 | FBA orders without buyer address: accept, or request Tax Invoicing now | 2026-11-06 | Nitya asked a colleague 10-27 who uses FBA name/street; no answer |
-| 1219919921404437 | Confirm scope 20 in the BRD | 2026-11-06 | confirmed 10-28 07:24Z; still open |
+| 1219919921404437 | Confirm scope 20 in the BRD | 2026-11-06 | confirmed 10-28 07:24Z; task completed 10-28 08:30Z |
 | 1219919921458898 | Listing ownership after Rithum; SKU format | 2026-11-20 | SKU format answered 10-28; 08:54Z: `-L` only on old products, other alternate formats may come; ownership and `-L` mapping open |
 | 1219920153543831 | PIC per department; who contacts Rithum | 2026-11-06 | asked 10-27; no answer |
-| 1219921642535113 | UK orders: import, ignore or report (BD-20) | 2026-11-06 | "import" 10-28 07:18Z; Finance/Warehouse handling open |
+| 1219921642535113 | UK orders: import, ignore or report (BD-20) | 2026-11-06 | "import" 10-28 07:18Z; task completed 10-28 08:30Z; Finance/Warehouse handling still open in the BRD |
 | 1219920153544088 | Which warehouse holds FBA stock; Amazon as truth | 2026-11-20 | FC list asked 10-27; 10-28 08:56Z 'not a problem, FBA stock not used today', warehouse waits for Andreas; early go-live question unanswered |
 | 1219919864498676 | Build International Listings active; copies DE quantity? | 2026-12-04 | no comment |
 | 1219920153544278 | Returns opened on Amazon: who records them; shipping refund? (#6039) | 2026-12-04 | 29 Oct 13:18Z (IT, @Nitya, story 1220015351242263): FBA goods sent back to Hamburg (13 in 12 months; ChannelAdvisor accepted the refund for 7) stay refunded automatically with an already-refunded check, or CS refunds in Seller Central? No answer |
@@ -94,8 +94,8 @@ All assigned to Nitya; 6 completed (their answers are in the flow files' Decisio
 
 ## Doc A housekeeping
 
-- Rev 157, 39 log rows (last `.70046`). **Not yet logged:** the UK "import" answer, the PII answer and the
-  scope confirmation of 07:24Z (Asana rows above).
+- Rev 192 (2026-10-30), last log row `.91480`. **Not yet logged as their own rows:** the UK "import" answer and the
+  scope confirmation of 28 Oct 07:24Z (Asana rows above); the PII answer has `.72438`.
 - Stale text to annotate whenever someone edits Doc A: each trap (in `traps.md` and in the flow files' Traps
   sections) names the row carrying the old belief; in addition `.61615`, `.66078` and `.69284` say a PR is open, and
   `.13900` says the crontab is unknown (#5984 answered it).
