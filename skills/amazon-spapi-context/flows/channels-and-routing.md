@@ -57,6 +57,17 @@ preparation section).
 - **Who, when:** Sarina (authorisation), Erick (check), 2026-10-27
 - **Where:** Doc A .37271; Asana 1219960974323506
 
+### Integrator column save rules (#6065)
+
+`integrator` is a required (`present`) field on the sales-channel save: a stale form opened before the deploy fails
+loudly with a "reload the page" message instead of saving NULL and silently taking a channel off ChannelAdvisor. The
+form rule "reject `amazon` while `AMAZON_SELLER_SWITCH_ENABLED` is false" ships with #6075 (moved from spec §E), and the
+S1 parent PR is not marked ready before #6075 is in. The save keeps no DB transaction around the row update and the
+integrator write: the integrator is written last, a failure leaves the old value and its mirrors consistent, and
+wrapping would move the selling-price refresh job before commit; revisit if S2 adds writes to that save.
+- **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q7–Q9, #6065 / PR #6089)
+- **Where:** PR #6089 body and docblocks; #6075 acceptance criteria; #6074 note on the factory default (`integrator` NULL)
+
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
