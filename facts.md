@@ -242,6 +242,14 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   Italiane, PostNL, Royal Mail, DPD; absent Metapack and Austrian Post. `Other` requires `carrierName` and Amazon
   cannot track it (#5982).
 - getInventorySummaries returns 50 SKUs per page with `nextToken` (2026-10-27).
+- **Rate limits** (rps / burst, per account-application pair; Usage Plan tables in `github.com/amzn/selling-partner-api-models`,
+  read 2026-10-30; the `x-amzn-RateLimit-Limit` header can apply other values): getOrder v2026 and v0 0.5/30;
+  getOrderItems v0 0.5/30; createFeed 0.0083/15; getFeed 2/15; createFeedDocument 0.5/15; getFeedDocument 0.0222/10;
+  getListingsItem 5/10; patchListingsItem 5/**5**; putListingsItem 5/10; getInventorySummaries 2/2;
+  listFinancialEventsByOrderId v0 0.5/30; listTransactions 2024-06-19 0.5/10; createReport 0.0167/15; getReport 2/15;
+  getReportDocument 0.0167/15 (searchOrders and confirmShipment above).
+- **Notifications API** delivers only to an SQS queue or an EventBridge bus in our own AWS account; no webhook. ORDER_CHANGE,
+  FEED_PROCESSING_FINISHED and REPORT_PROCESSING_FINISHED all need one, so every flow polls (2026-10-30; #5977).
 
 ## Refund feed on FBA orders (documentation research, 2026-10-29)
 
@@ -269,6 +277,13 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   one constant string (#5983, 2026-10-27).
 - **Load:** CA retail for Nenalina averages 27 orders a day, peak 44; returns 613 rows per 90 days (AN.DB 358,
   AN.UB 90) (Doc A .2855, .11301, measured 2026-10-20).
+- **SKUs per fulfilment channel:** `jng_sp_sku` holds 3,730 distinct SKUs on the 9 FBM channels (29,576 rows) and 2,126 on
+  the 12 FBA channels (15,285 rows) (replica, 2026-10-30; #5977).
+- **Failure records today** (replica, 2026-10-30; #5977): `order_import_errors` open rows: ChannelAdvisor 1,638 (566 in 30
+  days), MS Direct 1,156, Tradebyte 5,490, all reported (resolved rows are deleted after the push);
+  `channeladvisor_order_ship_failures` 0 rows; `order_status_update_rejections` 133 MS Direct rows open; production
+  `failed_jobs` 2,923 rows in 30 days. Horizon's LongWaitDetected mail (it.team@julie-grace.com) covers only queue
+  `general`; job exceptions reach Sentry as handled warnings.
 
 ## Code anchors
 
