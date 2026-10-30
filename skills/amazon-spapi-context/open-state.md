@@ -1,6 +1,6 @@
 # Open state
 
-**As of 2026-10-30, about 09:30 UTC** (S1 spec added; the rest as of about 05:00 UTC). The fastest-staling file here; everything time-sensitive is confined to it.
+**As of 2026-10-30, about 10:00 UTC** (Pull requests and S1 spec; the rest as of about 05:00 UTC). The fastest-staling file here; everything time-sensitive is confined to it.
 Re-verify with `verification.md` before acting on a line. Only live state stays here: a line that is settled moves
 to [timeline.md](timeline.md) and to the Decisions of its flow file.
 
@@ -8,13 +8,28 @@ to [timeline.md](timeline.md) and to the Decisions of its flow file.
 
 ## Pull requests
 
-No Amazon ADR PR is open. Merges and closures, with commits: [timeline.md](timeline.md).
+Merges and closures, with commits: [timeline.md](timeline.md). Erick reviews and merges every PR.
+
+- **#6085** `6066: fix(sentry)` → `master`, draft, CI green. BR-3: `breadcrumbs.sql_bindings` and
+  `tracing.sql_bindings` false. Waits on the staging promotion (sink conflict, Q1 below) and the Nightwatch read (Q2).
+- **#6086** `6067: docs(adr)` → `master`, ready, docs-only erratum on ADR 0128 (staging gets sandbox tokens only).
+  Waits on Erick's review.
+- **#6088** `6064: feat(amazon-seller)` → `6062-amazon-seller-s1-foundation`, draft, CI running. Domain skeleton,
+  `config/amazon.php`, connection check.
+- **Ticket #6087** (ready-for-agent, not a sub-issue of #6062): scrub bound values from database exception messages
+  before Sentry and Nightwatch. Must close before the DE go-live order import (4 Jan 2027).
+- **Waiting on Erick** (asked via the coordinator, 30 Oct):
+  - Q1: reset `integration-test` to master, or resolve the IDS-1113 leftover `308f843f57`. Master itself conflicts with
+    the sink on `docs/INTEGRATIONS.md`, so no S1 branch can be promoted to staging until then.
+  - Q2: Nightwatch's production state (`php artisan config:show nightwatch` in production `manobo_central`, or the
+    dashboard). Treated as enabled until read.
 
 ## S1 spec 6062
 
 - Published 2026-10-30 with `to-spec` (label `ready-for-agent`), linked from map #5967 (issuecomment-6518285175).
-- **Ticketed 2026-10-30, nothing implemented.** Erick approved the breakdown, the test seams and the six added
-  decisions (recorded in the flow files). Implementation waits for Erick's go for S1.
+- **Implementation started 2026-10-30** on Erick's go. He approved the breakdown, the test seams and the six added
+  decisions (recorded in the flow files). The parent branch was cut from master `b53a9b8971`; open PRs are under
+  Pull requests above. #6065 is in progress.
   - **Tickets:** #6064–#6077, all sub-issues of #6062 with native blocked-by edges; listed in #6062
     issuecomment-6519040956.
   - **Frontier:** #6064 (skeleton), #6065 (integrator column), #6066 (BR-3).
