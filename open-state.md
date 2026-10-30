@@ -27,7 +27,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5977 closed that day:
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
 | 6040 | grilling | Refund flows: FBA refund pull source, already-refunded guard, per-unit feed values, does the adjustment feed accept FBA orders (S2 gate: closes before 23 Nov) | #6039 |
-| 5976 | grilling | Shadow mode: comparison table and diff report during peak | #6006 |
+| 5976 | grilling | Shadow mode: comparison table and diff report during peak. Unblocked from #6006 on 30 Oct (coordinator, option (c), issuecomment-6514714221): only the November shadow-pull deploy date waits on Asana 1219961077776438 | nothing open: **next to grill** |
 | 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
@@ -41,7 +41,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5977 closed that day:
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
-Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. No grilling ticket is unblocked: the technical frontier now waits on BRD inputs (and #5985, Erick's LWA rotation).
+Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs #5976 (the only unblocked grilling ticket) and #5985 (Erick's LWA rotation); every other grilling ticket waits on BRD inputs.
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
