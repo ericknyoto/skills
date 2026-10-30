@@ -40,6 +40,18 @@ Stopping ChannelAdvisor for Nenalina at S8 goes per CA profile or in code, never
 - **Who, when:** ticket session (read-only prod, granted by Erick), 2026-10-27
 - **Where:** #5984 c6435792248
 
+### ChannelAdvisor export gate per profile
+
+Manobo's stock export to ChannelAdvisor (event job per product family + daily 18:30/00:30 exports) and its price export
+(RRP + SellingPrice on save) skip a CA profile whose channels all carry integrator `amazon`. The same gate is the
+"stop per profile" of the S8 decommission (#5984). Why: both exports hit every profile ungated, so after a switch the only
+safety is Rithum's DE sync being off by hand; the gate closes the case where it is switched back on. Built in the S3 spec
+(with DE prices and the FBM stock patch), not a map ticket. The switch itself stays a manual command (#6075); S1 neither
+automates it nor cuts the CA connection.
+- **Who, when:** Erick ("setuju"), 2026-10-30, on the coordinator's analysis
+- **Where:** Doc A .99433; to be carried into the S3 spec; map #5967 Decisions line owed by the next Wayfinder session
+- Facts behind it: [fbm-stock.md](fbm-stock.md#facts), [prices-and-listings.md](prices-and-listings.md#facts)
+
 ### ADR 0134 channels configured by columns
 
 Amazon Seller channels are plain `JngSp` rows (`type` NULL), defined by `amazon_seller_account` NOT NULL (both

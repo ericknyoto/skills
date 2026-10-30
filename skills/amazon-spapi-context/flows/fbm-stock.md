@@ -15,6 +15,11 @@ manual one at Christmas); the Christmas reserve is discussed outside this migrat
 - **Who, when:** the BA, 2026-10-28; Asana task due 2026-12-04, completed 29 Oct
 - **Where:** Asana 1219919783814613 (Anja 09:34Z, Nitya 09:57Z); Doc A .74043 (rev 163)
 
+### CA export gate per profile
+
+The CA stock export skips profiles whose channels are all `amazon` (Erick, 30 Oct; S3 spec):
+[channels-and-routing.md](channels-and-routing.md#channeladvisor-export-gate-per-profile).
+
 ## Facts
 
 - **Stock to CA:** no cron since 2023-07-09; event-driven `ExportStockToChanneladvisorJob` (15-minute delay, per
