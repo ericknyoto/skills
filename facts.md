@@ -392,3 +392,33 @@ What it means for the migration (coordinator assessment, 2026-10-30):
   research ticket only if the BA asks for it. The outbound-shipping refund question stays with the BA.
 - Manual (Seller) authorisation on CA/MX/SA is an operations duty in Seller Central today (CA 1 order and SA 0 in the last
   365 days, so negligible); the US and UK rows were not in the screenshot and matter more (US 109 orders in 30 days).
+
+### Return-settings terms and the SP-API surface for FBM returns (research 2026-10-30)
+
+Verified by the coordinator on https://developer-docs.amazon.com/sp-api/docs/report-type-values-returns and
+/notification-type-values (30 Oct): seller-fulfilled returns are **read-only reports**, `GET_XML_RETURNS_DATA_BY_RETURN_DATE`
+and `GET_FLAT_FILE_RETURNS_DATA_BY_RETURN_DATE` (return request date, RMA ID, label details incl. `label_to_be_paid_by`,
+`return_type`, ASIN, reason code; up to 60 days per report; roles "Inventory and Order Tracking" + "Direct to Consumer
+Shipping (Restricted)"); FBA returns use `GET_FBA_FULFILLMENT_CUSTOMER_RETURNS_DATA`. No Returns API, no return feed and
+no `*RETURN*` notification type for seller-fulfilled orders (External Fulfillment Returns API is a separate programme).
+
+Worker-cited from Seller Central help (sellercentral.amazon.de G200828040, G202072200, G200708210, G201725690, en-DE;
+not re-read by the coordinator):
+- **In Policy (Amazon)**: Amazon authorises every in-policy request itself; out-of-policy and exempt-category requests
+  still go to the seller for manual review within **24 hours** (what happens after a missed deadline: not verified).
+  **Manual (Seller)**: the seller authorises every request.
+- **Amazon Prepaid label**: Amazon issues the label; the cost is deducted from the seller account when the carrier
+  first scans the parcel (DE carriers DHL, DPD, DHL Connect; buyer chooses). Buyer-fault returns: the seller deducts
+  the label cost from the refund, or files a SAFE-T claim if Amazon already refunded. **Unpaid label**: label with the
+  seller's address, buyer pays postage.
+- **RMA = Amazon**: Amazon generates the RMA number (alternative: Seller); the buyer sees it on the RMA slip and the
+  label; the seller gets it in the return e-mail and the returns report.
+- **Exempt items**: Handmade, flowers, hazmat, heavy/bulky, non-returnable by law, and SKUs above EUR 500 exempted by
+  the seller through an upload template (HIGH_PRICE). Their label is "Unpaid label" or "Seller Prepaid" (seller uploads
+  a label within 2 days).
+- The seller learns of a return by e-mail, on Manage Returns, and in the returns report.
+
+Design consequence (coordinator, 30 Oct): no return write path exists or is needed in `Domain\AmazonSeller`; an
+"expected returns" read would be one more report type on the report-pull path the FBA returns read already needs, only
+if the BA asks for it (#6039). Label cost and buyer-fault deductions are amounts in the adjustment feed, i.e. BRD
+questions on #6039, not architecture.
