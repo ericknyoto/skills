@@ -106,8 +106,8 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 ## Deadlines ahead
 
 - **6 Nov 2026, S0 exit** (Asana milestone `1219919783880756`): Frank's go, scope approved, and the Tax Invoicing
-  answer (#5988, Asana `1219919849816117`; Amazon's role approval takes weeks). The BRD sign-off is no longer here. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) and the LWA secret
-  rotation (`1219920153548672`, #5985; done on GitHub 30 Oct 07:34Z).
+  answer (#5988, Asana `1219919849816117`; Amazon's role approval takes weeks). The BRD sign-off is no longer here. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) ; the LWA secret
+  rotation (`1219920153548672`, #5985) is done: Asana task completed 30 Oct 07:37Z (story `1220045306266864`), Doc A log row `.90339` (rev 189). Erick still owes the Ops calendar reminder for 2027-02-20.
 - **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
 - **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
   - S1 section, 30 Oct 06:28Z (no shadow mode): "Shadow order pull live in production" `1219919864565642` completed as not needed (story `1220043125747003`, @Nitya); the BR-3 task `1220041626125348` (created earlier that day) DELETED, its obligation back on `1219919783910025` (DPP obligations, due 4 Dec, story `1220043191951545`): Sentry `sql_bindings` off and Nightwatch checked before the first production SP-API read that returns PII, now the go-live order import. S1 exit `1219919983244087` renamed "SP-API client, channel switch and monitoring built; DE SKU reconciliation report ready"; S2 exit `1219919864236215` renamed "FBA stock visible in Manobo". Doc A: log row `.88693` (rev 183) + body rows .7171/.21596/.8380/.8656 rewritten (rev 188).
