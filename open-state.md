@@ -20,18 +20,18 @@ Re-verify with `verification.md` before acting on a line.
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
 
-## Map #5967 — 14 of 28 tickets closed
+## Map #5967 — 15 of 29 tickets closed
 
-Blockers from GitHub issue dependencies, read 2026-10-29 (#5974 closed that day: resolution issuecomment-6497734388):
+Blockers from GitHub issue dependencies, read 2026-10-30 (#5977 closed that day: resolution issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
 
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
-| 5977 | grilling | Monitoring per flow: failure table, notifications, queues, cadence. Handover from #5974: reason `fulfilment_channel_not_served` (issuecomment-6497739716) | nothing open: **next to grill** |
 | 6040 | grilling | Refund flows: FBA refund pull source, already-refunded guard, per-unit feed values, does the adjustment feed accept FBA orders (S2 gate: closes before 23 Nov) | #6039 |
 | 5976 | grilling | Shadow mode: comparison table and diff report during peak | #6006 |
 | 5978 | grilling | SKU mapping table and the DE reconciliation report (S2 gate: closes before 23 Nov, not before S1) | #5986, #5989 |
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
+| 6052 | grilling | FBM stock push: trigger (event vs sweep, cadence), write mechanism (patchListingsItem vs JSON_LISTINGS_FEED), SKUs and marketplaces written (S2 gate: closes before 23 Nov; graduated from #5977, 30 Oct) | #5978 |
 | 5985 | task | Rotate the LWA client secret; store it in staging and production | — |
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
@@ -41,12 +41,12 @@ Blockers from GitHub issue dependencies, read 2026-10-29 (#5974 closed that day:
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
-Map Destination names four S2-gate tickets since 29 Oct: #5978, #5979, #6012, #6040.
+Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. No grilling ticket is unblocked: the technical frontier now waits on BRD inputs (and #5985, Erick's LWA rotation).
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
-the months-long ChannelAdvisor overlap, updates to an already imported order, UK and US FBA stock flows, and how
-Finance and Warehouse handle UK orders.
+the months-long ChannelAdvisor overlap, updates to an already imported order, UK and US FBA stock flows, how
+Finance and Warehouse handle UK orders, and an Admin Tool page for Amazon failure rows if resolving by command stops scaling (#5977).
 
 ## Asana business questions
 
