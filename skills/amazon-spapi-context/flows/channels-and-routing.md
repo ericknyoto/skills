@@ -79,6 +79,16 @@ test twice), #6064's acceptance criterion and spec #6062 Testing Decisions are s
 - **Who, when:** Erick, 2026-10-30
 - **Where:** Doc A .97616; PR #6088; ADR 0134 erratum (docs PR); #6064 and #6062 edits by the S1 session
 
+### The form keeps the `amazon` option
+
+The sales-channel form keeps `amazon` in its integrator select (spec #6062 §E, confirmed "Tetap ikutin sesuai spec di
+awal"). While `AMAZON_SELLER_SWITCH_ENABLED` is off, form and command both refuse `amazon`; once it is on for the go-live
+weeks, both can move a channel. Only the command (#6075) adds the dry run, the Rithum attestation and the open-orders
+record; a form change is covered by the audit log only. Runbook consequence: cutovers go through the command, the form
+is for keys and corrections, and the env switch stays on only during the go-live window.
+- **Who, when:** Erick, 2026-10-30 (in the S1 implementation session)
+- **Where:** Doc A .100529; #6065, #6075 and the spec unchanged
+
 ### Integrator column save rules (#6065)
 
 `integrator` is a required (`present`) field on the sales-channel save: a stale form opened before the deploy fails
