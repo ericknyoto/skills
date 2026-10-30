@@ -92,7 +92,26 @@ Manobo's own tables cannot show a double refund: the FBA pull drops a refund for
 
 **Partly wrong.** FBA orders reach Manobo only once SHIPPED, by design (ChannelAdvisor today, confirmed by the BA).
 Pending, Unshipped and Cancelled orders are absent on purpose. **Compare SHIPPED orders only.** The largest real
-gaps are DE FBA (218 of 573 shipped orders missing, mostly unmapped SKUs) and all of UK.
+gaps were DE FBA (218 of 573 shipped orders missing on 2026-10-27, mostly unmapped `-L` SKUs) and all of UK.
+After the `-L` mapping and the re-dispatch on 2026-10-28, DE FBA is missing 2 of 245 (`facts.md`). FBM arrives at
+UNSHIPPED. An order-level presence check misses **partial imports**: an "Imported" error row with "Product not
+found for SKU" means that item was dropped.
+
+## "Manobo's promotion amounts are Amazon's gross discount"
+
+**Believed** from the FBM example `302-2119838-0613968` (13.43 = 11.29 × 1.19).
+**True** only for FBM. On FBA orders (item promotions `PLM-…`, from 2026-10-27) the `voucher` row holds Amazon's
+**net** discount, and Manobo applies it as gross. `price_selling_after_service` is then too high by the VAT share
+of the discount (12 window orders, up to 9.14 EUR). On 3 or more orders that carry both a shipping and an item
+discount, only the `free-shipping` row is stored and the item discount is lost (up to 20.16 EUR).
+**Caught** by the #5976 diff, 2026-10-30. Compare money as `ITEM − DISCOUNT + TAX` from `proceeds`, never `ITEM`
+alone, which is net.
+
+## "Finances `PostedDate` is the FBA ship time"
+
+It is not on DE: median 221 h after `createdTime`, and absent for the newest orders. Assumption: delivery + 7
+days reserve. Caught in the #5976 diff, 2026-10-30. No GET call gives an FBA ship time; the shipment report needs
+a `createReport` POST.
 
 ## "Setting `ca_used = 0` stops ChannelAdvisor for a channel"
 

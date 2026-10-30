@@ -152,6 +152,16 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   Nenalina EU marketplace in the window.
 - Unexplained: DE FBA order `028-5344066-8747504` (Nenalina EU) sits under J&G channel AM.DF (58) with two rows
   and a midnight order date.
+- **DE after the 2026-10-28 re-dispatch** (manual diff for #5976, 2026-10-30; window created 2026-10-14 to
+  2026-10-28Z):
+  - FBA: 243 of 245 shipped orders are in 195, and 2 are missing (`-L` SKUs still unmapped, downloads still `R`).
+    FBM: 9 of 9. Extras: 0.
+  - The cause: on 2026-10-28 between 19:40 and 19:50 Berlin, 108 stuck `R` downloads went to `I`, and 195 now
+    holds 486 `-L` rows in `jng_sp_sku`. 79 of the 243 orders came in that batch, so 81 had been missing before
+    it.
+  - 2 further orders were imported with the `-L` item silently dropped: error status "Imported" plus "Product not
+    found for SKU".
+  - Note: `w2-de-dry-diff` in `~/.config/Claude/side-session-notes/local_0f6cedbf-c406-4622-afe2-5b8dae0215c5/`.
 
 ## SKU rules
 
@@ -166,8 +176,10 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   (`ChanneladvisorCacheService::getObjectProductArticleBySku` → `ProductArticle::loadObjectFromSKUExternal`).
 - **`-L` exception** (`order_import_errors`, CA source, last 30 days, 2026-10-28): channel 195 has 243 "Product not
   found for SKU" rows over 138 distinct SKUs, all ending in `-L` (`726099-046-L`, `0101371222_55-L`), none in
-  `-FBM`; 90 of the 138 match a real SKU once `-L` is stripped; `-L` alternate SKUs exist only on FBA-IN channels
-  52, 68 and 118. Channels 203, 204, 205 and 207 show the same (39, 28, 45, 17 SKUs, all `-L`), and 229, 231 and
+  `-FBM`; 90 of the 138 match a real SKU once `-L` is stripped. On 2026-10-28 `-L` alternate SKUs existed only on
+  FBA-IN channels 52, 68 and 118. By 2026-10-30, 195 held 486 `-L` rows. Each points at the same product and
+  article as `product_skus` for the stripped SKU on 288 of 288 rows where that SKU exists; 198 have no
+  `product_skus` row. Channels 203, 204, 205 and 207 show the same (39, 28, 45, 17 SKUs, all `-L`), and 229, 231 and
   232 one `-L` SKU each. Example orders on 195:
   `028-1496294-5276357` (`335109-021-L`), `028-3014188-7621138` (`712712-019-L`). So FBA listings carry at least
   three styles: real, real + `-L`, old dash format.
@@ -209,6 +221,21 @@ up in `order_import_errors` (#5969 probe 2026-10-27; table on #5978):
   COD_FEE, OTHER, TAX, DISCOUNT, each a line-total `subtotal`; `detailedBreakdowns` only on TAX and DISCOUNT.
   `promotion.breakdowns[]` holds only `promotionId`; `tax` holds `taxCalculationBreakdowns[].reportingScheme` and
   `taxCollections[].{model, responsibleParty}` (`orders_2026-01-01.json`, checked 2026-10-28).
+- **Signs and VAT in the item `proceeds`** (240+ DE items, 2026-10-30):
+  - `ITEM` is **net of VAT**.
+  - `DISCOUNT` is a positive **net** amount that is subtracted.
+  - `TAX` is the VAT after the discount.
+  - `proceedsTotal = ITEM + SHIPPING + TAX − DISCOUNT`. What the buyer paid for the item = `ITEM − DISCOUNT(ITEM) +
+    TAX(ITEM)`, and that equals Manobo `price_selling_after_service × qty` on 243 of 258 items.
+  - `product.price.unitPrice` carries DE VAT even when the buyer paid destination VAT (FBM cross-border).
+- **FBA ship time is not available over GET:**
+  - v2026 `packages` exist for MFN only.
+  - Finances `ShipmentEvent.PostedDate` comes about 9 days after `createdTime` on DE (median 221 h).
+    Assumption: this is the delivery + 7 days deferral.
+  - `lastUpdatedTime` moves after shipment (on 9 of 243 orders it is later than the Manobo import).
+  - Source: #5976 diff, 2026-10-30.
+- **FBM `orderAliases[SELLER_ORDER_ID]` = the ChannelAdvisor order id** (= `jng_sp_orders.order_id_external`) on
+  11 of 11 imported DE FBM orders. FBA aliases equal the Amazon id. Key on `orderId` (2026-10-30).
 - **FBA buyer data with our roles:** AFN orders carry no buyer block, and `recipient.deliveryAddress` holds only
   city, postal code and country (sometimes region): 96 of 96 DE FBA orders, 2026-10-27; v0 `getOrderAddress` Name
   is empty. MFN orders are complete. Through CA, AN.DB has full addresses today (370 of 370 orders in 30 days),
