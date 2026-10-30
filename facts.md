@@ -86,6 +86,14 @@ ES `AFQLKURYRPEL8`, UK `AZMDEXL2RVFNN`; NA US `A2ZV50J4W1RKNI`, CA `A1MQXOICRS2Z
 - `ca_stock_use_alternate_sku = 1` only on 192 AN.DL; `no_order_confirmation` = 1 on every FBA row, 0 on every FBM
   row (2026-10-28). `use_amvd_logistic` = 0 on all 20 (#5973, 2026-10-27). `jng_sp.currency` is EUR even on the PL,
   SE and US rows (#5980). `jng_sp.marketplace_id` points at Manobo's own `marketplaces` table (#5969).
+- **All `jng_sp` rows**, replica 2026-10-30, the base of the ADR 0132 backfill:
+  - 238 rows: 29 with `ca_used = 1` (become `channeladvisor`), 130 with `tb_used = 1` (become `tradebyte`), 79 with
+    neither (become NULL), none with both.
+  - Every `ca_used = 1` row has a CA channel id, and no `ca_used = 0` row has one, so the skip rule moves no routing
+    on deploy.
+  - `jng_sp_orders`: 5,462,237 rows, a non-unique `order_id` index (it serves the ADR 0132 guard) and a UNIQUE
+    `shipment_id`.
+  - `order_import_errors.source` is `varchar(50)`.
 - Neighbours outside scope: AM.US 53 (J&G US FBA) on CA profile 12043758; FBA-IN channels AN.IS 52, AN.UI 68,
   AN.UK 118 (`ca_used = 0`), which book FBA stock as pseudo-orders (AN.UK 118 last on 2026-07-08, 20,569 in
   total, memory 2026-10-27); row 48 AN.DS, the inactive 2021–2023 direct import.
