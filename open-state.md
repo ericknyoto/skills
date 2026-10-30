@@ -24,7 +24,7 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Map #5967 — 16 of 29 tickets closed
 
-Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day, then ruled out of scope: no shadow mode, issuecomment-6516457748; #5977 the same day: issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
+Blockers from GitHub issue dependencies, read 2026-10-30 (#5985 closed that day: LWA rotation, issuecomment-6517469235; #5976 closed that day, then ruled out of scope: no shadow mode, issuecomment-6516457748; #5977 the same day: issuecomment-6514635367; #5974 on 29 Oct: issuecomment-6497734388):
 
 | # | Kind | Question | Blocked by |
 |---|---|---|---|
@@ -33,7 +33,6 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day,
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
 | 6052 | grilling | FBM stock push: trigger (event vs sweep, cadence), write mechanism (patchListingsItem vs JSON_LISTINGS_FEED), SKUs and marketplaces written (S2 gate: closes before 23 Nov; graduated from #5977, 30 Oct) | #5978 |
-| 5985 | task | Rotate the LWA client secrets of both apps (claimed by Erick 30 Oct; HITL checklist issuecomment-6516733459; staging and production env moved to the S1 ticket that adds `config/amazon.php`). Waiting on Erick's portal steps; then a status-only re-check, again by day 8 | — |
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
@@ -42,7 +41,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day,
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
-Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs only #5985 (Erick's LWA rotation, checklist posted 30 Oct); every open grilling ticket waits on BRD inputs (#5976 closed 30 Oct).
+Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. No ticket that gates S1 (9 Nov) is open since #5985 closed (30 Oct 07:34Z, c6517469235); every open grilling ticket waits on BRD inputs (#5976 closed 30 Oct).
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
@@ -108,7 +107,9 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 
 - **6 Nov 2026, S0 exit** (Asana milestone `1219919783880756`): Frank's go, scope approved, and the Tax Invoicing
   answer (#5988, Asana `1219919849816117`; Amazon's role approval takes weeks). The BRD sign-off is no longer here. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) and the LWA secret
-  rotation (`1219920153548672`, #5985).
+  rotation (`1219920153548672`, #5985; done on GitHub 30 Oct 07:34Z).
+- **20 Feb 2027:** LWA rotation reminder (#5985): sandbox `Manobo-2008` is due 2027-03-22, `Manobo-2008-Sellers`
+  2027-04-28; every copy of a secret is updated within 7 days. Erick owes the Ops calendar entry.
 - **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
 - **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
   - S1 section, 30 Oct 06:28Z (no shadow mode): "Shadow order pull live in production" `1219919864565642` completed as not needed (story `1220043125747003`, @Nitya); the BR-3 task `1220041626125348` (created earlier that day) DELETED, its obligation back on `1219919783910025` (DPP obligations, due 4 Dec, story `1220043191951545`): Sentry `sql_bindings` off and Nightwatch checked before the first production SP-API read that returns PII, now the go-live order import. S1 exit `1219919983244087` renamed "SP-API client, channel switch and monitoring built; DE SKU reconciliation report ready"; S2 exit `1219919864236215` renamed "FBA stock visible in Manobo". Doc A: log row `.88693` (rev 183) + body rows .7171/.21596/.8380/.8656 rewritten (rev 188).
