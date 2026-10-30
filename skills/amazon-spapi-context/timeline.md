@@ -96,3 +96,4 @@ time. The detail of each decision is in its flow file ([index.md](index.md)); li
 - 2026-10-30 — Erick approves spec #6062 (seams, six added decisions, `balance => false`) and 14 S1 tickets #6064–#6077 are cut; #6066 (BR-3) ships early to `master` (Doc A .93129).
 - 2026-10-30 — Erick: dormant Amazon deploys count as releases; S1 must be in production before the 27 Nov freeze, S2–S4 deploys wait on the go-live-week exception (Doc A .94215).
 - 2026-10-30 — Erick: `master` auto-deploys to production on merge; S2–S4 stack on one integration branch until the freeze exception (Doc A .95048).
+- 2026-10-30 — Erick: staging gets the sandbox Amazon values only (#6067 narrowed; Doc A .96202). S1 session opens PR #6085 (BR-3, draft) and reports the integration-test sink conflict on docs/INTEGRATIONS.md.

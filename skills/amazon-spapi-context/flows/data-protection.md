@@ -35,6 +35,19 @@ not now; the unused sandbox app `Manobo` (`2185aaca`) that carried the alert is 
   (story `1220045306266864`), Doc A log row `.90339` (rev 189). The rotation reminder is in Erick's Google Calendar
   for Friday 2027-02-19 09:00 WITA (set by the #5985 session on 30 Oct); Doc A row `.90339` corrected to 19 Feb.
 
+### Staging gets the sandbox values only
+
+Staging Central holds only the sandbox app's client id, secret and refresh token; no `AMAZON_PROD_*` and no read-override
+variable. The staging connection check runs in sandbox mode only; the production-read check runs on production after the
+S1 parent deploy. A production refresh token is a full key to the Nenalina account that Amazon cannot scope to reads (the
+ADR 0128 guard lives in Manobo code), and a production read from staging would pull buyer PII onto staging before BR-3 is
+live there. ADR 0128's assumption (lines 34–35) that the sandbox is reached with the same app's tokens was refuted on
+27 Oct (trap below), so S1 needs no production token on staging. Reading production from staging (order-mapping
+validation in S2) is decided in the S2 spec as a bounded procedure: token set for one test window, removed after it, BR-3
+live first. ADR 0128 gets a one-sentence erratum (docs PR by the S1 session).
+- **Who, when:** Erick ("Opsi 1 saja"), 2026-10-30, on the coordinator's analysis
+- **Where:** Doc A .96202; #6067 issuecomment-6519943243; spec #6062 section B and "Still open" 2 (edited by the S1 session)
+
 ### Old-order PII is an After Release Task
 
 Old-order PII: the BA will have users tick the PII field in the sales-channel setting, as an After Release Task
