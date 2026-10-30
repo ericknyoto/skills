@@ -117,6 +117,7 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
   (`1219920153548672`, #5985) is done: [data-protection.md](flows/data-protection.md#5985-lwa-secrets).
 - **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
 - **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
+- **26 Nov 2026, last day before the freeze:** the S1 parent PR merged and in production (dormant deploys count as releases, Erick 30 Oct); after it, #6067 and #6073 production steps.
   - BRD requirement posted on that task 30 Oct 03:56Z (IT, @Nitya, story `1220041038186030`): who receives the daily
     06:00 Amazon failure digest and the immediate refund/cancel failure alert; first comment named "Order N8N" as the
     default; corrected the same day by Erick (story `1220041038698373`): a NEW dedicated Google Chat space for Amazon,
