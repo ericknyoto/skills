@@ -17,6 +17,7 @@ switch, with no forced validation and no gate; FBA requests neither BUYER nor RE
 go-live order import: [no shadow mode](governance-and-timeline.md#no-shadow-mode).
 - **Status:** Accepted 2026-10-27 (`ffd5aa4aaf`; Q1 answered by Erick, Q2–Q6 delegated); PR #5995 merged 2026-10-28 06:59Z (`d5f55beb6f`)
 - **Where:** #5975 c6435827564 (closed by Erick); Doc A .49003 (said Proposed), .71195 (merged)
+- **Implemented by** PR #6085 (#6066, Sentry `breadcrumbs.sql_bindings` and `tracing.sql_bindings` false), merged 2026-10-30 10:05Z, deployed 2026-10-30 10:12Z (release `cd56372`). Exception-message gap: #6087.
 
 ### BR-1 to BR-6 stay binding
 
@@ -77,8 +78,8 @@ Task, decided with Sarina before go-live (18 Dec); nothing to decide for S1–S4
   `customizedUrl` (ungated)**; FBA orders neither (#5976).
 - **PII:** retention is off on all 238 channels and `pii_redaction_logs` is empty; the 20 Nenalina channels hold
   70,793 orders shipped more than 30 days ago that still carry PII (FBM 6,380, FBA 64,413, oldest mid-2023)
-  (#5975, 2026-10-27). `config/sentry.php` has `breadcrumbs.sql_bindings => true` on master (2026-10-30); PR #6085 (#6066,
-  open) sets it and `tracing.sql_bindings` false.
+  (#5975, 2026-10-27). Sentry `breadcrumbs.sql_bindings` and `tracing.sql_bindings` are false on production since
+  2026-10-30 10:12Z (PR #6085).
 - **Sentry and Nightwatch bindings paths** (code read at master `b53a9b8971`, 2026-10-30): sentry-laravel 4.20.1 has a
   second key, `tracing.sql_bindings`, which defaults to true when absent (`Tracing/EventHandler.php:99`), so BR-3
   needs both keys off. Nightwatch v1.22.1 sends SQL with `?` placeholders and no job payloads, and receives no log

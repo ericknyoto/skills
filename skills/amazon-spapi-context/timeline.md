@@ -98,3 +98,4 @@ time. The detail of each decision is in its flow file ([index.md](index.md)); li
 - 2026-10-30 — Erick: `master` auto-deploys to production on merge; S2–S4 stack on one integration branch until the freeze exception (Doc A .95048).
 - 2026-10-30 — Erick: staging gets the sandbox Amazon values only (#6067 narrowed; Doc A .96202). S1 session opens PR #6085 (BR-3, draft) and reports the integration-test sink conflict on docs/INTEGRATIONS.md.
 - 2026-10-30 — Erick drops the S1 architecture tests for now; ADR 0134 §4 held by review (Doc A .97616). integration-test and staging reset to master (4c894c2e99), 4 branches re-promoted, IDS-1360 skipped.
+- 2026-10-30 — PR #6085 (BR-3, Sentry SQL bindings off) merged 10:05Z, deployed to production 10:12Z (`cd56372`); PR #6086 (ADR 0128 erratum) merged 10:16Z. ADR 0134 erratum opened as PR #6090.
