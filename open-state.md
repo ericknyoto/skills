@@ -15,9 +15,9 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Pull requests
 
-- **#6053** (ADR 0139 Proposed, failures per stage and alarms, #5977): branch `5977-adr-amazon-seller-failures`, head
-  `bd932dffd9` (option (d) added after opening), opened 2026-10-30. `check_changes` pass, `guard` pending at the first read; review required. Erick
-  merges; the file stays Proposed until he approves (the 0138 flow). 0139 was free on master and every remote branch.
+- **#6053** (ADR 0139 **Accepted**, approved by Erick 30 Oct; failures per stage and alarms, #5977): branch
+  `5977-adr-amazon-seller-failures`, head `3bbdbd64b0`, opened 2026-10-30, title "accept ADR 0139 …". Review required;
+  Erick merges. 0139 was free on master and every remote branch (re-check before merge).
 - #6041 (ADR 0138, Accepted) merged 2026-10-30 03:41Z (`238de6e6d8`).
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
