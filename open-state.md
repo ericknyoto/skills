@@ -33,7 +33,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day,
 | 5979 | grilling | FBA stock import: target warehouse, Amazon as source of truth (S2 gate: closes before 23 Nov) | #5987, #5989 |
 | 6012 | grilling | Price flow: Manobo price fields → `list_price`/`purchasable_offer`, write mechanism (S2 gate: closes before 23 Nov) | #5978, #6013 |
 | 6052 | grilling | FBM stock push: trigger (event vs sweep, cadence), write mechanism (patchListingsItem vs JSON_LISTINGS_FEED), SKUs and marketplaces written (S2 gate: closes before 23 Nov; graduated from #5977, 30 Oct) | #5978 |
-| 5985 | task | Rotate the LWA client secret; store it in staging and production | — |
+| 5985 | task | Rotate the LWA client secrets of both apps (claimed by Erick 30 Oct; HITL checklist issuecomment-6516733459; staging and production env moved to the S1 ticket that adds `config/amazon.php`). Waiting on Erick's portal steps; then a status-only re-check, again by day 8 | — |
 | 5986 | BRD input | Listing ownership after Rithum (A3); the SKU half is answered | — |
 | 5987 | BRD input | Which warehouse holds FBA stock; is Amazon's figure the truth (A9) | — |
 | 5988 | BRD input | FBA buyer name and address, or request the Tax Invoicing role now (A11) | — |
@@ -42,7 +42,7 @@ Blockers from GitHub issue dependencies, read 2026-10-30 (#5976 closed that day,
 | 6013 | BRD input | Price fields (UVP, selling, promo), FBM = FBA, UK/US GBP/USD flows. Price half answered (Asana 1219919849429744 completed 29 Oct); waits only on the UK/US `_foreign` confirmation (1219919783909992) | — |
 | 6039 | BRD input | Returns opened on Amazon, shipping refund, and who refunds FBA goods sent back to Hamburg (Asana 1219920153544278) | — |
 
-Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs only #5985 (Erick's LWA rotation); every open grilling ticket waits on BRD inputs (#5976 closed 30 Oct).
+Map Destination names five S2-gate tickets since 30 Oct: #5978, #5979, #6012, #6040, #6052. Before S1 (9 Nov) the map still needs only #5985 (Erick's LWA rotation, checklist posted 30 Oct); every open grilling ticket waits on BRD inputs (#5976 closed 30 Oct).
 
 Unticketed fog on the map ("Not yet specified"): order mapping v2026 (waits for #5988), the confirmShipment
 carrier map, the runbook of the 11–15 Jan week across both tokens,
