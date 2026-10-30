@@ -1,0 +1,65 @@
+# Decision index
+
+One line per decision in its current state, ADRs first, then by date. The detail (the decision's own wording, status,
+where it is recorded) is in the linked flow file. Ids: an ADR number, a ticket number (`#5970 c6435901334` =
+`issuecomment-6435901334`), a Doc A log row (`.NNNN` = `mzse2z3z5sh.NNNN`) or an Asana task. "Delegated" means Erick
+handed the grilling answers to the coordinator session and accepted the result; "not recorded" means the store does
+not name who accepted. Statuses checked 2026-10-28 with `gh pr view` and the ADR files on `origin/master` (0134
+rechecked 2026-10-29, 0138 and 0139 2026-10-30).
+
+| Id | Decision | Who | Date | Detail |
+|---|---|---|---|---|
+| ADR 0128 | All Amazon Seller code in one domain `Manobo2/Domain/AmazonSeller`; credentials per seller account in `config/amazon.php`; endpoint follows the app environment | Erick, delegated | 2026-10-27 | [channels-and-routing](flows/channels-and-routing.md#adr-0128-one-amazonseller-domain) |
+| ADR 0129 | One SP-API transport: token bucket per (seller account, operation), retry only idempotent calls, `createFeed` never replayed | delegated | 2026-10-27 | [monitoring-and-failures](flows/monitoring-and-failures.md#adr-0129-one-sp-api-transport) |
+| ADR 0130 | One searchOrders stream per seller account; route by account, marketplace and fulfilment under a UNIQUE index; unrouted orders to the failure table | delegated | 2026-10-27 | [orders-import](flows/orders-import.md#adr-0130-one-order-stream-per-seller-account) |
+| ADR 0131 | `shipment_id` = `<amazonOrderId>AZ`; raw item money once in `amazon_seller_order_items`, only `proceeds` carries money (amended 28 Oct) | not recorded | 2026-10-27 | [cancel-and-refund](flows/cancel-and-refund.md#adr-0131-shipment-id-and-raw-item-money) |
+| ADR 0131 | Body edited after acceptance, before merge; no erratum block | Erick ("Merge begini") | 2026-10-28 | [cancel-and-refund](flows/cancel-and-refund.md#adr-0131-edited-before-merge-without-erratum) |
+| ADR 0131 | Raw-money table and suffix stay per integrator; a shared refund flow generalises the port, not the storage | Erick ("Per integrator") | 2026-10-28 | [cancel-and-refund](flows/cancel-and-refund.md#adr-0131-raw-money-table-per-integrator) |
+| ADR 0132 | Nullable `jng_sp.integrator`; CA download skips non-CA channels; cross-importer dedup; write-backs follow the integrator; switch per CA profile | Erick accepted | 2026-10-28 | [channels-and-routing](flows/channels-and-routing.md#adr-0132-one-integrator-per-sales-channel) |
+| ADR 0132 | Decision 6 rewritten: no drained gate; batch switch per CA profile, DE twice; Rithum stock/price off the only hard precondition | coordinator, delegated; Erick accepted | 2026-10-28 | [channels-and-routing](flows/channels-and-routing.md#adr-0132-decision-6-batch-switch-per-ca-profile) |
+| ADR 0133 | Buyer PII only in `PiiFieldMap` columns; none in any `AmazonSeller` store, log, feed or payload; BR-3 before the first PII read | Erick (Q1), delegated (Q2–Q6) | 2026-10-27 | [data-protection](flows/data-protection.md#adr-0133-amazon-buyer-pii) |
+| ADR 0134 | Amazon Seller channels are plain `JngSp` rows identified by `amazon_seller_account`; other discriminators banned by an architecture test | not recorded | 2026-10-28 | [channels-and-routing](flows/channels-and-routing.md#adr-0134-channels-configured-by-columns) |
+| ADR 0138 | One rule table of flows per fulfilment channel; refund feed for FBM and FBA behind an already-refunded lookup | Erick (approved), Q1–Q9 delegated | 2026-10-29 | [cancel-and-refund](flows/cancel-and-refund.md#adr-0138-flows-per-fulfilment-channel) |
+| ADR 0139 | Failures per stage (`order_import_errors` before import, `amazon_seller_failures` after); Sentry alarms; digest in a dedicated Amazon Chat space; supervisor and cadences | Erick (approved), delegated | 2026-10-30 | [monitoring-and-failures](flows/monitoring-and-failures.md#adr-0139-failures-alarms-and-supervisor) |
+| ADR 0140 | Shadow mode design: withdrawn, never on master | drafted by the coordinator; dropped by Erick and the BA | 2026-10-30 | [governance-and-timeline](flows/governance-and-timeline.md#adr-0140-shadow-mode-withdrawn) |
+| .36931 | Build directly in `manobo-2008`; `manobo-service-api` deprecated | Erick | 2026-10-20 | [governance-and-timeline](flows/governance-and-timeline.md#build-directly-in-manobo-2008) |
+| .37485 | PO = Sarina, BA = Nitya; business decisions via BRD, technical via grilling | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#po-and-ba-roles) |
+| .37729 | Doc A = source of truth; new Asana project; GitHub map for technical; July project superseded | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#tracking-roles) |
+| .38822 | Every business task is assigned to Nitya, never Sarina | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#business-tasks-go-to-nitya) |
+| .38010 | Amazon DPP obligations BR-1 … BR-6 stay binding for the new domain | Erick | 2026-10-27 | [data-protection](flows/data-protection.md#br-1-to-br-6-stay-binding) |
+| .38199 | Map destination "S1 can start"; one map per gate | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#map-destination-s1-can-start) |
+| .38368 | Research agents may use production read-only; findings on `research/*` branches | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#research-agents-may-read-production) |
+| .38540 | Canonical terms Integrator, Seller account, Fulfilment channel | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#canonical-terms) |
+| .41362 | Asana rewritten for non-technical readers | Erick | 2026-10-27 | [governance-and-timeline](flows/governance-and-timeline.md#asana-for-non-technical-readers) |
+| .37271 | App authorised on Nenalina EU and NA; J&G EU not needed for phase 1 | Sarina (authorisation), Erick (check) | 2026-10-27 | [channels-and-routing](flows/channels-and-routing.md#app-authorised-on-nenalina-eu-and-na) |
+| #5981 | Product types NECKLACE/RING/BRACELET, not JEWELRY; a price write sends the listing's own `productType` | research agent, checked by Erick | 2026-10-27 | [prices-and-listings](flows/prices-and-listings.md#5981-product-types-and-price-writes) |
+| #5982 | `carrierCode` = the last-mile carrier's `amzn-base.xsd` code; `Other` only for codeless carriers; confirmShipment stays on v0 | research agent, checked by Erick | 2026-10-27 | [shipment-confirmation](flows/shipment-confirmation.md#5982-carrier-codes) |
+| #5983 | Personalisation stays out of the P1 order-mapping scope | research agent, checked by Erick | 2026-10-27 | [prices-and-listings](flows/prices-and-listings.md#5983-personalisation-out-of-p1-scope) |
+| #5980 | Hold an order when a rate is missing or ≤ 0; currency from the Amazon order, never `jng_sp.currency` | research agent, checked by Erick | 2026-10-27 | [orders-import](flows/orders-import.md#5980-currency-from-the-order-and-missing-rates) |
+| #5984 | Stop ChannelAdvisor for Nenalina per CA profile or in code, never by removing the cron line | ticket session | 2026-10-27 | [channels-and-routing](flows/channels-and-routing.md#5984-stop-channeladvisor-per-ca-profile) |
+| .57223 | Timeline revised: UAT in the DE go-live week 4–8 Jan, other Nenalina 11–15 Jan, JG from 15 Feb; Nitya's artifact is the date source | Erick, Nitya, Sahat | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#timeline-revised) |
+| Asana sections | Asana restructured: S5, S6 renamed, S7 deleted, Monitoring + JG preparation, S8 undated | Erick (coordinator executed) | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#asana-restructured) |
+| .65324 | Scope = 20 Nenalina channels per the sheet; only AN.DT closes | Erick; confirmed by Nitya | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#scope-is-20-nenalina-channels) |
+| .67265 | JG phase 2 = 12 channels; AM.US left to the JG BRD | the BA | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#jg-phase-2-is-12-channels) |
+| .68082 | FBA orders enter Manobo only once SHIPPED | the BA | 2026-10-28 | [orders-import](flows/orders-import.md#fba-orders-enter-only-once-shipped) |
+| .70046 | Seller SKU: FBA = real SKU, FBM = real SKU + `-FBM` | the BA | 2026-10-28 | [prices-and-listings](flows/prices-and-listings.md#seller-sku-format) |
+| .70555 | UK: import the orders, keep a UK channel | the BA | 2026-10-28 | [orders-import](flows/orders-import.md#uk-orders-are-imported) |
+| #5991 | UK orders ticket closed as "import" by the scope decision | map session | 2026-10-28 | [orders-import](flows/orders-import.md#5991-uk-orders-ticket-closed-as-import) |
+| .70800 | Old-order PII is an After Release Task, decided with Sarina before go-live; not blocking S1 | the BA; Erick (not blocking) | 2026-10-28 | [data-protection](flows/data-protection.md#old-order-pii-is-an-after-release-task) |
+| .68504 | No separate ticket for the ChannelAdvisor DE import leak; wait for the migration | Erick | 2026-10-28 | [orders-import](flows/orders-import.md#5970-no-ticket-for-the-channeladvisor-de-leak) |
+| #6012, #6013 | Price flow gets grilling ticket #6012 and BRD-input ticket #6013 | Erick | 2026-10-28 | [prices-and-listings](flows/prices-and-listings.md#6012-and-6013-price-flow-tickets) |
+| #6006 | Release-freeze question becomes BRD-input ticket #6006 | map session, at the coordinator's request | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#release-freeze-becomes-ticket-6006) |
+| .71715 | `-L` FBA listings get no data fix before the migration | Erick | 2026-10-28 | [prices-and-listings](flows/prices-and-listings.md#l-listings-get-no-data-fix-before-the-migration) |
+| .73109 | BRD P0+P1 sign-off is the S2 gate (20 Nov), not the S0 exit | Erick | 2026-10-28 | [governance-and-timeline](flows/governance-and-timeline.md#brd-sign-off-is-the-s2-gate) |
+| .74043 | FBM stock = full available Hamburg stock, no buffer | the BA (Anja, Nitya) | 2026-10-28 | [fbm-stock](flows/fbm-stock.md#fbm-stock-is-the-full-hamburg-stock) |
+| .74487 | Price fields A5–A7: `list_price` ← UVP, `our_price` ← Normal Price, `discounted_price` ← Promotion Price | the BA | 2026-10-28 | [prices-and-listings](flows/prices-and-listings.md#a5-to-a7-price-field-mapping) |
+| .75339 | `-L` only on old products; the SKU mapping rests on the alternate-SKU table | the BA | 2026-10-28 | [prices-and-listings](flows/prices-and-listings.md#l-suffix-only-on-old-products) |
+| .75339 | A9: FBA stock not used today; warehouse list waits for Andreas | the BA | 2026-10-28 | [fba-stock](flows/fba-stock.md#a9-fba-stock-not-used-today) |
+| .78305 | FBM and FBA price come from separate sales-channel rows and may differ | Erick | 2026-10-29 | [prices-and-listings](flows/prices-and-listings.md#a7-fbm-and-fba-price-per-sales-channel) |
+| Asana 1219922605431756 | BD-21 task completed: historical-order PII is an After Release Task | Erick | 2026-10-29 | [data-protection](flows/data-protection.md#bd-21-task-completed-by-erick) |
+| #6039, #6040 | Refund fog graduated: grilling #6040 blocked by BRD input #6039 | coordinator, delegated | 2026-10-29 | [cancel-and-refund](flows/cancel-and-refund.md#6040-refund-fog-graduated) |
+| #5977 c6514635367 | No n8n in Amazon core processes; Amazon gets its own Chat space | Erick | 2026-10-30 | [monitoring-and-failures](flows/monitoring-and-failures.md#no-n8n-in-amazon-core-processes) |
+| #5976 c6514714221 | #6006 does not block #5989 | coordinator, delegated | 2026-10-30 | [governance-and-timeline](flows/governance-and-timeline.md#6006-does-not-block-5989) |
+| #5976 c6516457748 | No shadow mode; BR-3 binds before the go-live order import | Erick and the BA | 2026-10-30 | [governance-and-timeline](flows/governance-and-timeline.md#no-shadow-mode) |
+| #5985 | LWA: rotate `Manobo-2008-Sellers` now; server env from the S1 ticket; sandbox `Manobo` left unrotated | Erick; coordinator (server env) | 2026-10-30 | [data-protection](flows/data-protection.md#5985-lwa-secrets) |
+| .91480 | #5978 waits only on #5986 and is grilled inside S1 | Erick | 2026-10-30 | [prices-and-listings](flows/prices-and-listings.md#5978-waits-only-on-5986) |
