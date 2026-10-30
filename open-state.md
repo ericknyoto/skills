@@ -15,10 +15,7 @@ Re-verify with `verification.md` before acting on a line.
 
 ## Pull requests
 
-- **#6041** (ADR 0138 Accepted, fulfilment gating, #5974): branch `5974-adr-amazon-flow-gating`, head `2f6f7d2095`,
-  opened 2026-10-29 13:36Z. `guard` and `check_changes` pass, `do_testing` skipped (docs only); blocked on review
-  (read 13:45Z). Erick merges. Re-check the number before merge: 0135 and 0137 sit on other branches, 0136 on master,
-  and 0138 nowhere else (2026-10-29).
+- #6041 (ADR 0138, Accepted) merged 2026-10-30 03:41Z (`238de6e6d8`). No Amazon ADR PR is open.
 - #6008 (ADR 0134) merged 2026-10-29 12:55Z (`58eea8e9ea`).
 - Merged on 2026-10-28, in this order: #5994 (ADR 0131, head `6440c7feda`) 06:52Z, #5995 (ADR 0133) 06:59Z,
   #6007 (ADR 0132) 07:14Z. #5990, #5992, #5993 merged on 2026-10-27.
