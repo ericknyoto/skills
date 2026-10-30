@@ -57,6 +57,16 @@ preparation section).
 - **Who, when:** Sarina (authorisation), Erick (check), 2026-10-27
 - **Where:** Doc A .37271; Asana 1219960974323506
 
+### No architecture tests for now
+
+The source-scan tests for ADR 0128 §1 (nothing outside the domain references `Domain\AmazonSeller`) and ADR 0134 §4
+(no `JngSpIdHelper`, `->equals(`, `package_prefix`, `marketplace_id`, `Marketplace` model, `->currency`) are dropped from
+PR #6088: "too rigid for now". The rules stay binding and are held by code review; ADR 0134 gets an erratum (§4 names the
+test twice), #6064's acceptance criterion and spec #6062 Testing Decisions are struck. The `currency_code` convention
+(Q6) stays as a review rule. The coordinator's recommendation (keep, token-based matching) was not taken.
+- **Who, when:** Erick, 2026-10-30
+- **Where:** Doc A .97616; PR #6088; ADR 0134 erratum (docs PR); #6064 and #6062 edits by the S1 session
+
 ### Integrator column save rules (#6065)
 
 `integrator` is a required (`present`) field on the sales-channel save: a stale form opened before the deploy fails
@@ -71,8 +81,8 @@ wrapping would move the selling-price refresh job before commit; revisit if S2 a
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
-channel from another object), which is stricter than the ADR's "on a sales channel". Accepted, with the convention that
-the domain's own currency columns and properties are named `currency_code` (ISO 4217, Amazon's `currencyCode`; ADR 0131
+channel from another object), which is stricter than the ADR's "on a sales channel". Accepted on 30 Oct, then the test itself was dropped the same day (see "No architecture tests for now"); the convention that
+the domain's own currency columns and properties are named `currency_code` stays, held by review (ISO 4217, Amazon's `currencyCode`; ADR 0131
 already says "currency code"), so S2's order currency never trips the test. No ADR change.
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q6, #6064 / PR #6088)
 - **Where:** the architecture test's docblock; PR #6088
