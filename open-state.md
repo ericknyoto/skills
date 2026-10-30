@@ -108,13 +108,13 @@ Phase 2 gets its own BRD and its own wayfinder map; nothing for it is ticketed o
 - **6 Nov 2026, S0 exit** (Asana milestone `1219919783880756`): Frank's go, scope approved, and the Tax Invoicing
   answer (#5988, Asana `1219919849816117`; Amazon's role approval takes weeks). The BRD sign-off is no longer here. Erick owes "Close the technical decisions for the foundation" (`1219919783869671`) and the LWA secret
   rotation (`1219920153548672`, #5985; done on GitHub 30 Oct 07:34Z).
-- **20 Feb 2027:** LWA rotation reminder (#5985): sandbox `Manobo-2008` is due 2027-03-22, `Manobo-2008-Sellers`
-  2027-04-28; every copy of a secret is updated within 7 days. Erick owes the Ops calendar entry.
 - **9 Nov 2026:** S1 starts if the map destination holds; S1 waits on no business answer (Erick, 28 Oct), only Frank's go.
 - **20 Nov 2026:** BRD P0+P1 sign-off (#5989, Asana `1219919921548797`), the gate for the S2 build starting 23 Nov.
   - S1 section, 30 Oct 06:28Z (no shadow mode): "Shadow order pull live in production" `1219919864565642` completed as not needed (story `1220043125747003`, @Nitya); the BR-3 task `1220041626125348` (created earlier that day) DELETED, its obligation back on `1219919783910025` (DPP obligations, due 4 Dec, story `1220043191951545`): Sentry `sql_bindings` off and Nightwatch checked before the first production SP-API read that returns PII, now the go-live order import. S1 exit `1219919983244087` renamed "SP-API client, channel switch and monitoring built; DE SKU reconciliation report ready"; S2 exit `1219919864236215` renamed "FBA stock visible in Manobo". Doc A: log row `.88693` (rev 183) + body rows .7171/.21596/.8380/.8656 rewritten (rev 188).
   - BRD requirement posted on that task 30 Oct 03:56Z (IT, @Nitya, story `1220041038186030`): who receives the daily 06:00 Amazon failure digest and the immediate refund/cancel failure alert; first comment named "Order N8N" as the default; corrected the same day by Erick (story `1220041038698373`): a NEW dedicated Google Chat space for Amazon, name and members per BRD. Standing rule from Erick (30 Oct): Amazon core flows run in Manobo only, no n8n; n8n only for notifications and similar, and every n8n plan is confirmed with Erick first. No answer yet.
   Listing ownership `1219919921458898` and PIC `1219920153543831` are "Blocks S2", due 20 Nov.
+- **20 Feb 2027:** LWA rotation reminder (#5985): sandbox `Manobo-2008` is due 2027-03-22, `Manobo-2008-Sellers`
+  2027-04-28; every copy of a secret is updated within 7 days. Erick owes the Ops calendar entry.
 
 ## Known-unfixed, no issue yet
 
