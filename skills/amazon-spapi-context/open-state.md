@@ -21,6 +21,11 @@ No Amazon ADR PR is open. Merges and closures, with commits: [timeline.md](timel
 - **Left out on purpose:** the SKU mapping table's design (#5978 → #5986), the DE reconciliation report, the order
   pull, and the `shipment_id` scheme with `amazon_seller_order_items`. Doc A's backlog row (.21248) puts the last two
   in S1; the spec defers them to the order-import spec, pending Erick.
+- Updated 2026-10-30: `balance => false` on the supervisor ([decision](flows/monitoring-and-failures.md#supervisor-balance-false)).
+- **`to-tickets` breakdown proposed, not published** (S1 spec session, 30 Oct):
+  - 14 tickets, 2 of them HITL (server env, filling the 20 keys).
+  - Parent branch `6062-amazon-seller-s1-foundation`, child branches `6062-<ticket>-<slug>`, one parent PR to `master`.
+  - It waits on Erick's answers: granularity, blocking edges, the seams and six decisions, and whether BR-3 ships early.
 - **Awaiting Erick:** confirm the test seams, and six decisions the spec adds beyond the ADRs:
   1. switch enable flag, false in production;
   2. form rule rejecting a ChannelAdvisor identity under an integrator other than CA or Amazon;
