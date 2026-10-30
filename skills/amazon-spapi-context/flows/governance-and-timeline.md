@@ -118,6 +118,9 @@ session ("Manager Amazon", `local_0f6cedbf-c406-4622-afe2-5b8dae0215c5`), which 
 this store, Doc A and read-only production; design, scope, date and production questions go to Erick, business ones
 to Nitya via Asana. Decisions born from implementation blockers are logged in Doc A and here the same day; the
 implementing session adds the "Implemented by PR #n" lines. The coordinator writes no code and opens no PR.
+Implementation sessions stop at the PR: promotion into `integration-test` (and so staging verification) happens only when
+Erick asks for it, one branch per request (REPO.md → Branches; Erick, 30 Oct: "Biasanya skill implement spec berhenti di
+PR saja. Kalau aku tidak minta merge ke integration-test, tidak akan jalan.").
 - **Who, when:** Erick, 2026-10-30
 - **Where:** this file (chat decision, no Doc A row: a working arrangement, not a project decision)
 
