@@ -134,6 +134,37 @@ Goes into #6074's acceptance criteria and the parent PR #6062 post-deploy note.
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session question on #6074)
 - **Where:** Doc A row of 30 Okt "Aturan skip download ChannelAdvisor (#6074) dipertegas"; #6074; PR #6089 body note
 
+### Review of the S1 parent PR #6094: dispositions (1 Nov)
+
+The report-only review of PR #6094 (issuecomment-6553470012, 26b94dfdd0) was right on every fact and wrong on the
+recommendations that lacked Doc A context. Erick accepted the coordinator's disposition after a per-item exchange with the
+reviewing session:
+- PR #6094 goes to **draft** until #6075 is in; the form keeps the `amazon` option (.100529 unchanged).
+- The backfill command fills **only rows where `integrator IS NULL`** (`whereNull` inside the UPDATE itself, so a concurrent
+  save is never overwritten) and **reports** rows whose mirrors disagree without fixing them. That report must be 0 before
+  the S2 CHECK migration, which otherwise fails. This narrows rev 205's "rerunnable to repair drift": the command never
+  overwrites a set `integrator`, so the "0/0 on amazon → kept" special case disappears. Mirror definition comes from
+  `SalesChannelIntegratorEnum::jngSpColumnsFor()`; the flags → integrator mapping lives once, in `fromLegacyFlags()` on the enum.
+- **Deploy-window hazard closed:** while `integrator` is NULL the form showed "None", and a save wrote `ca_used`/`tb_used` = 0
+  (`jngSpColumnsFor(null)`); the request rule catches only CA channels with a `ca_channel_id`, not the 130 Tradebyte channels,
+  and the backfill cannot recover a 0/0 NULL row. Fix: when the column is NULL the form pre-selects the value derived from
+  the flags (trait `DerivesJngSpIntegrator`); the runbook runs the backfill right after the deploy.
+- ADR changes go through **one new amending ADR** in the same PR, not errata: ADR 0132 §1 last sentence (backfill is a
+  command, per ADR 0004 and `.ai/rules/migrations.md`), ADR 0134 §4 (rules held by code review, no architecture test) and
+  ADR 0129 §2 (replay after a token refresh only for idempotent operations). All three sentences sit in `## Decision`, and
+  `docs/adr/README.md:52-53` limits errata to Context/Consequences. The ADR 0134 erratum already in the PR is replaced.
+- Ticket/spec text follows the decisions, not the other way round: AC #6064 (lock timeouts are #6074's; `token_url`;
+  `lwa_error` is only LWA's `error` string), AC #6065 (CHECK in S2; backfill via command; the Action is the only writer in
+  the application flow, the command is the cutover path), spec #6062 §C (idempotent replay) and §E (NULL never skips).
+- Agreed code fixes in S1: GLOSSARY (no CHECK yet; two writers), backfill clauses on `JngSpBuilder` (ADR-0126),
+  `CheckConnectionCommand` registered in `withCommands()` (REPO.md:40), enum instead of literals in the command, the test
+  gaps listed as 10a–f, factory default `ca_channel_id` NULL, no mocking of `SetSalesChannelIntegratorAction` in the save
+  test, `currency_code` convention recorded with `record-rule`. Deferred, not blocking S1: the transport refactors
+  (13–17, 19 → #6068), speculative `apiVersion()`/`useAmazon()`, low-value tests. Rejected: moving `jngSpColumnsFor()` out
+  of the enum (Erick asked for it there).
+- **Who, when:** Erick ("Ok aku setuju"), 2026-11-01, on the coordinator's recommendation after the exchange with the S1 Code review session
+- **Where:** Doc A rev 207 (.104572); PR #6094 issuecomment-6553470012; the implementation brief to the S1 session
+
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales

@@ -66,6 +66,11 @@ the token is always forgotten, but only idempotent operations are replayed (corr
 first framing "ADR 0129 fixes no rule here" was wrong).
 - **Who, when:** coordinator on Erick's delegation, 2026-10-30 (S1 session Q5, #6064 / PR #6088)
 - **Where:** PR #6088 body and the transport class docblock
+- **1 Nov addendum (Erick, review of PR #6094):** this replay contradicts ADR 0129 §2's "No other 4xx is ever retried", so it
+  is recorded in the amending ADR of PR #6094 (see channels-and-routing → review dispositions), and the transport docblocks
+  cite that ADR. LWA errors: a 429 from the token endpoint is `LwaUnavailable` (retryable); every other 4xx (`invalid_client`,
+  `invalid_grant`, `invalid_request`, `unsupported_grant_type`) is `LwaRejected`, never retried. Unchecked: whether LWA ever
+  answers 429; the rule costs nothing if it never does. `lwa_error` in the request log is only LWA's `error` string.
 
 ### S1 spec additions to ADR 0129 and 0139
 
