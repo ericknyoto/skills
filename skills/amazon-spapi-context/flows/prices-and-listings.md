@@ -137,6 +137,23 @@ is grilled inside S1 once #5986 is answered.
   report), the business meaning of `-L`, replica lag. API calls: LWA token POST, createReport POST, getReport GET ×2,
   getReportDocument GET, document download; no feeds.
 
+- **All-listings reports, every marketplace, 2026-11-01** (16 `GET_MERCHANT_LISTINGS_ALL_DATA` reports, one per marketplace
+  from `getMarketplaceParticipations`; workbook `5978-amazon-all-marketplaces-vs-manobo-2026-11-01.xlsx` in
+  `~/.config/Claude/side-session-notes/local_0f6cedbf-c406-4622-afe2-5b8dae0215c5/`, 5 sheets incl. "SKU x marketplace"):
+  the EU account lists 13 Amazon marketplaces, **SA, AE and TR included** (0, 0 and 1 listing; no Manobo channel), plus
+  8 non-Amazon/MCF entries; NA = US, CA, MX. Totals 31,856 listings (FBA 17,716 / FBM 14,140), 7,823 distinct seller
+  SKUs, 30,081 exact matches, 429 after normalisation, 1,346 no match, **51 Active listings without a Manobo match**
+  (GB 6, US 44, FR 1). Per marketplace: DE 4,714; FR 3,919 (report has no ASIN column); IT 3,920; ES 3,925; NL 3,918;
+  BE 3,762; PL 3,168; **SE 1** although Manobo's SE catalogs (202 FBM 3,000 rows, 233 FBA 2,270) are full; IE 0;
+  GB 4,140 with **2,248 FBM listings while Manobo has only the FBA channel 206** and GB-only suffixes `-UK`, `-PAR`,
+  `-PAR-UK`, `PAR` (423 `-UK` SKUs match only after the suffix is stripped; `-PAR` = sizeless codes, assumed variation
+  parents); US 187 (44 Active unmatched: 6-digit / sizeless codes and their `-L` variants); CA 180 and MX 21 with
+  Amazon placeholder SKUs `Amazon.Found.<ASIN>`; channels 208 CA and 209 MX have no catalog rows, 207 US has 5. Manobo
+  SKUs without an Active listing: FBM channels 12,739 (catalog-active) / 17,397 (all rows), FBA 5,717 / 6,603. Report
+  layouts differ per marketplace (18–31 columns, German headers on EU, English on NA): map columns by header name.
+  Amazon returned the same DE document as the morning pull. 68 API calls, no 429. Not verified: listing ownership,
+  the meaning of `-L` / `-UK` / `-PAR`, why Amazon.se has 1 listing, replica lag.
+
 ### Prices per sales channel (verified 2026-10-29, code + replica)
 
 - The sales-channel price page (`modules/products-pricing/controller.php:391-411` → `SalesChannelCatalogPriceService::savePrices`)
