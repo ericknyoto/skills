@@ -301,6 +301,31 @@ ES `AFQLKURYRPEL8`, UK `AZMDEXL2RVFNN`; NA US `A2ZV50J4W1RKNI`, CA `A1MQXOICRS2Z
 
 ## Traps
 
+### What reads the legacy integrator flags (map of 1 Nov, branch 6062-amazon-seller-s1-foundation)
+
+Nothing outside the sales-channel form reads `jng_sp.integrator` yet (form preselect `JngSp::integratorForForm()`, the
+request rule "a filled `ca_channel_id` needs channeladvisor or amazon"). The backfill writes only `integrator`, never the
+flags, so it cannot change any running process. Order import does not key on the flags at all:
+- **ChannelAdvisor order download** maps an order to a channel by `ca_profile_id` + `ca_channel_id` (+ `use_external_warehouse`)
+  (`classes/psr4/Services/SalesChannelService.php` `getSalesChannelIdsByChanneladvisorChannelId`); no match = logged and skipped.
+- **Tradebyte order import** matches by `tb_channel` only (`TradebyteImportOrderService.php:730` → `SalesPartner.php:1553`).
+- `ca_used = 1` gates: the ChannelAdvisor channel list for catalog/family/promotion exports (`SalesChannelService.php:419`),
+  the price push (`ProductPriceEventSubscriber.php:41`), `ca_status` re-upload flags (`jng_sp_catalog.php:400`, `Product.php:4947`),
+  delivery/cancel confirmation (`SalesOrderConfirmationService.php:58`), shipped-status sync
+  (`OrderItemNeedUpdateToStatusSentAction.php:30`), return forwarding (`ProcessReturnB2cToChanneladvisorListener.php:20`),
+  the personalization import factory (`ImportOrderPersonalizationsFactoryRegistry.php:92`), the packing-time shipment
+  confirmation branch (`gateway/mc_functions/mod01_order_detail.php:265`), Local customs/invoice/label (`JngSp.php:247`).
+- `tb_used = 1` gates: `cron/tradebyte-messages-sender.php:191` (ship/cancel/return messages), the Tradebyte channel list for
+  product/active-status/price export and the sales report (`SalesPartner.php:1633` callers, `TradebyteConnectionManager.php:158`),
+  price-sync intents (`ProductPriceEventSubscriber.php:30`), `tb_status`/stock need-update flags (`jng_sp_catalog.php:477`),
+  MS Direct → Tradebyte status forwarding (`ForwardingStrategyFactory.php:58,93,105`); the confirmation service skips TB channels.
+- ChannelAdvisor stock export is gated per product (`ca_status`), not per channel.
+So one form move CA → Tradebyte (only possible after clearing `ca_channel_id`, which already stops the order download for that
+site) stops the CA export/confirmation/return/personalization paths and starts the Tradebyte ones; the Tradebyte import itself
+needs `tb_channel`. Unchecked: the unit of the 20-unit site-id cache in `ChanneladvisorCacheService.php:70,77` (orders may map
+for a short window after a save). Source: Explore worker report, citations spot-checked by the coordinator.
+
+
 ### "Setting ca_used = 0 stops ChannelAdvisor for a channel"
 
 **True:** the CA download routes on `(ca_profile_id, ca_channel_id, use_external_warehouse)` and ignores `ca_used`
