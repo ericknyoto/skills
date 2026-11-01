@@ -172,6 +172,21 @@ reviewing session:
   tenant: staging Local still had 48 NULL rows after the Central run. The production runbook must run it in each tenant's
   app container.
 
+### S1 ships in two releases; the integrator select is read-only until S2 (1 Nov)
+
+Erick merges the S1 parent PR #6094 to master twice to stay clear of the 27 Nov freeze. **Release 1** = the parent as of
+#6097 plus one child PR `6062-release1-form-gate`: the form rule that rejects `amazon` while the switch is off (split out of
+#6075), `docs/INTEGRATIONS.md` updated, a test that the app boots with no `AMAZON_*` env, and the integrator select
+**read-only for existing channels** (select disabled + hidden input carrying `JngSp::integratorForForm()`, a request rule
+that rejects a tampered value), active only when creating a channel. Then master is merged into the parent and `guard`
+must be green. After the deploy Erick runs the backfill in every tenant's app container. **Release 2** before 26 Nov:
+#6068–#6072, #6074, the rest of #6075 (switch command + hypercare record), #6076, #6077; leftovers go to the S2
+integration branch. Consequence: between Release 1 and S2 no existing channel can change integrator through the app, and
+Release 1 carries no user-facing behaviour to announce. S2 re-enables the select together with the switch.
+- **Who, when:** Erick, 2026-11-01 (two releases on the coordinator's recommendation; read-only select his own proposal,
+  new-channel exception on the coordinator's recommendation)
+- **Where:** Doc A rev 208 (.106967) and rev 209 (.108702); PR #6094 body; #6065 and spec #6062 §E amended; S2 spec input
+
 ### Currency is `currency_code` inside the Amazon Seller domain
 
 The ADR 0134 architecture test bans `->currency` anywhere in `Domain\AmazonSeller` (a source scan cannot tell a sales
