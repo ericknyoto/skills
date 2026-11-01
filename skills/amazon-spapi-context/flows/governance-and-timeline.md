@@ -91,7 +91,7 @@ although Doc A recommends closing it; the JG BRD decides. The channels: [channel
 BRD P0+P1 sign-off is the S2 gate (20 Nov), not the S0 exit; S1 waits only for Frank's go and the Tax Invoicing answer
 (6 Nov). Map #5967 Destination names the S2-gate tickets ([open-state](../open-state.md#map-tickets)).
 - **Who, when:** Erick, 2026-10-28
-- **Where:** Asana 1219919921548797; Doc A .73109 (S0 gate text .8316 and P0-09 updated, rev 162); #5989
+- **Where:** Asana 1219919783880756 (was 1219919921548797, deleted 1 Nov as a duplicate); Doc A .73109 (S0 gate text .8316 and P0-09 updated, rev 162); #5989
 
 ### Release freeze becomes ticket 6006
 
