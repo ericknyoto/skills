@@ -183,6 +183,12 @@ must be green. After the deploy Erick runs the backfill in every tenant's app co
 #6068–#6072, #6074, the rest of #6075 (switch command + hypercare record), #6076, #6077; leftovers go to the S2
 integration branch. Consequence: between Release 1 and S2 no existing channel can change integrator through the app, and
 Release 1 carries no user-facing behaviour to announce. S2 re-enables the select together with the switch.
+- **Form rules in Release 1 (rev 210):** a filled Tradebyte channel code requires the integrator `tradebyte`, symmetric to
+  the CA-id rule, because the save no longer derives `tb_used` from the code (master `SaveSalesChannelDetailAction.php:59-60`
+  did) and a silent `tb_used = 0` switches the Tradebyte paths off without a word. Production replica 1 Nov: 130 `tb_used = 1`
+  all with `tb_channel`, 0 `tb_used = 0` with one; 29 `ca_used = 1` all with `ca_channel_id` — the rule hits no existing row.
+  The amazon-while-switch-off rule applies only when the integrator changes to amazon, so an amazon channel stays saveable
+  after the go-live switch is turned off.
 - **Who, when:** Erick, 2026-11-01 (two releases on the coordinator's recommendation; read-only select his own proposal,
   new-channel exception on the coordinator's recommendation)
 - **Where:** Doc A rev 208 (.106967) and rev 209 (.108702); PR #6094 body; #6065 and spec #6062 §E amended; S2 spec input
