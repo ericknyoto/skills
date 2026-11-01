@@ -120,6 +120,23 @@ is grilled inside S1 once #5986 is answered.
   Assumption: it is the sheet's "List price (RRP EUR net)"; the schema was not read for it.
 - The write path for FBM quantity and price (`patchListingsItem` or `JSON_LISTINGS_FEED`): [fbm-stock.md](fbm-stock.md#facts).
 
+- **All-listings report, Amazon.de, 2026-11-01** (`GET_MERCHANT_LISTINGS_ALL_DATA`, report 2406960020758, pulled by a
+  standalone script with the Nenalina EU token; #5986 issuecomment-6557537148; persistent summary
+  `~/.config/Claude/side-session-notes/local_0f6cedbf-c406-4622-afe2-5b8dae0215c5/5978-de-listings-summary-2026-11-01.md`):
+  4,714 seller SKUs = FBA (AMAZON_EU) 2,644 + FBM (DEFAULT) 2,070; Active 2,865 (FBA 1,871, FBM 994), Inactive 1,834,
+  Incomplete 15. FBM: 2,045 of 2,070 end in `-FBM` (25 sizeless codes). FBA: 2,058 are the real SKU in the current
+  format `NNNNNNNNNN[_SS]`; **`-L` is a second FBA convention**, 495 of 496 `-L` rows are FBA (377 Active), on old
+  dash-format SKUs (389), current codes (93) and letter-prefix codes (14). Other formats: 39 old dash without suffix,
+  54 six-digit, 10 nine-digit, 18 Amazon-generated `XX-XXXX-XXXX`; 3 `-FBM` SKUs are fulfilled by Amazon.
+  **Match against Manobo (replica, read-only):** 3,953 exact (2,379 on the DE channel's `jng_sp_sku`, 1,546 on
+  `product_skus`, 28 on another channel's `jng_sp_sku`), 1 after stripping `-L`, 760 no match; **every Active listing
+  matches exactly**, all 760 unmatched are Inactive (745) or Incomplete (15), 733 of them a product code without its
+  size (old offers, not checked per ASIN). Manobo side without a listing (active `jng_sp_catalog` rows, expected SKU =
+  channel `jng_sp_sku` else `product_skus`): FBM channel 192: 705 of 2,419 have no FBM listing (1,425 no Active one);
+  FBA channel 195: 90 of 2,212 have no FBA listing (397 no Active one). Not verified: listing ownership (not in the
+  report), the business meaning of `-L`, replica lag. API calls: LWA token POST, createReport POST, getReport GET ×2,
+  getReportDocument GET, document download; no feeds.
+
 ### Prices per sales channel (verified 2026-10-29, code + replica)
 
 - The sales-channel price page (`modules/products-pricing/controller.php:391-411` → `SalesChannelCatalogPriceService::savePrices`)
