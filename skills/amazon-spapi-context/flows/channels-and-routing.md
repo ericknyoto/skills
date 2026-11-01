@@ -163,7 +163,7 @@ reviewing session:
   (13–17, 19 → #6068), speculative `apiVersion()`/`useAmazon()`, low-value tests. Rejected: moving `jngSpColumnsFor()` out
   of the enum (Erick asked for it there).
 - **Who, when:** Erick ("Ok aku setuju"), 2026-11-01, on the coordinator's recommendation after the exchange with the S1 Code review session
-- **Where:** Doc A rev 207 (.104572); PR #6094 issuecomment-6553470012; the implementation brief to the S1 session
+- **Where:** Doc A rev 207 (.104572); PR #6094 issuecomment-6553470012; implemented by PR #6097 (ADR 0140, merged into the S1 parent branch by Erick 2026-11-01, merge 37ae9882bd); drift in the backfill report exits 1
 
 ### Currency is `currency_code` inside the Amazon Seller domain
 
