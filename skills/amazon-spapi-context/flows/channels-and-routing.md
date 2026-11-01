@@ -164,6 +164,13 @@ reviewing session:
   of the enum (Erick asked for it there).
 - **Who, when:** Erick ("Ok aku setuju"), 2026-11-01, on the coordinator's recommendation after the exchange with the S1 Code review session
 - **Where:** Doc A rev 207 (.104572); PR #6094 issuecomment-6553470012; implemented by PR #6097 (ADR 0140, merged into the S1 parent branch by Erick 2026-11-01, merge 37ae9882bd); drift in the backfill report exits 1
+- **Staging verification, 1 Nov (PR #6094 issuecomment-6556059954, deployed head a14c505116):** 8 PASS, CA download OUT OF SCOPE
+  (no download ran on staging; no scheduler there). Staging Central: 240 `jng_sp` rows, all NULL after `migrate`; backfill
+  dry-run / run / rerun = 25 channeladvisor, 128 tradebyte, 87 NULL, "Drift: none.", exit 0; form preselect, untouched save,
+  stale-form rejection and the CA-id rule all held on channel 191. Staging already has sandbox LWA credentials, so
+  `check-connection` is 200/200 on both tenants; only production-mode reads wait on #6067. **Trap:** the backfill is per
+  tenant: staging Local still had 48 NULL rows after the Central run. The production runbook must run it in each tenant's
+  app container.
 
 ### Currency is `currency_code` inside the Amazon Seller domain
 
